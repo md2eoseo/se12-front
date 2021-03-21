@@ -1,0 +1,5 @@
+{
+  "apps": [
+    { "name": "se12-front", "script": "npm", "args": "start", "watch": true }
+  ]
+}
