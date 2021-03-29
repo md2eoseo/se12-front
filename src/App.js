@@ -1,4 +1,4 @@
-import "./App.css";
+import './App.css';
 
 function App() {
   return (
@@ -27,20 +27,10 @@ function App() {
             <td>최해솔</td>
           </tr>
         </table>
-        <a
-          className="App-link"
-          href="https://github.com/md2eoseo/se12-front"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a className="App-link" href="https://github.com/md2eoseo/se12-front" target="_blank" rel="noopener noreferrer">
           Frontend
         </a>
-        <a
-          className="App-link"
-          href="https://github.com/md2eoseo/se12-back"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a className="App-link" href="https://github.com/md2eoseo/se12-back" target="_blank" rel="noopener noreferrer">
           Backend
         </a>
       </header>
