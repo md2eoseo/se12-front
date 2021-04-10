@@ -24,7 +24,12 @@ input {
 .loginBtn {
   width: 400px;
   height: 50px;
-  border-color: #4374d9;
+  border: solid 1px #3163c9;
   color: white;
   font-size: 100%;
+  cursor: pointer;
+}
+
+.loginBtn:focus {
+  outline: none;
 }

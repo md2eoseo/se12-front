@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 import MainPage from './Home';
 import Login from './Login';
+import Sign from './Sign';
 
 class App extends Component {
   render() {
@@ -13,6 +14,7 @@ class App extends Component {
         <Switch>
           <Route path="/login" component={Login} />
           <Route path="/main" exact component={MainPage} />
+          <Route path="/sign" component={Sign} />
           <Route
             render={() => (
               <div className="error">

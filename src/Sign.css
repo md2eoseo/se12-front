@@ -1,0 +1,96 @@
+body {
+  background-color: whites;
+  text-align: center;
+}
+.Sign {
+  margin-top: 0;
+}
+
+.slogo {
+  margin-top: -70px;
+  margin-bottom: -30px;
+  width: auto;
+  height: auto;
+  max-width: 400px;
+  max-height: 300px;
+}
+
+.userPw {
+  width: 400px;
+  height: 50px;
+}
+input {
+  border: solid 1px #a6a6a6;
+  margin-bottom: 10px;
+  width: 400px;
+  height: 50px;
+}
+
+input:focus {
+  outline: none;
+  border: solid 1px #4374d9;
+}
+
+select {
+  border: solid 1px #a6a6a6;
+}
+
+select:focus {
+  outline: none;
+  border: solid 1px #4374d9;
+}
+
+.year {
+  width: 127px;
+}
+
+.month {
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  width: 127px;
+  height: 50px;
+}
+
+.date {
+  width: 127px;
+}
+
+.gender {
+  margin-bottom: 10px;
+  width: 400px;
+  height: 50px;
+}
+
+.signBtn {
+  margin-top: 20px;
+  margin-bottom: 80px;
+  background-color: #4374d9;
+  width: 400px;
+  height: 50px;
+  border: solid 1px #3163c9;
+  color: white;
+  font-size: 100%;
+  cursor: pointer;
+}
+
+.signBtn:focus {
+  outline: none;
+}
+
+.signform {
+  margin: 0 auto;
+  justify-content: ceter;
+  width: 403px;
+}
+
+.signform h3 {
+  text-align: left;
+  margin: 19px 0 8px;
+  font-size: 16px;
+}
+
+.signform h3 small {
+  font-size: 13px;
+  font-weight: lighter;
+}
