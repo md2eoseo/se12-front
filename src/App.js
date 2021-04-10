@@ -15,7 +15,7 @@ class App extends Component {
         <Header />
         <Switch>
           <Route path="/login" component={Login} />
-          <Route path="/main" exact component={Home} />
+          <Route path="/" exact component={Home} />
           <Route path="/signup" component={SignUp} />
           <Route
             render={() => (
