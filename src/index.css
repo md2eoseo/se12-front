@@ -1,3 +1,4 @@
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -46,4 +47,10 @@ ul {
   margin-left: 300px;
   margin-right: -500px;
   margin-top: -50px
+/* reset css */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
