@@ -1,5 +1,17 @@
 import { useState } from 'react';
+import { gql, useMutation } from '@apollo/client';
 import './css/Login.css';
+import { logUserIn } from '../client';
+
+const LOGIN_MUTATION = gql`
+  mutation login($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      ok
+      error
+      token
+    }
+  }
+`;
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -9,6 +21,23 @@ function Login() {
     e.preventDefault();
     console.log('사용자 Email :', email);
     console.log('사용자 Password :', password);
+    if (loading) {
+      return;
+    }
+    login({ variables: { email, password } });
+  };
+
+  const onCompleted = data => {
+    const {
+      login: { ok, error, token },
+    } = data;
+    if (!ok) {
+      // TODO: 로그인 에러 처리
+      console.log(error);
+    }
+    if (token) {
+      logUserIn(token);
+    }
   };
 
   const onEmailChange = e => {
@@ -18,6 +47,10 @@ function Login() {
   const onPasswordChange = e => {
     setPassword(e.target.value);
   };
+
+  const [login, { loading }] = useMutation(LOGIN_MUTATION, {
+    onCompleted,
+  });
 
   return (
     <div className="Login">
