@@ -21,6 +21,7 @@ function App() {
             render={() => (
               <div className="error">
                 잘못된 접근입니다.
+                <Link to="/main">홈으로 돌아가기</Link>
                 <Link to="/">홈으로 돌아가기</Link>
               </div>
             )}
