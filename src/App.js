@@ -1,22 +1,22 @@
-import React, { Component } from 'react';
+import { ApolloProvider } from '@apollo/client';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { client } from './client';
 import Footer from './components/Footer';
 import Header from './components/Header';
-
 import Home from './routes/Home';
 import Login from './routes/Login';
 import SignUp from './routes/SignUp';
 
-class App extends Component {
-  render() {
-    return (
+function App() {
+  return (
+    <ApolloProvider client={client}>
       <Router>
         <Header />
         <Switch>
           <Route path="/login" component={Login} />
-          <Route path="/" exact component={Home} />
           <Route path="/signup" component={SignUp} />
+          <Route path="/" exact component={Home} />
           <Route
             render={() => (
               <div className="error">
@@ -28,8 +28,8 @@ class App extends Component {
         </Switch>
         <Footer />
       </Router>
-    );
-  }
+    </ApolloProvider>
+  );
 }
 
 export default App;
