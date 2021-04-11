@@ -1,0 +1,50 @@
+body {
+  margin-top: 100px;
+  background-color: whites;
+  text-align: center;
+}
+.logo {
+  margin-bottom: 50px;
+  width: auto;
+  height: auto;
+  max-width: 400px;
+  max-height: 300px;
+}
+.userId {
+  width: 400px;
+  height: 50px;
+}
+.userPw {
+  width: 400px;
+  height: 50px;
+}
+.userBirthday{
+  width: 400px;
+  height: 50px;
+}
+.userName{
+  width: 400px;
+  height: 50px;
+}
+.userEmail{
+  width: 400px;
+  height: 50px;
+}
+.userPhoneNumber{
+  width: 400px;
+  height: 50px;
+}
+input {
+  margin-bottom: 10px;
+}
+.loginBtn {
+  width: 400px;
+  height: 50px;
+  border-color: #4374d9;
+  color: white;
+  font-size: 100%;
+}
+h4{
+  text-indent: 550px;
+  text-align: left;
+}
