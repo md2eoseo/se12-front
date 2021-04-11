@@ -1,3 +1,52 @@
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  padding: 0 0 0 0;
+  border-bottom: 1px solid black;
+}
+
+.header strong {
+  margin: 0 20px 0 0;
+}
+
+.header ul {
+  display: flex;
+}
+
+.header ul li {
+  margin: 0 15px 0 0;
+}
+
+.header ul li:last-child {
+  margin: 0;
+}
+
+.homelogo {
+  margin-top: -50px;
+  width: auto;
+  height: auto;
+  max-width: 200px;
+  max-height: 200px;
+}
+
+.hello {
+  margin-top: 40px;
+}
+.link{
+  margin-left: 300px;
+  margin-right: -500px;
+  margin-top: -50px
 /* reset css */
 
 * {
