@@ -2,6 +2,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid gray;
+  height: 128px;
 }
 
 .Header > div {
@@ -10,9 +12,11 @@
 }
 
 .logoImg {
-  height: 160px;
+  height: 128px;
 }
 
-.default-link {
-  margin: 0 10px;
+.rightMenu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

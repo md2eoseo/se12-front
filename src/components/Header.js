@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './css/Header.css';
+import Login from './Login';
 
 function Header({ location, history }) {
   return (
@@ -16,17 +17,7 @@ function Header({ location, history }) {
         </Link>
       </div>
       <div className="rightMenu">
-        <Link className="default-link" to="/login">
-          로그인
-        </Link>
-        |
-        <Link className="default-link" to="/signup">
-          회원가입
-        </Link>
-        |
-        <Link className="default-link" to="/bag">
-          장바구니
-        </Link>
+        <Login />
       </div>
     </div>
   );

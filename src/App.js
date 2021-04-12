@@ -5,7 +5,6 @@ import { client } from './client';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import Home from './routes/Home';
-import Login from './routes/Login';
 import SignUp from './routes/SignUp';
 
 function App() {
@@ -14,7 +13,6 @@ function App() {
       <Router>
         <Header />
         <Switch>
-          <Route path="/login" component={Login} />
           <Route path="/signup" component={SignUp} />
           <Route path="/" exact component={Home} />
           <Route
