@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import { gql, useMutation } from '@apollo/client';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
@@ -73,8 +72,8 @@ const Message = styled.div`
 `;
 
 const CREATE_ACCOUNT_MUTATION = gql`
-  mutation createAccount($name: String!, $email: String!, $password: String!, $address: String) {
-    createAccount(name: $name, email: $email, password: $password, address: $address) {
+  mutation createAccount($userId: String!, $password: String!, $email: String!, $name: String!, $address: String) {
+    createAccount(userId: $userId, password: $password, email: $email, name: $name, address: $address) {
       ok
       error
     }
@@ -82,8 +81,8 @@ const CREATE_ACCOUNT_MUTATION = gql`
 `;
 
 const LOGIN_MUTATION = gql`
-  mutation login($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
+  mutation login($userId: String!, $password: String!) {
+    login(userId: $userId, password: $password) {
       ok
       error
       token
@@ -92,9 +91,10 @@ const LOGIN_MUTATION = gql`
 `;
 
 const schema = yup.object().shape({
-  name: yup.string().required('이름을 입력해주세요.'),
-  email: yup.string().email('유효한 이메일 형식을 입력해주세요.').required('이메일을 입력해주세요.'),
+  userId: yup.string().required('아이디를 입력해주세요.'),
   password: yup.string().required('비밀번호를 입력해주세요.'),
+  email: yup.string().email('유효한 이메일 형식을 입력해주세요.').required('이메일을 입력해주세요.'),
+  name: yup.string().required('이름을 입력해주세요.'),
   address: yup.string(),
 });
 
@@ -110,11 +110,11 @@ function SignUp() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = ({ name, email, password, address }) => {
+  const onSubmit = ({ userId, password, email, name, address }) => {
     if (createAccountLoading) {
       return;
     }
-    createAccount({ variables: { name, email, password, address } });
+    createAccount({ variables: { userId, password, email, name, address } });
   };
 
   const onSignUpCompleted = data => {
@@ -126,8 +126,8 @@ function SignUp() {
         message: error,
       });
     }
-    const { email, password } = getValues();
-    login({ variables: { email, password } });
+    const { userId, password } = getValues();
+    login({ variables: { userId, password } });
   };
 
   const onLoginCompleted = data => {
@@ -160,9 +160,9 @@ function SignUp() {
         <form onSubmit={handleSubmit(onSubmit)}>
           {errors.result?.message && <Message>{errors.result?.message}</Message>}
           <label>
-            <Text>이메일</Text>
-            <Input type="text" placeholder="이메일을 입력하세요" {...register('email')} />
-            {errors.email?.message && <Message>{errors.email?.message}</Message>}
+            <Text>아이디</Text>
+            <Input type="text" placeholder="아이디를 입력하세요" {...register('userId')} />
+            {errors.userId?.message && <Message>{errors.userId?.message}</Message>}
           </label>
           <label>
             <Text>비밀번호</Text>
@@ -170,9 +170,19 @@ function SignUp() {
             {errors.password?.message && <Message>{errors.password?.message}</Message>}
           </label>
           <label>
+            <Text>이메일</Text>
+            <Input type="text" placeholder="이메일을 입력하세요" {...register('email')} />
+            {errors.email?.message && <Message>{errors.email?.message}</Message>}
+          </label>
+          <label>
             <Text>이름</Text>
             <Input type="text" placeholder="이름을 입력하세요" {...register('name')} />
             {errors.name?.message && <Message>{errors.name?.message}</Message>}
+          </label>
+          <label>
+            <Text>주소(선택)</Text>
+            <Input type="text" placeholder="주소를 입력하세요" {...register('address')} />
+            {errors.address?.message && <Message>{errors.address?.message}</Message>}
           </label>
           <Button className="submitBtn" type="submit" disabled={createAccountLoading || loginLoading}>
             {loginLoading ? '자동 로그인 중...' : createAccountLoading ? '회원가입 중...' : '회원가입'}
