@@ -1,0 +1,46 @@
+.Login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+form {
+  display: flex;
+  justify-content: center;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.formInputs {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+form input {
+  margin: 0 2px;
+  padding: 0 5px;
+  width: 200px;
+  height: 30px;
+}
+
+.submitBtn {
+  width: 64px;
+  height: 60px;
+  color: white;
+  background-color: cornflowerblue;
+  font-size: 100%;
+  cursor: pointer;
+  outline: none;
+  border: none;
+}
+
+.default-link {
+  margin: 0 8px;
+}

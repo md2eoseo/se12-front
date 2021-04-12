@@ -1,8 +1,13 @@
-import React from 'react';
+import { useReactiveVar } from '@apollo/client';
 import { Link } from 'react-router-dom';
+import { isLoggedInVar } from '../client';
 import './css/Header.css';
+import Login from './Login';
+import MyMenu from './MyMenu';
 
-function Header({ location, history }) {
+function Header() {
+  const isLoggedIn = useReactiveVar(isLoggedInVar);
+
   return (
     <div className="Header">
       <div className="leftMenu"></div>
@@ -15,19 +20,7 @@ function Header({ location, history }) {
           />
         </Link>
       </div>
-      <div className="rightMenu">
-        <Link className="default-link" to="/login">
-          로그인
-        </Link>
-        |
-        <Link className="default-link" to="/signup">
-          회원가입
-        </Link>
-        |
-        <Link className="default-link" to="/bag">
-          장바구니
-        </Link>
-      </div>
+      <div className="rightMenu">{isLoggedIn ? <MyMenu /> : <Login />}</div>
     </div>
   );
 }

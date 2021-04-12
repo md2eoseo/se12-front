@@ -49,7 +49,7 @@ function SignUp() {
         message: error,
       });
     }
-    history.push('/login');
+    history.push('/');
   };
 
   const [createAccount, { loading }] = useMutation(CREATE_ACCOUNT_MUTATION, {
