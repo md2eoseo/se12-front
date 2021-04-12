@@ -1,101 +1,79 @@
 import React from 'react';
+import { gql, useMutation } from '@apollo/client';
 import './css/SignUp.css';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { useHistory } from 'react-router';
 
-class SignUp extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      email: '',
-      password: '',
-      birthday: '',
-      phone: '',
-      emailChecked: false,
-      pwChecked: false,
-      btnColor: '#4374D9',
-    };
-  }
-
-  onSubmit = e => {
-    e.preDefault();
-    console.log('사용자 Email :', this.state.email);
-    console.log('사용자 Password :', this.state.password);
-  };
-
-  pwInputCheck = e => {
-    this.setState({ userPW: e.target.value });
-    if (e.target.value.length >= 5) {
-      this.setState({ userName: e.target.value, pwChecked: true }, () => this.btnChangeColor());
-    } else {
-      this.setState({ pwChecked: false }, () => this.btnChangeColor());
+const CREATE_ACCOUNT_MUTATION = gql`
+  mutation createAccount($name: String!, $email: String!, $password: String!, $address: String) {
+    createAccount(name: $name, email: $email, password: $password, address: $address) {
+      ok
+      error
     }
-  };
-
-  btnChangeColor = () => {
-    if (this.state.idChecked && this.state.pwChecked) {
-      this.setState({ btnColor: '#4374D9' });
-    } else {
-      this.setState({ btnColor: '#FF5A5A' });
-    }
-  };
-
-  onlyNumber = e => {
-    e.target.value = e.target.value.replace(/[^0-9]/g, '');
-  };
-
-  render() {
-    return (
-      <div className="SignUp">
-        <div className="title">회원가입</div>
-        <div className="form">
-          <label>
-            <h3>생년월일</h3>
-            <input id="birth" className="year" type="text" placeholder=" 년(4자)" maxLength="4" onkeyup="onlyNumber(e)" />
-            <select className="month">
-              <option value="" selected disabled hidden>
-                월
-              </option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
-              <option value="11">11</option>
-              <option value="12">12</option>
-            </select>
-            <input className="date" type="text" placeholder=" 일" maxLength="2" onkeyup="onlyNumber(e)" />
-          </label>
-          <label>
-            <h3>성별</h3>
-            <select className="gender">
-              <option value="" selected disabled hidden>
-                성별
-              </option>
-              <option value="male">남자</option>
-              <option value="female">여자</option>
-              <option value="null">선택안함</option>
-            </select>
-          </label>
-          <label>
-            <h3>이메일</h3>
-            <input className="email" type="text" placeholder="선택입력" />
-          </label>
-          <label>
-            <h3>휴대전화</h3>
-            <input className="phone" type="text" placeholder="전화번호 입력" />
-          </label>
-          <br></br>
-          <button className="submitBtn" type="submit">
-            회원가입
-          </button>
-        </div>
-      </div>
-    );
   }
+`;
+
+const schema = yup.object().shape({
+  name: yup.string().required('이름을 입력해주세요.'),
+  email: yup.string().email('유효한 이메일 형식을 입력해주세요.').required('이메일을 입력해주세요.'),
+  password: yup.string().required('비밀번호를 입력해주세요.'),
+  address: yup.string(),
+});
+
+function SignUp() {
+  const history = useHistory();
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit = ({ name, email, password, address }) => {
+    if (loading) {
+      return;
+    }
+    createAccount({ variables: { name, email, password, address } });
+  };
+
+  const onCompleted = data => {
+    const {
+      createAccount: { ok, error },
+    } = data;
+    if (!ok) {
+      return setError('result', {
+        message: error,
+      });
+    }
+    history.push('/login');
+  };
+
+  const [createAccount, { loading }] = useMutation(CREATE_ACCOUNT_MUTATION, {
+    onCompleted,
+  });
+
+  return (
+    <div className="SignUp">
+      <h2 className="title">회원가입</h2>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <input className="name" type="text" placeholder="이름" {...register('name')} />
+        {errors.name?.message}
+        <input className="email" type="text" placeholder="이메일" {...register('email')} />
+        {errors.email?.message}
+        <input className="password" type="password" placeholder="비밀번호" {...register('password')} />
+        {errors.password?.message}
+        <input className="address" type="text" placeholder="주소" {...register('address')} />
+        <button className="submitBtn" type="submit" disabled={loading}>
+          {loading ? '회원가입 중...' : '회원가입'}
+        </button>
+        {errors.result?.message}
+      </form>
+    </div>
+  );
 }
 
 export default SignUp;
