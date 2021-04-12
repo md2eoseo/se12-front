@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useHistory } from 'react-router';
+import { Link } from 'react-router-dom';
 
 const LOGIN_MUTATION = gql`
   mutation login($email: String!, $password: String!) {
@@ -60,16 +61,22 @@ function Login() {
 
   return (
     <div className="Login">
-      <h2 className="title">로그인</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <input className="email" type="text" placeholder="이메일" {...register('email')} />
-        {errors.email?.message}
-        <input className="password" type="password" placeholder="비밀번호" {...register('password')} />
-        {errors.password?.message}
+        <div className="formInputs">
+          <input className="email" type="text" placeholder="이메일" {...register('email')} />
+          <input className="password" type="password" placeholder="비밀번호" {...register('password')} />
+          <div className="errors">
+            {errors.email?.message && <div>{errors.email?.message}</div>}
+            {errors.password?.message && <div>{errors.password?.message}</div>}
+            {errors.result?.message && <div>{errors.result?.message}</div>}
+          </div>
+        </div>
         <button className="submitBtn" type="submit" disabled={loading}>
           {loading ? '로그인 중...' : '로그인'}
         </button>
-        {errors.result?.message}
+        <Link className="default-link" to="/signup">
+          회원가입
+        </Link>
       </form>
     </div>
   );
