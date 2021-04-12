@@ -8,8 +8,8 @@ import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 
 const LOGIN_MUTATION = gql`
-  mutation login($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
+  mutation login($userId: String!, $password: String!) {
+    login(userId: $userId, password: $password) {
       ok
       error
       token
@@ -18,7 +18,7 @@ const LOGIN_MUTATION = gql`
 `;
 
 const schema = yup.object().shape({
-  email: yup.string().email('유효한 이메일 형식을 입력해주세요.').required('이메일을 입력해주세요.'),
+  userId: yup.string().required('아이디를 입력해주세요.'),
   password: yup.string().required('비밀번호를 입력해주세요.'),
 });
 
@@ -33,11 +33,11 @@ function Login() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = ({ email, password }) => {
+  const onSubmit = ({ userId, password }) => {
     if (loading) {
       return;
     }
-    login({ variables: { email, password } });
+    login({ variables: { userId, password } });
   };
 
   const onCompleted = data => {
@@ -63,10 +63,10 @@ function Login() {
     <div className="Login">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="formInputs">
-          <input className="email" type="text" placeholder="이메일" {...register('email')} />
+          <input className="userId" type="text" placeholder="아이디" {...register('userId')} />
           <input className="password" type="password" placeholder="비밀번호" {...register('password')} />
           <div className="errors">
-            {errors.email?.message && <div>{errors.email?.message}</div>}
+            {errors.userId?.message && <div>{errors.userId?.message}</div>}
             {errors.password?.message && <div>{errors.password?.message}</div>}
             {errors.result?.message && <div>{errors.result?.message}</div>}
           </div>
