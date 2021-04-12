@@ -7,7 +7,7 @@ function Header({ location, history }) {
     <div className="Header">
       <div className="leftMenu"></div>
       <div className="logo">
-        <Link to="/main">
+        <Link to="/">
           <img
             className="logoImg"
             alt="logoImg"

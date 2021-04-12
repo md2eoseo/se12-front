@@ -1,10 +1,75 @@
 import React from 'react';
 import { gql, useMutation } from '@apollo/client';
-import './css/SignUp.css';
+import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useHistory } from 'react-router';
+
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+
+  form {
+    display: flex;
+    margin-bottom: 10px;
+    flex-direction: column;
+  }
+`;
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 480px;
+  flex-direction: column;
+`;
+
+const Title = styled.div`
+  font-size: 25px;
+  margin-bottom: 20px;
+`;
+
+const Input = styled.input`
+  width: 400px;
+  height: 50px;
+  border: solid 1px #b8b8b8;
+  margin-bottom: 20px;
+  padding: 10px;
+
+  &:focus {
+    outline: none;
+    border: solid 1px #4374d9;
+  }
+`;
+
+const Text = styled.div`
+  margin-bottom: 10px;
+  font-weight: 600;
+`;
+
+const Button = styled.button`
+  width: 400px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  background-color: #4374d9;
+  margin-bottom: 20px;
+  font-weight: 500;
+  cursor: pointer;
+`;
+
+const Message = styled.div`
+  font-size: 13px;
+  margin-bottom: 10px;
+  margin-top: -10px;
+  color: #ff4848;
+`;
 
 const CREATE_ACCOUNT_MUTATION = gql`
   mutation createAccount($name: String!, $email: String!, $password: String!, $address: String) {
@@ -49,7 +114,7 @@ function SignUp() {
         message: error,
       });
     }
-    history.push('/login');
+    history.push('/');
   };
 
   const [createAccount, { loading }] = useMutation(CREATE_ACCOUNT_MUTATION, {
@@ -57,22 +122,32 @@ function SignUp() {
   });
 
   return (
-    <div className="SignUp">
-      <h2 className="title">회원가입</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input className="name" type="text" placeholder="이름" {...register('name')} />
-        {errors.name?.message}
-        <input className="email" type="text" placeholder="이메일" {...register('email')} />
-        {errors.email?.message}
-        <input className="password" type="password" placeholder="비밀번호" {...register('password')} />
-        {errors.password?.message}
-        <input className="address" type="text" placeholder="주소" {...register('address')} />
-        <button className="submitBtn" type="submit" disabled={loading}>
-          {loading ? '회원가입 중...' : '회원가입'}
-        </button>
-        {errors.result?.message}
-      </form>
-    </div>
+    <Wrapper>
+      <Container>
+        <Title>회원가입</Title>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {errors.result?.message && <Message>{errors.result?.message}</Message>}
+          <label>
+            <Text>이메일</Text>
+            <Input type="text" placeholder="이메일을 입력하세요" {...register('email')} />
+            {errors.email?.message && <Message>{errors.email?.message}</Message>}
+          </label>
+          <label>
+            <Text>비밀번호</Text>
+            <Input placeholder="영문 대소문자, 숫자, 특수문자를 포함한 8~16자리" type="password" {...register('password')} />
+            {errors.password?.message && <Message>{errors.password?.message}</Message>}
+          </label>
+          <label>
+            <Text>이름</Text>
+            <Input type="text" placeholder="이름을 입력하세요" {...register('name')} />
+            {errors.name?.message && <Message>{errors.name?.message}</Message>}
+          </label>
+          <Button className="submitBtn" type="submit">
+            회원가입
+          </Button>
+        </form>
+      </Container>
+    </Wrapper>
   );
 }
 
