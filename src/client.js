@@ -9,19 +9,31 @@ export const client = new ApolloClient({
 });
 
 export const isLoggedInVar = makeVar(Boolean(localStorage.getItem(TOKEN)));
+export const isAdminVar = makeVar(false);
 
 export const logUserIn = token => {
   localStorage.setItem(TOKEN, token);
   isLoggedInVar(true);
+  isAdminVar(isLoggedInUserAdmin());
 };
 
 export const logUserOut = () => {
   localStorage.removeItem(TOKEN);
   isLoggedInVar(false);
+  isAdminVar(false);
 };
 
 export const getUserId = () => {
   const token = localStorage.getItem(TOKEN);
   const { id } = jwt.verify(token, process.env.REACT_APP_JWT_SECRET_KEY);
   return id;
+};
+
+export const isLoggedInUserAdmin = () => {
+  const token = localStorage.getItem(TOKEN);
+  if (!token) {
+    return false;
+  }
+  const { admin } = jwt.verify(token, process.env.REACT_APP_JWT_SECRET_KEY);
+  return admin;
 };
