@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { gql, useMutation } from '@apollo/client';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useHistory } from 'react-router';
+import { logUserIn } from '../client';
 
 const Wrapper = styled.div`
   display: flex;
@@ -80,6 +81,16 @@ const CREATE_ACCOUNT_MUTATION = gql`
   }
 `;
 
+const LOGIN_MUTATION = gql`
+  mutation login($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      ok
+      error
+      token
+    }
+  }
+`;
+
 const schema = yup.object().shape({
   name: yup.string().required('이름을 입력해주세요.'),
   email: yup.string().email('유효한 이메일 형식을 입력해주세요.').required('이메일을 입력해주세요.'),
@@ -93,19 +104,20 @@ function SignUp() {
     register,
     handleSubmit,
     setError,
+    getValues,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   });
 
   const onSubmit = ({ name, email, password, address }) => {
-    if (loading) {
+    if (createAccountLoading) {
       return;
     }
     createAccount({ variables: { name, email, password, address } });
   };
 
-  const onCompleted = data => {
+  const onSignUpCompleted = data => {
     const {
       createAccount: { ok, error },
     } = data;
@@ -114,11 +126,31 @@ function SignUp() {
         message: error,
       });
     }
-    history.push('/');
+    const { email, password } = getValues();
+    login({ variables: { email, password } });
   };
 
-  const [createAccount, { loading }] = useMutation(CREATE_ACCOUNT_MUTATION, {
-    onCompleted,
+  const onLoginCompleted = data => {
+    const {
+      login: { ok, error, token },
+    } = data;
+    if (!ok) {
+      return setError('result', {
+        message: error,
+      });
+    }
+    if (token) {
+      logUserIn(token);
+      history.push('/');
+    }
+  };
+
+  const [createAccount, { loading: createAccountLoading }] = useMutation(CREATE_ACCOUNT_MUTATION, {
+    onCompleted: onSignUpCompleted,
+  });
+
+  const [login, { loading: loginLoading }] = useMutation(LOGIN_MUTATION, {
+    onCompleted: onLoginCompleted,
   });
 
   return (
@@ -142,8 +174,8 @@ function SignUp() {
             <Input type="text" placeholder="이름을 입력하세요" {...register('name')} />
             {errors.name?.message && <Message>{errors.name?.message}</Message>}
           </label>
-          <Button className="submitBtn" type="submit">
-            회원가입
+          <Button className="submitBtn" type="submit" disabled={createAccountLoading || loginLoading}>
+            {loginLoading ? '자동 로그인 중...' : createAccountLoading ? '회원가입 중...' : '회원가입'}
           </Button>
         </form>
       </Container>
