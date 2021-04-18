@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Banner from './Banner';
 import SearchBar from './SearchBar';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import RecentItems from './RecentItems';
 
 const Container = styled.div`
   display: flex;
@@ -31,9 +32,10 @@ function CustomerMain() {
   return (
     <Container>
       <SearchBar />
-      <Carousel autoPlay emulateTouch swipeable stopOnHover infiniteLoop showStatus={false}>
+      <Carousel autoPlay emulateTouch swipeable stopOnHover infiniteLoop showStatus={false} showThumbs={false}>
         {data && data.seeBanners.banners.map(banner => <Banner key={banner.id} bannerId={banner.id} imgUrl={banner.imgUrl} />)}
       </Carousel>
+      <RecentItems />
     </Container>
   );
 }
