@@ -1,6 +1,10 @@
+import { useQuery } from '@apollo/client';
+import gql from 'graphql-tag';
+import { Carousel } from 'react-responsive-carousel';
 import styled from 'styled-components';
-import Banners from './Banners';
+import Banner from './Banner';
 import SearchBar from './SearchBar';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 const Container = styled.div`
   display: flex;
@@ -8,11 +12,28 @@ const Container = styled.div`
   align-items: center;
 `;
 
+const SEE_BANNERS_QUERY = gql`
+  query seeBanners {
+    seeBanners {
+      ok
+      error
+      banners {
+        id
+        imgUrl
+      }
+    }
+  }
+`;
+
 function CustomerMain() {
+  const { data } = useQuery(SEE_BANNERS_QUERY);
+
   return (
     <Container>
       <SearchBar />
-      <Banners />
+      <Carousel autoPlay emulateTouch swipeable stopOnHover infiniteLoop showStatus={false}>
+        {data && data.seeBanners.banners.map(banner => <Banner key={banner.id} bannerId={banner.id} imgUrl={banner.imgUrl} />)}
+      </Carousel>
     </Container>
   );
 }
