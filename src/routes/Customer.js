@@ -1,8 +1,12 @@
+import styled from 'styled-components';
+
+const Container = styled.div``;
+
 function Customer() {
   return (
-    <div className="Customer">
-      <div className="customer">Customer page</div>
-    </div>
+    <Container>
+      <div>Customer page</div>
+    </Container>
   );
 }
 

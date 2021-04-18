@@ -1,8 +1,18 @@
 import { useEffect, useState } from 'react';
-import './css/Login.css';
 import { useHistory } from 'react-router';
 import { getUserId, logUserOut } from '../client';
 import { gql, useQuery } from '@apollo/client';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Greeting = styled.div``;
+
+const LogoutBtn = styled.button``;
 
 const GET_USER_QUERY = gql`
   query getUser($id: Int!) {
@@ -31,12 +41,10 @@ function MyMenu() {
   };
 
   return (
-    <div className="MyMenu">
-      <div>안녕하세요! {!loading && `${data?.getUser?.user?.name}님!`}</div>
-      <button className="logoutBtn" onClick={logout}>
-        로그아웃
-      </button>
-    </div>
+    <Container>
+      <Greeting>안녕하세요! {!loading && `${data?.getUser?.user?.name}님!`}</Greeting>
+      <LogoutBtn onClick={logout}>로그아웃</LogoutBtn>
+    </Container>
   );
 }
 

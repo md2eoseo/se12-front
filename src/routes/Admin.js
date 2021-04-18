@@ -1,8 +1,12 @@
+import styled from 'styled-components';
+
+const Container = styled.div``;
+
 function Admin() {
   return (
-    <div className="Admin">
-      <div className="admin">Admin page</div>
-    </div>
+    <Container>
+      <div>Admin page</div>
+    </Container>
   );
 }
 
