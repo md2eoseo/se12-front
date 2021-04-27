@@ -2,8 +2,6 @@ import { ApolloProvider } from '@apollo/client';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { client } from './client';
-import AdminBanners from './components/AdminBanners';
-import AdminItems from './components/AdminItems';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import Admin from './routes/Admin';
