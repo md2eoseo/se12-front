@@ -6,7 +6,6 @@ const Container = styled.div`
   text-align: center;
   padding: 30px;
   height: 100px;
-  align: center;
 `;
 const Text = styled.div`
   justify-content: center;

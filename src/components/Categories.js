@@ -8,9 +8,13 @@ const Container = styled.div`
   flex-direction: column;
   align-items: flex-start;
   padding: 30px 50px;
+  background-color: #487be1;
+  color: #d9e5ff;
 `;
 
-const Label = styled.h2``;
+const Label = styled.h2`
+  margin-bottom: 20px;
+`;
 
 const SEE_CATEGORIES_QUERY = gql`
   query seeCategories {
