@@ -6,7 +6,7 @@ const Container = styled.div`
 `;
 
 function Category({ categoryId, name }) {
-  return <Container categoryId={categoryId}>{name}</Container>;
+  return <Container id={`category-${categoryId}`}>{name}</Container>;
 }
 
 export default Category;

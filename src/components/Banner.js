@@ -107,7 +107,7 @@ function Banner({ bannerId, imgUrl, title, startDate, endDate, activate, admin }
   };
 
   const deleteBannerCompleted = () => {
-    document.getElementById(`bannerId-${bannerId}`).remove();
+    document.getElementById(`banner-${bannerId}`).remove();
   };
 
   const [toggleActivate, { toggleActivateLoading }] = useMutation(TOGGLE_ACTIVATE_MUTATION, {
@@ -119,7 +119,7 @@ function Banner({ bannerId, imgUrl, title, startDate, endDate, activate, admin }
   });
 
   return (
-    <Container id={`bannerId-${bannerId}`}>
+    <Container id={`banner-${bannerId}`}>
       {admin ? (
         <Card>
           <CardInfo>

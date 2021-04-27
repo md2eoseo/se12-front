@@ -17,7 +17,7 @@ const ItemName = styled.p``;
 
 function Item({ itemId, imgUrl, name }) {
   return (
-    <Container itemId={itemId}>
+    <Container id={`item-${itemId}`}>
       <ItemImg src={imgUrl} />
       <ItemName>{name}</ItemName>
     </Container>
