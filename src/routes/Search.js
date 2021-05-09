@@ -7,7 +7,7 @@ import Item from '../components/Item';
 import SearchBar from '../components/SearchBar';
 
 const SEARCH_ITEMS_QUERY = gql`
-  query searchItems($term: String!, $categoryId: Int, $minPrice: Int, $maxPrice: Int, $lastId: Int) {
+  query searchItems($term: String, $categoryId: Int, $minPrice: Int, $maxPrice: Int, $lastId: Int) {
     searchItems(term: $term, categoryId: $categoryId, minPrice: $minPrice, maxPrice: $maxPrice, lastId: $lastId) {
       ok
       error
@@ -51,14 +51,16 @@ function useQueryString() {
 function Search() {
   const queries = useQueryString();
   const term = queries.get('term');
-  const { loading, data } = useQuery(SEARCH_ITEMS_QUERY, { variables: { term } });
+  const categoryId = Number(queries.get('categoryId'));
+  const categoryName = queries.get('categoryName');
+  const { loading, data } = useQuery(SEARCH_ITEMS_QUERY, { variables: { ...(term && { term }), ...(categoryId && { categoryId }) } });
 
   return (
     <Container>
       <Categories />
       <SearchMain>
         <SearchBar initialTerm={term} />
-        {loading ? `"${term}" 검색중...` : `"${term}" 검색 결과`}
+        {loading ? `${categoryName || '전체'} "${term || ''}" 검색중...` : `${categoryName || '전체'} "${term || ''}" 검색 결과`}
         <Items>
           {data?.searchItems?.ok &&
             data.searchItems.items.map(item => (
