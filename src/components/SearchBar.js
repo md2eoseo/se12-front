@@ -38,9 +38,9 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-function SearchBar() {
+function SearchBar({ initialTerm }) {
   const history = useHistory();
-  const [term, setTerm] = useState('');
+  const [term, setTerm] = useState(initialTerm);
 
   const onSearchBtnClick = e => {
     e.preventDefault();
@@ -50,7 +50,7 @@ function SearchBar() {
   return (
     <Container>
       <Form onSubmit={onSearchBtnClick}>
-        <Input type="text" placeholder="검색어 입력" onChange={({ target: { value } }) => setTerm(value)} />
+        <Input type="text" placeholder="검색어 입력" value={term} onChange={({ target: { value } }) => setTerm(value)} />
         <Button type="submit">검색</Button>
       </Form>
     </Container>
