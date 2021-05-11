@@ -36,7 +36,7 @@ function AdminBanners() {
   return (
     <Container>
       <Label>공지/이벤트 관리</Label>
-      {loading && '카테고리 불러오는 중...'}
+      {loading && '배너 불러오는 중...'}
       {data &&
         data.seeAllBanners.banners.map(banner => (
           <Banner

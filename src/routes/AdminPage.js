@@ -7,7 +7,7 @@ const Container = styled.div`
   grid-template-columns: 20% 80%;
 `;
 
-function Admin() {
+function AdminPage() {
   return (
     <Container>
       <AdminMenu />
@@ -16,4 +16,4 @@ function Admin() {
   );
 }
 
-export default Admin;
+export default AdminPage;

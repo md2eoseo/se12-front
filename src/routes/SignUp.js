@@ -101,7 +101,7 @@ const schema = yup.object().shape({
   address: yup.string(),
 });
 
-function SignUp() {
+function SignUpPage() {
   const history = useHistory();
   const {
     register,
@@ -196,4 +196,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default SignUpPage;

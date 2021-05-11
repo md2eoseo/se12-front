@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom';
 import { client } from './client';
 import Footer from './components/Footer';
 import Header from './components/Header';
-import Admin from './routes/Admin';
-import Home from './routes/Home';
-import Search from './routes/Search';
-import SignUp from './routes/SignUp';
-import ItemInfo from './routes/ItemInfo';
+import AdminPage from './routes/AdminPage';
+import HomePage from './routes/HomePage';
+import SearchPage from './routes/SearchPage';
+import SignUpPage from './routes/SignUp';
+import ItemPage from './routes/ItemPage';
 
 function App() {
   return (
@@ -16,12 +16,12 @@ function App() {
       <Router>
         <Header />
         <Switch>
-          <Route path="/banners" component={Admin} />
-          <Route path="/items" component={Admin} />
-          <Route path="/search" component={Search} />
-          <Route path="/signup" component={SignUp} />
-          <Route path="/" exact component={Home} />
-          <Route path="/iteminfo" component={ItemInfo} />
+          <Route path="/banners" component={AdminPage} />
+          <Route path="/items" component={AdminPage} />
+          <Route path="/item" component={ItemPage} />
+          <Route path="/search" component={SearchPage} />
+          <Route path="/signup" component={SignUpPage} />
+          <Route path="/" exact component={HomePage} />
           <Route
             render={() => (
               <div className="error">

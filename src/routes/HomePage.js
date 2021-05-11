@@ -1,8 +1,8 @@
 import { useReactiveVar } from '@apollo/client';
 import styled from 'styled-components';
 import { isAdminVar } from '../client';
-import Admin from './Admin';
-import Customer from './Customer';
+import AdminPage from './AdminPage';
+import CustomerPage from './CustomerPage';
 
 const Container = styled.div`
   display: flex;
@@ -14,9 +14,9 @@ const Container = styled.div`
   }
 `;
 
-function Home() {
+function HomePage() {
   const isAdmin = useReactiveVar(isAdminVar);
-  return <Container>{isAdmin ? <Admin /> : <Customer />}</Container>;
+  return <Container>{isAdmin ? <AdminPage /> : <CustomerPage />}</Container>;
 }
 
-export default Home;
+export default HomePage;

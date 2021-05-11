@@ -61,7 +61,7 @@ function useQueryString() {
   return new URLSearchParams(useLocation().search);
 }
 
-function Search() {
+function SearchPage() {
   const queries = useQueryString();
   const term = queries.get('term');
   const categoryId = Number(queries.get('categoryId'));
@@ -98,4 +98,4 @@ function Search() {
   );
 }
 
-export default Search;
+export default SearchPage;

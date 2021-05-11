@@ -1,10 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-const Container = styled.div`
-  font-size: 20px;
-  margin: 10px 0;
-`;
 const Button = styled.button`
   width: 100px;
   height: 40px;
