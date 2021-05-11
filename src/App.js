@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import Header from './components/Header';
 import Home from './routes/Home';
 import SignUp from './routes/SignUp';
+import ItemInfo from './routes/ItemInfo';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Switch>
           <Route path="/signup" component={SignUp} />
           <Route path="/" exact component={Home} />
+          <Route path="/iteminfo" component={ItemInfo} />
           <Route
             render={() => (
               <div className="error">
