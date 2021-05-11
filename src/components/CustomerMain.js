@@ -26,12 +26,12 @@ const SEE_BANNERS_QUERY = gql`
   }
 `;
 
-function CustomerMain() {
+function CustomerMain({ categories, categoriesLoading }) {
   const { data } = useQuery(SEE_BANNERS_QUERY);
 
   return (
     <Container>
-      <SearchBar />
+      <SearchBar categories={categories} categoriesLoading={categoriesLoading} />
       <Carousel autoPlay emulateTouch swipeable stopOnHover infiniteLoop showStatus={false} showThumbs={false}>
         {data && data.seeBanners.banners.map(banner => <Banner key={banner.id} bannerId={banner.id} imgUrl={banner.imgUrl} />)}
       </Carousel>
