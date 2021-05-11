@@ -7,9 +7,10 @@ const Container = styled.div`
 `;
 
 function Category({ categoryId, name }) {
+  return <Container id={`category-${categoryId}`}>{name}</Container>;
   return (
     <Link to={`/search?categoryId=${categoryId}`}>
-      <Container>{name}</Container>
+      <Container id={`category-${categoryId}`>{name}</Container>
     </Link>
   );
 }
