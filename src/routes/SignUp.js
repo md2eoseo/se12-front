@@ -24,7 +24,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 480px;
+  height: 700px;
   flex-direction: column;
 `;
 
@@ -92,7 +92,10 @@ const LOGIN_MUTATION = gql`
 
 const schema = yup.object().shape({
   userId: yup.string().required('아이디를 입력해주세요.'),
-  password: yup.string().required('비밀번호를 입력해주세요.'),
+  password: yup
+    .string()
+    .required('비밀번호를 입력해주세요.')
+    .matches(/^(?=.*[A-z])(?=.*[0-9])(?=.{8,16})/, '영문, 숫자를 포함한 8~16자리를 입력해주세요.'),
   email: yup.string().email('유효한 이메일 형식을 입력해주세요.').required('이메일을 입력해주세요.'),
   name: yup.string().required('이름을 입력해주세요.'),
   address: yup.string(),
@@ -166,7 +169,7 @@ function SignUp() {
           </label>
           <label>
             <Text>비밀번호</Text>
-            <Input placeholder="영문 대소문자, 숫자, 특수문자를 포함한 8~16자리" type="password" {...register('password')} />
+            <Input placeholder="영문, 숫자를 포함한 8~16자리" type="password" {...register('password')} />
             {errors.password?.message && <Message>{errors.password?.message}</Message>}
           </label>
           <label>
