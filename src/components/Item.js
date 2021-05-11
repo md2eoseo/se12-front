@@ -15,11 +15,14 @@ const ItemImg = styled.img`
 
 const ItemName = styled.p``;
 
-function Item({ itemId, imgUrl, name }) {
+const ItemPrice = styled.p``;
+
+function Item({ itemId, imgUrl, name, price }) {
   return (
     <Container itemId={itemId}>
       <ItemImg src={imgUrl} />
       <ItemName>{name}</ItemName>
+      <ItemPrice>{price}원</ItemPrice>
     </Container>
   );
 }
