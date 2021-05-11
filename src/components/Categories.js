@@ -7,13 +7,13 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 30px 50px;
+  padding: 30px 60px;
   background-color: #487be1;
   color: #d9e5ff;
 `;
 
 const Label = styled.h2`
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 `;
 
 const SEE_CATEGORIES_QUERY = gql`
