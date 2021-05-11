@@ -8,19 +8,21 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   width: 600px;
+  margin: 20px;
 `;
 
 const Form = styled.form`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 10px;
 `;
 
 const Input = styled.input`
-  margin-top: 20px;
-  margin-bottom: 20px;
+  font-size: 18px;
   width: 550px;
   height: 50px;
+  margin: 0 10px;
   border: solid 3px #4374d9;
   padding: 0px 15px;
   &:focus {
@@ -28,25 +30,46 @@ const Input = styled.input`
   }
 `;
 
+const Select = styled.select`
+  width: 100px;
+  height: 50px;
+  font-size: 18px;
+  &:focus {
+    outline: none;
+  }
+`;
+
 const Button = styled.button`
-  margin-left: 10px;
   height: 50px;
   width: 70px;
   border: solid 3px #4374d9;
   background-color: #4374d9;
   color: white;
-  font-size: 17px;
+  font-size: 18px;
   cursor: pointer;
 `;
 
-const Conditions = styled.div``;
+const Conditions = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
-function SearchBar({ initialTerm, initialCategoryId, categories, categoriesLoading }) {
+const PriceInput = styled.input`
+  width: 120px;
+  height: 30px;
+  margin: 0 10px;
+  &:focus {
+    outline: none;
+  }
+`;
+
+function SearchBar({ initialTerm, initialCategoryId, initialMinPrice, initialMaxPrice, categories, categoriesLoading }) {
   const history = useHistory();
-  const [term, setTerm] = useState(initialTerm);
-  const [categoryId, setCategoryId] = useState(initialCategoryId);
-  const [minPrice, setMinPrice] = useState('');
-  const [maxPrice, setMaxPrice] = useState('');
+  const [term, setTerm] = useState(initialTerm || null);
+  const [categoryId, setCategoryId] = useState(initialCategoryId || null);
+  const [minPrice, setMinPrice] = useState(initialMinPrice || null);
+  const [maxPrice, setMaxPrice] = useState(initialMaxPrice || null);
 
   const onSearchBtnClick = e => {
     e.preventDefault();
@@ -55,16 +78,16 @@ function SearchBar({ initialTerm, initialCategoryId, categories, categoriesLoadi
 
   const generateQueryStrings = () => {
     let queryStrings = '';
-    if (term !== '') {
+    if (term && term !== '') {
       queryStrings += `term=${term}&`;
     }
-    if (categoryId !== '') {
+    if (categoryId && categoryId !== '') {
       queryStrings += `categoryId=${categoryId}&`;
     }
-    if (minPrice !== '') {
+    if (minPrice && minPrice !== '') {
       queryStrings += `minPrice=${minPrice}&`;
     }
-    if (maxPrice !== '') {
+    if (maxPrice && maxPrice !== '') {
       queryStrings += `maxPrice=${maxPrice}&`;
     }
     return queryStrings;
@@ -73,7 +96,7 @@ function SearchBar({ initialTerm, initialCategoryId, categories, categoriesLoadi
   return (
     <Container>
       <Form onSubmit={onSearchBtnClick}>
-        <select name="categoryId" value={categoryId} onChange={({ target: { value } }) => setCategoryId(value)}>
+        <Select name="categoryId" value={categoryId} onChange={({ target: { value } }) => setCategoryId(value)}>
           <option value="">전체</option>
           {categories &&
             categories.map(category => (
@@ -81,11 +104,15 @@ function SearchBar({ initialTerm, initialCategoryId, categories, categoriesLoadi
                 {category.name}
               </option>
             ))}
-        </select>
+        </Select>
         <Input type="text" placeholder="검색어 입력" value={term} onChange={({ target: { value } }) => setTerm(value)} />
         <Button type="submit">검색</Button>
       </Form>
-      <Conditions></Conditions>
+      <Conditions>
+        <PriceInput type="number" placeholder="최소 금액" value={minPrice} onChange={({ target: { value } }) => setMinPrice(value)} />
+        {' ~ '}
+        <PriceInput type="number" placeholder="최대 금액" value={maxPrice} onChange={({ target: { value } }) => setMaxPrice(value)} />
+      </Conditions>
     </Container>
   );
 }

@@ -65,8 +65,10 @@ function Search() {
   const queries = useQueryString();
   const term = queries.get('term');
   const categoryId = Number(queries.get('categoryId'));
+  const minPrice = Number(queries.get('minPrice'));
+  const maxPrice = Number(queries.get('maxPrice'));
   const { loading: itemsLoading, data: itemsData } = useQuery(SEARCH_ITEMS_QUERY, {
-    variables: { ...(term && { term }), ...(categoryId && { categoryId }) },
+    variables: { ...(term && { term }), ...(categoryId && { categoryId }), ...(minPrice && { minPrice }), ...(maxPrice && { maxPrice }) },
   });
   const { loading: categoriesLoading, data: categoriesData } = useQuery(SEE_CATEGORIES_QUERY);
 
@@ -77,6 +79,8 @@ function Search() {
         <SearchBar
           initialTerm={term}
           initialCategoryId={categoryId}
+          initialMinPrice={minPrice}
+          initialMaxPrice={maxPrice}
           categories={categoriesData && categoriesData.seeCategories.categories}
           categoriesLoading={categoriesLoading}
         />
