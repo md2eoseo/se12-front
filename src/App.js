@@ -8,6 +8,7 @@ import Admin from './routes/Admin';
 import Home from './routes/Home';
 import Search from './routes/Search';
 import SignUp from './routes/SignUp';
+import ItemInfo from './routes/ItemInfo';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/search" component={Search} />
           <Route path="/signup" component={SignUp} />
           <Route path="/" exact component={Home} />
+          <Route path="/iteminfo" component={ItemInfo} />
           <Route
             render={() => (
               <div className="error">

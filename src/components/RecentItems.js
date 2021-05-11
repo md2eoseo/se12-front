@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
 import Item from './Item';
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
   width: 100%;
@@ -19,9 +20,17 @@ const SEE_RECENT_ITEMS_QUERY = gql`
         id
         imgUrl
         name
+        price
       }
     }
   }
+`;
+const Button = styled.button`
+  background-color: white;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  padding: 0px 10px;
 `;
 
 function RecentItems() {
@@ -30,7 +39,14 @@ function RecentItems() {
   return (
     <Container>
       {loading && '최신 상품 불러오는 중...'}
-      {data && data.seeRecentItems.items.map(item => <Item key={item.id} itemId={item.id} imgUrl={item.imgUrl} name={item.name} />)}
+      {data &&
+        data.seeRecentItems.items.map(item => (
+          <Link to="/iteminfo">
+            <Button>
+              <Item key={item.id} itemId={item.id} imgUrl={item.imgUrl} name={item.name} price={item.price} />
+            </Button>
+          </Link>
+        ))}
     </Container>
   );
 }
