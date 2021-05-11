@@ -19,7 +19,7 @@ const ItemPrice = styled.p``;
 
 function Item({ itemId, imgUrl, name, price }) {
   return (
-    <Container itemId={itemId}>
+    <Container id={`item-${itemId}`}>
       <ItemImg src={imgUrl} />
       <ItemName>{name}</ItemName>
       <ItemPrice>{price}원</ItemPrice>

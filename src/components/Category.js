@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -16,7 +17,11 @@ const Button = styled.button`
 `;
 
 function Category({ categoryId, name }) {
-  return <Button categoryId={categoryId}>{name}</Button>;
+  return (
+    <Link to={`/search?categoryId=${categoryId}`}>
+      <Button categoryId={categoryId}>{name}</Button>
+    </Link>
+  );
 }
 
 export default Category;
