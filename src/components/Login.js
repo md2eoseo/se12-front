@@ -44,6 +44,18 @@ const SubmitBtn = styled.button`
   border: none;
 `;
 
+const Button = styled.button`
+  margin-left: 5px;
+  width: 80px;
+  height: 60px;
+  color: white;
+  background-color: cornflowerblue;
+  font-size: 100%;
+  cursor: pointer;
+  outline: none;
+  border: none;
+`;
+
 const Errors = styled.div`
   position: absolute;
   top: 100%;
@@ -118,7 +130,9 @@ function Login() {
         <SubmitBtn type="submit" disabled={loading}>
           {loading ? '로그인 중...' : '로그인'}
         </SubmitBtn>
-        <Link to="/signup">회원가입</Link>
+        <Link to="/signup">
+          <Button>회원가입</Button>
+        </Link>
       </Form>
       <Errors>
         {errors.userId?.message && <Error>{errors.userId?.message}</Error>}
