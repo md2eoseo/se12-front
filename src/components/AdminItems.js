@@ -3,7 +3,6 @@ import ItemManage from './ItemManage';
 import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
 import { Link } from 'react-router-dom';
-import { isNonEmptyArray } from '@apollo/client/utilities';
 
 const Container = styled.div`
   display: flex;

@@ -4,10 +4,9 @@ import Category from './Category';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   background-color: #487be1;
   color: #d9e5ff;
-  width: 250px;
 `;
 
 const Label = styled.div`

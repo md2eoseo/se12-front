@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -6,6 +7,14 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+`;
+
+const Button = styled.button`
+  background-color: white;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  padding: 0px 10px;
 `;
 
 const ItemImg = styled.img`
@@ -19,11 +28,16 @@ const ItemPrice = styled.p``;
 
 function Item({ itemId, imgUrl, name, price }) {
   return (
-    <Container id={`item-${itemId}`}>
-      <ItemImg src={imgUrl} />
-      <ItemName>{name}</ItemName>
-      <ItemPrice>{price}원</ItemPrice>
-    </Container>
+    // TODO: "/item" 뒤에 itemId 추가
+    <Link to="/item">
+      <Button>
+        <Container id={`item-${itemId}`}>
+          <ItemImg src={imgUrl} />
+          <ItemName>{name}</ItemName>
+          <ItemPrice>{price}원</ItemPrice>
+        </Container>
+      </Button>
+    </Link>
   );
 }
 

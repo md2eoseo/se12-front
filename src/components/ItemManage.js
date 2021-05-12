@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
 import { useState } from 'react';
@@ -13,17 +12,19 @@ const Container = styled.div`
 `;
 
 const Table = styled.div`
-display: flex;
-justify-content: space-between;
-align-items: center;
-width: 900px;
-height: 200px;
-padding: 8px;
-border: 1px solid black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 900px;
+  height: 200px;
+  padding: 8px;
+  border: 1px solid black;
 
-&:hover {
-  border-width: 2px;
-  cursor: pointer;`;
+  &:hover {
+    border-width: 2px;
+    cursor: pointer;
+  }
+`;
 
 const ItemImg = styled.img`
   max-height: 160px;
