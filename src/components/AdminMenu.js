@@ -5,14 +5,32 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 30px 50px;
+  background-color: #487be1;
+  width: 240px;
+`;
+
+const Button = styled.button`
+  width: 240px;
+  height: 80px;
+  border: 0;
+  background-color: #487be1;
+  color: #d9e5ff;
+  font-size: 18px;
+  cursor: pointer;
+  &:hover {
+    background-color: cornflowerblue;
+  }
 `;
 
 function AdminMenu() {
   return (
     <Container>
-      <Link to="/banners">공지/이벤트 관리</Link>
-      <Link to="/items">상품 관리</Link>
+      <Link to="/banners">
+        <Button>공지/이벤트 관리</Button>
+      </Link>
+      <Link to="/items">
+        <Button>상품 관리</Button>
+      </Link>
     </Container>
   );
 }
