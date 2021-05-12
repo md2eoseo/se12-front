@@ -1,7 +1,7 @@
-import { ApolloProvider } from '@apollo/client';
+import { ApolloProvider, useReactiveVar } from '@apollo/client';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { client } from './client';
+import { client, isAdminVar } from './client';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import AdminPage from './routes/AdminPage';
@@ -10,16 +10,18 @@ import SearchPage from './routes/SearchPage';
 import SignUpPage from './routes/SignUpPage';
 import ItemPage from './routes/ItemPage';
 import AddItem from './components/AddItem';
+import AuthRoute from './routes/AuthRoute';
 
 function App() {
+  const isAdmin = useReactiveVar(isAdminVar);
   return (
     <ApolloProvider client={client}>
       <Router>
         <Header />
         <Switch>
-          <Route path="/banners" component={AdminPage} />
-          <Route path="/additem" component={AddItem} />
-          <Route path="/items" component={AdminPage} />
+          <AuthRoute authenticated={isAdmin} path="/additem" render={props => <AddItem {...props} />} />
+          <AuthRoute authenticated={isAdmin} path="/banners" render={props => <AdminPage {...props} />} />
+          <AuthRoute authenticated={isAdmin} path="/items" render={props => <AdminPage {...props} />} />
           <Route path="/item" component={ItemPage} />
           <Route path="/search" component={SearchPage} />
           <Route path="/signup" component={SignUpPage} />
