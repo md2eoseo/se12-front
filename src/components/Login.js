@@ -35,13 +35,17 @@ const Input = styled.input`
 
 const SubmitBtn = styled.button`
   width: 64px;
+  margin-left: 3px;
   height: 60px;
   color: white;
-  background-color: cornflowerblue;
+  background-color: #487be1;
   font-size: 100%;
   cursor: pointer;
   outline: none;
   border: none;
+  &:hover {
+    background-color: cornflowerblue;
+  }
 `;
 
 const Button = styled.button`
@@ -49,11 +53,14 @@ const Button = styled.button`
   width: 80px;
   height: 60px;
   color: white;
-  background-color: cornflowerblue;
+  background-color: #487be1;
   font-size: 100%;
   cursor: pointer;
   outline: none;
   border: none;
+  &:hover {
+    background-color: cornflowerblue;
+  }
 `;
 
 const Errors = styled.div`
