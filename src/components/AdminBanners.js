@@ -10,7 +10,9 @@ const Container = styled.div`
   width: 100%;
 `;
 
-const Label = styled.h2``;
+const Label = styled.h2`
+  padding: 20px;
+`;
 
 const SEE_ALL_BANNERS_QUERY = gql`
   query seeAllBanners {

@@ -12,7 +12,20 @@ const Container = styled.div`
 
 const Greeting = styled.div``;
 
-const LogoutBtn = styled.button``;
+const LogoutBtn = styled.button`
+  margin-top: 10px;
+  width: 80px;
+  height: 40px;
+  color: white;
+  background-color: #487be1;
+  font-size: 90%;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  &:hover {
+    background-color: cornflowerblue;
+  }
+`;
 
 const GET_USER_QUERY = gql`
   query getUser($id: Int!) {

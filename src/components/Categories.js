@@ -5,13 +5,16 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 30px 60px;
   background-color: #487be1;
   color: #d9e5ff;
+  width: 250px;
 `;
 
-const Label = styled.h2`
-  margin-bottom: 30px;
+const Label = styled.div`
+  margin-top: 20px;
+  padding: 20px 65px;
+  font-weight: 200%;
+  font-size: 28px;
 `;
 
 function Categories({ categories, categoriesLoading }) {

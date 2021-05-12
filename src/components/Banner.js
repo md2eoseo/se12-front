@@ -8,6 +8,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 10px;
 `;
 
 const Card = styled.div`
@@ -33,26 +34,41 @@ const Title = styled.h2``;
 const Period = styled.p``;
 
 const CardBtns = styled.div`
+  margin-right: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
 const ActivateBtn = styled.button`
-  width: 32px;
-  height: 32px;
-  background-color: red;
-
+  width: 80px;
+  height: 50px;
+  margin-right: 5px;
+  color: white;
+  background-color: #cc3d3d;
+  font-size: 100%;
+  cursor: pointer;
+  outline: none;
+  border: none;
   ${props =>
     props.activate &&
     css`
-      background-color: green;
+      background-color: #2f9d27;
     `}
 `;
 
 const DeleteBtn = styled.button`
-  width: 32px;
-  height: 32px;
+  width: 80px;
+  height: 50px;
+  color: white;
+  background-color: #487be1;
+  font-size: 100%;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  &:hover {
+    background-color: cornflowerblue;
+  }
 `;
 
 const BannerImg = styled.img``;
@@ -127,9 +143,11 @@ function Banner({ bannerId, imgUrl, title, startDate, endDate, activate, admin }
             <Period>{period}</Period>
           </CardInfo>
           <CardBtns>
-            <ActivateBtn activate={activateState} onClick={onActivateBtnClick} disabled={toggleActivateLoading} />
+            <ActivateBtn activate={activateState} onClick={onActivateBtnClick} disabled={toggleActivateLoading}>
+              노출상태
+            </ActivateBtn>
             <DeleteBtn onClick={onDeleteBtnClick} disabled={deleteBannerLoading}>
-              X
+              삭제
             </DeleteBtn>
           </CardBtns>
         </Card>
