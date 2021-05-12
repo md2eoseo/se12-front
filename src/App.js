@@ -9,6 +9,7 @@ import HomePage from './routes/HomePage';
 import SearchPage from './routes/SearchPage';
 import SignUpPage from './routes/SignUp';
 import ItemPage from './routes/ItemPage';
+import AddItem from './components/AddItem';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Header />
         <Switch>
           <Route path="/banners" component={AdminPage} />
+          <Route path="/additem" component={AddItem} />
           <Route path="/items" component={AdminPage} />
           <Route path="/item" component={ItemPage} />
           <Route path="/search" component={SearchPage} />
