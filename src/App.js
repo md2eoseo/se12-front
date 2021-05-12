@@ -7,7 +7,7 @@ import Header from './components/Header';
 import AdminPage from './routes/AdminPage';
 import HomePage from './routes/HomePage';
 import SearchPage from './routes/SearchPage';
-import SignUpPage from './routes/SignUp';
+import SignUpPage from './routes/SignUpPage';
 import ItemPage from './routes/ItemPage';
 import AddItem from './components/AddItem';
 
