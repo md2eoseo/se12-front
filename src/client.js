@@ -1,4 +1,5 @@
 import { ApolloClient, HttpLink, InMemoryCache, makeVar } from '@apollo/client';
+import { createUploadLink } from 'apollo-upload-client';
 import { setContext } from '@apollo/client/link/context';
 import jwt from 'jsonwebtoken';
 
@@ -14,7 +15,7 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
-const httpLink = new HttpLink({
+const httpLink = createUploadLink({
   uri: process.env.REACT_APP_BACKEND_URL,
 });
 
