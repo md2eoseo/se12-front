@@ -48,9 +48,9 @@ const Label = styled.h2`
   margin-bottom: 30px;
 `;
 
-const SEE_RECENT_ITEMS_QUERY = gql`
-  query seeRecentItems($count: Int) {
-    seeRecentItems(count: $count) {
+const GET_ITEMS_QUERY = gql`
+  query getItems {
+    getItems {
       ok
       error
       items {
@@ -70,7 +70,7 @@ const SEE_RECENT_ITEMS_QUERY = gql`
 `;
 
 function AdminItems() {
-  const { loading, data } = useQuery(SEE_RECENT_ITEMS_QUERY, { variables: { count: 10 } });
+  const { loading, data } = useQuery(GET_ITEMS_QUERY, { variables: { count: 10 } });
   function refreshPage() {
     window.location.reload();
   }
@@ -83,10 +83,9 @@ function AdminItems() {
         </Link>
         <SaveButton onClick={refreshPage}>저장</SaveButton>
       </Button>
-
       {loading && '상품 불러오는 중...'}
       {data &&
-        data.seeRecentItems.items.map(item => (
+        data.getItems.items.map(item => (
           <ItemManage
             key={item.id}
             itemId={item.id}
