@@ -3,6 +3,7 @@ import ItemManage from './ItemManage';
 import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const Container = styled.div`
   display: flex;
@@ -70,7 +71,12 @@ const GET_ITEMS_QUERY = gql`
 `;
 
 function AdminItems() {
-  const { loading, data } = useQuery(GET_ITEMS_QUERY, { variables: { count: 10 } });
+  const { loading, data, refetch } = useQuery(GET_ITEMS_QUERY);
+
+  useEffect(() => {
+    refetch();
+  }, []);
+
   function refreshPage() {
     window.location.reload();
   }
