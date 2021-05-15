@@ -1,4 +1,4 @@
-import { ApolloClient, HttpLink, InMemoryCache, makeVar } from '@apollo/client';
+import { ApolloClient, InMemoryCache, makeVar } from '@apollo/client';
 import { createUploadLink } from 'apollo-upload-client';
 import { setContext } from '@apollo/client/link/context';
 import jwt from 'jsonwebtoken';

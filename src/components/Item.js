@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const Container = styled.div`
   margin: 30px 0;
@@ -17,9 +17,18 @@ const Button = styled.button`
   padding: 0px 10px;
 `;
 
-const ItemImg = styled.img`
-  max-height: 180px;
+const ItemImg = styled.div`
+  ${props =>
+    props.src &&
+    css`
+      background-image: url(${props.src});
+    `}
+  height: 180px;
+  width: 132px;
   margin-bottom: 8px;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
 `;
 
 const ItemName = styled.p``;
