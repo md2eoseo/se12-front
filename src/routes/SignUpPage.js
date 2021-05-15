@@ -76,6 +76,8 @@ const CREATE_ACCOUNT_MUTATION = gql`
     createAccount(userId: $userId, password: $password, email: $email, name: $name, address: $address) {
       ok
       error
+      userIdExist
+      emailExist
     }
   }
 `;
@@ -122,15 +124,23 @@ function SignUpPage() {
 
   const onSignUpCompleted = data => {
     const {
-      createAccount: { ok, error },
+      createAccount: { ok, userIdExist, emailExist },
     } = data;
     if (!ok) {
-      return setError('result', {
-        message: error,
-      });
+      if (userIdExist) {
+        setError('userId', {
+          message: '사용 중인 아이디입니다.',
+        });
+      }
+      if (emailExist) {
+        setError('email', {
+          message: '사용 중인 이메일입니다.',
+        });
+      }
+    } else {
+      const { userId, password } = getValues();
+      login({ variables: { userId, password } });
     }
-    const { userId, password } = getValues();
-    login({ variables: { userId, password } });
   };
 
   const onLoginCompleted = data => {
