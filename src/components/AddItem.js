@@ -110,6 +110,9 @@ const schema = yup.object().shape({
   categoryId: yup.number().min(1, '카테고리를 선택해주세요.').required('카테고리를 선택해주세요.'),
   name: yup.string().required('상품 이름을 입력해주세요.'),
   price: yup.number().min(0, '유효하지 않은 가격입니다.').required('가격을 입력해주세요.'),
+  author: yup.string(),
+  publisher: yup.string(),
+  contents: yup.string(),
 });
 
 function AddItem() {
@@ -174,8 +177,23 @@ function AddItem() {
         </label>
         <label>
           <Text>가격</Text>
-          <Input type="number" placeholder="가격을 입력하세요" {...register('price')} />
+          <Input type="number" placeholder="가격을 입력하세요." {...register('price')} />
           {errors.price?.message && <Message>{errors.price?.message}</Message>}
+        </label>
+        <label>
+          <Text>저자</Text>
+          <Input type="text" placeholder="저자를 입력하세요." {...register('author')} />
+          {errors.author?.message && <Message>{errors.author?.message}</Message>}
+        </label>
+        <label>
+          <Text>출판사</Text>
+          <Input type="text" placeholder="출판사를 입력하세요." {...register('publisher')} />
+          {errors.publisher?.message && <Message>{errors.publisher?.message}</Message>}
+        </label>
+        <label>
+          <Text>설명</Text>
+          <textarea placeholder="설명을 입력하세요." {...register('contents')} />
+          {errors.contents?.message && <Message>{errors.contents?.message}</Message>}
         </label>
         <Button className="submitBtn" type="submit" disabled={createItemLoading || seeCategoriesLoading}>
           {createItemLoading ? '상품 등록 중...' : '상품 등록'}
