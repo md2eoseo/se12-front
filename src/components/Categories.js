@@ -7,6 +7,7 @@ const Container = styled.div`
   align-items: center;
   background-color: #487be1;
   color: #d9e5ff;
+  width: 250px;
 `;
 
 const Label = styled.div`
