@@ -263,6 +263,8 @@ function ItemPage() {
     pressDay = pDate.getDate();
   const pressed = `${pressYear}년 ${pressMonth}월 ${pressDay}일`;
 
+  const total = (data && data.seeItem.item.price) * number;
+
   return (
     <Container>
       <Wrapper>
@@ -299,7 +301,7 @@ function ItemPage() {
           <TotalPrice>
             <HR />
             <Label>총 상품 금액</Label>
-            <Int>{data.seeItem.item.price * number}</Int>
+            <Int>{total}</Int>
             <Won>원</Won>
           </TotalPrice>
           <Button>
