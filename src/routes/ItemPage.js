@@ -55,6 +55,13 @@ function ItemPage() {
   return (
     <Container>
       {data && <ItemName>제목 : {data.seeItem.item.name}</ItemName>}
+      {data && <ItemName>가격 : {data.seeItem.item.price}</ItemName>}
+      {data && <ItemName>카테고리 : {data.seeItem.item.category.name}</ItemName>}
+      {data && <ItemName>재고 : {data.seeItem.item.stock}</ItemName>}
+      {data && <ItemName>작가 : {data.seeItem.item.author}</ItemName>}
+      {data && <ItemName>내용 : {data.seeItem.item.contents}</ItemName>}
+      {data && <ItemName>출판사 : {data.seeItem.item.publisher}</ItemName>}
+      {data && <ItemName>출간일 : {data.seeItem.item.pressDate}</ItemName>}
       {data && <ItemImg src={data.seeItem.item.imgUrl} />}
     </Container>
   );
