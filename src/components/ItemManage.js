@@ -26,16 +26,26 @@ const Table = styled.div`
   }
 `;
 
-const ItemImg = styled.img`
-  max-height: 160px;
+const ItemImg = styled.div`
+  ${props =>
+    props.src &&
+    css`
+      background-image: url(${props.src});
+    `}
+  height: 180px;
+  width: 132px;
+  margin-bottom: 8px;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
 `;
 const ItemInfo = styled.div`
   margin-left: -20px;
-  height: 50px;
 `;
 const ItemName = styled.div`
   margin-bottom: 10px;
   font-size: 20px;
+  max-width: 100px;
 `;
 
 const ItemPrice = styled.div`
@@ -153,9 +163,9 @@ function ItemManage({ itemId, imgUrl, name, price, author, publisher, createdAt,
         <ItemImg src={imgUrl} />
         <ItemInfo>
           <ItemName>제목: {name}</ItemName>
-          <ItemAuthor>저자: {author}</ItemAuthor>
+          {author && <ItemAuthor>저자: {author}</ItemAuthor>}
         </ItemInfo>
-        <ItemPublisher>출판사: {publisher}</ItemPublisher>
+        {publisher && <ItemPublisher>출판사: {publisher}</ItemPublisher>}
         <ItemPrice>가격: {price}원</ItemPrice>
         <ItemDate>
           <ItemCreatedAt>등록일: {created}</ItemCreatedAt>

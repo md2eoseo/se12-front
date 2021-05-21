@@ -7,6 +7,9 @@ const Container = styled.div`
   align-items: flex-start;
   background-color: #487be1;
   width: 240px;
+  height: 100vh;
+  position: sticky;
+  top: 0;
 `;
 
 const Button = styled.button`
