@@ -97,6 +97,8 @@ const Price = styled.h2`
 `;
 
 const Int = styled.span`
+  font-size: 25px;
+  font-weight: bold;
   color: #4374d9;
 `;
 
@@ -135,31 +137,107 @@ const Slash = styled.span`
 
 const Quantity = styled.div`
   margin-top: 20px;
-  flex-direction: column;
 `;
 
-const H3 = styled.h3``;
+const H3 = styled.h3`
+  float: left;
+`;
 
 const Dec = styled.button`
+  float: left;
   margin-left: 40px;
   width: 40px;
   height: 35px;
-  padding: 0px 10px 0px 20px;
+  color: white;
+  background-color: #487be1;
+  font-size: 100%;
+  cursor: pointer;
+  outline: none;
+  border: 1px solid #487be1;
+  &:hover {
+    background-color: cornflowerblue;
+  }
 `;
-const Inc = styled.button``;
 
-const Num = styled.div``;
+const Inc = styled.button`
+  float: left;
+  width: 40px;
+  height: 35px;
+  color: white;
+  background-color: #487be1;
+  font-size: 100%;
+  cursor: pointer;
+  outline: none;
+  border: 1px solid #487be1;
+  &:hover {
+    background-color: cornflowerblue;
+  }
+`;
 
+const Num = styled.div`
+  float: left;
+  width: 60px;
+  height: 35px;
+  font-size: 100%;
+  padding: 5px 10px 0px 25px;
+  border: 1px solid #3162c7;
+  outline: none;
+`;
+
+const TotalPrice = styled.div``;
+
+const HR = styled.hr`
+  width: 400px;
+  margin-top: 80px;
+  margin-bottom: 10px;
+`;
 const Button = styled.div`
   flex-direction: column;
 `;
 
-const BuyButton = styled.button`
+const Destination = styled.button`
   width: 360px;
   height: 50px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: white;
+  background-color: #41af39;
+  font-size: 100%;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  &:hover {
+    background-color: #53c14b;
+  }
+`;
+const BuyButton = styled.button`
+  width: 175px;
+  height: 50px;
+  margin-right: 10px;
+  color: white;
+  background-color: #487be1;
+  font-size: 100%;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  &:hover {
+    background-color: cornflowerblue;
+  }
 `;
 
-const BagButton = styled.button``;
+const BagButton = styled.button`
+  width: 175px;
+  height: 50px;
+  color: white;
+  background-color: #5d5d5d;
+  font-size: 100%;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  &:hover {
+    background-color: #747474;
+  }
+`;
 function useQueryString() {
   return new URLSearchParams(useLocation().search);
 }
@@ -170,7 +248,9 @@ function ItemPage() {
     setNumber(number => number + 1);
   };
   const onDecrease = () => {
-    setNumber(number => number - 1);
+    if (number != 1) {
+      setNumber(number => number - 1);
+    }
   };
 
   const queries = useQueryString();
@@ -216,9 +296,17 @@ function ItemPage() {
             <Num>{number}</Num>
             <Inc onClick={onIncrease}>+</Inc>
           </Quantity>
+          <TotalPrice>
+            <HR />
+            <Label>총 상품 금액</Label>
+            <Int>{data.seeItem.item.price * number}</Int>
+            <Won>원</Won>
+          </TotalPrice>
           <Button>
-            <BuyButton>앙</BuyButton>
-            <BagButton>양</BagButton>
+            <Destination>배송지 선택</Destination>
+            <br />
+            <BuyButton>구매하기</BuyButton>
+            <BagButton>장바구니</BagButton>
           </Button>
         </Info>
       </Wrapper>
