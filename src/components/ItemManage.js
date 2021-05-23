@@ -178,7 +178,7 @@ function ItemManage({ itemId, imgUrl, name, price, author, publisher, createdAt,
         </Link>
         <Button>
           <Box>
-            <ActivateButton activate={activateState} onClick={onActivateBtnClick} disabled={toggleActivateLoading}>
+            <ActivateButton activate={activateState} disabled={toggleActivateLoading}>
               판매상태
             </ActivateButton>
           </Box>
@@ -186,7 +186,7 @@ function ItemManage({ itemId, imgUrl, name, price, author, publisher, createdAt,
             <EditButton>수정</EditButton>
           </Box>
           <Box>
-            <DeleteButton>삭제</DeleteButton>
+            <DeleteButton onClick={onActivateBtnClick}>삭제</DeleteButton>
           </Box>
         </Button>
       </Table>
