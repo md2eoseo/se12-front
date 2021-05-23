@@ -18,7 +18,9 @@ const Button = styled.button`
 `;
 
 const ItemImg = styled.img`
-  max-height: 180px;
+  max-height: 200px;
+  max-width: 140px;
+  object-fit: cover;
   margin-bottom: 8px;
 `;
 
