@@ -132,6 +132,22 @@ const TOGGLE_ACTIVATE_MUTATION = gql`
   }
 `;
 
+function showItemState(activate) {
+  if (activate) {
+    return '판매중';
+  } else if (!activate) {
+    return '판매중단';
+  }
+}
+
+function deleteBtn(activate) {
+  if (activate) {
+    return '삭제';
+  } else if (!activate) {
+    return '복구';
+  }
+}
+
 function ItemManage({ itemId, imgUrl, name, price, author, publisher, createdAt, updatedAt, activate }) {
   const cDate = new Date(+createdAt),
     createdYear = cDate.getFullYear(),
@@ -179,14 +195,14 @@ function ItemManage({ itemId, imgUrl, name, price, author, publisher, createdAt,
         <Button>
           <Box>
             <ActivateButton activate={activateState} disabled={toggleActivateLoading}>
-              판매상태
+              {showItemState(activateState)}
             </ActivateButton>
           </Box>
           <Box>
             <EditButton>수정</EditButton>
           </Box>
           <Box>
-            <DeleteButton onClick={onActivateBtnClick}>삭제</DeleteButton>
+            <DeleteButton onClick={onActivateBtnClick}>{deleteBtn(activateState)}</DeleteButton>
           </Box>
         </Button>
       </Table>
