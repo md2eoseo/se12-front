@@ -342,7 +342,7 @@ function ItemPage() {
           render={() => (
             <div className="error">
               잘못된 접근입니다.
-              <Link to="/">홈으로 돌아가기</Link>
+              <a href="/">홈으로 돌아가기</a>
             </div>
           )}
         />
@@ -350,4 +350,5 @@ function ItemPage() {
     );
   }
 }
+
 export default ItemPage;
