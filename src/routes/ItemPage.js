@@ -79,6 +79,7 @@ const Content = styled.div`
   margin-bottom: 20px;
   font-size: 20px;
   color: #5d5d5d;
+  width: 800px;
 `;
 
 const Description = styled.div`
