@@ -80,6 +80,11 @@ const Contents = styled.div`
   color: #5d5d5d;
 `;
 
+const Description = styled.div`
+  margin-bottom: 10px;
+  font-size: 17px;
+`;
+
 const Line = styled.hr`
   margin-top: 10px;
   margin-bottom: 20px;
@@ -315,7 +320,7 @@ function ItemPage() {
       <Contents>
         <Text>책소개</Text>
         <Line />
-        {data && <ItemName>{data.seeItem.item.contents}</ItemName>}
+        {data && <Description>{data.seeItem.item.contents}</Description>}
       </Contents>
     </Container>
   );
