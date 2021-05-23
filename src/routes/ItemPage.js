@@ -251,7 +251,7 @@ function useQueryString() {
 function ItemPage() {
   const queries = useQueryString();
   const itemId = Number(queries.get('itemId'));
-  const { data } = useQuery(SEE_ITEM_QUERY, { variables: { id: itemId } });
+  const { loading, data } = useQuery(SEE_ITEM_QUERY, { variables: { id: itemId } });
 
   const [number, setNumber] = useState(0);
   const onIncrease = () => {
@@ -329,6 +329,12 @@ function ItemPage() {
         </Content>
       </Container>
     );
+  } else if (loading) {
+    return (
+      <Router>
+        <Route render={() => <div className="loading">상품 상세정보 불러오는 중...</div>} />
+      </Router>
+    );
   } else {
     return (
       <Router>
@@ -344,5 +350,4 @@ function ItemPage() {
     );
   }
 }
-
 export default ItemPage;
