@@ -8,6 +8,7 @@ const Container = styled.div`
   padding: 0 20px;
   display: flex;
   justify-content: space-between;
+  margin-bottom: 40px;
 `;
 
 const SEE_RECENT_ITEMS_QUERY = gql`

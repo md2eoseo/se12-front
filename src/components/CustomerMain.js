@@ -13,6 +13,19 @@ const Container = styled.div`
   align-items: center;
 `;
 
+const Title = styled.h2`
+  margin-top: 60px;
+  margin-bottom: 10px;
+  font-weight: lighter;
+  color: #4c4c4c;
+  letter-spacing: 3px;
+`;
+
+const HR = styled.hr`
+  width: 140px;
+  margin-bottom: 20px;
+`;
+
 const SEE_BANNERS_QUERY = gql`
   query seeBanners {
     seeBanners {
@@ -35,6 +48,8 @@ function CustomerMain({ categories, categoriesLoading }) {
       <Carousel autoPlay emulateTouch swipeable stopOnHover infiniteLoop showStatus={false} showThumbs={false}>
         {data && data.seeBanners.banners.map(banner => <Banner key={banner.id} bannerId={banner.id} imgUrl={banner.imgUrl} />)}
       </Carousel>
+      <Title>NEW ITEM</Title>
+      <HR />
       <RecentItems />
     </Container>
   );

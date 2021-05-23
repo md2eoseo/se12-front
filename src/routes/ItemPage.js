@@ -74,12 +74,16 @@ const Title = styled.h1`
   margin-bottom: 10px;
 `;
 
-const Contents = styled.div`
+const Content = styled.div`
   margin-top: 100px;
   margin-bottom: 20px;
-
   font-size: 20px;
   color: #5d5d5d;
+`;
+
+const Description = styled.div`
+  margin-bottom: 10px;
+  font-size: 17px;
 `;
 
 const Line = styled.hr`
@@ -318,11 +322,11 @@ function ItemPage() {
             </Button>
           </Info>
         </Wrapper>
-        <Contents>
+        <Content>
           <Text>책소개</Text>
           <Line />
-          {data && <ItemName>{data.seeItem.item.contents}</ItemName>}
-        </Contents>
+          {data && <Description>{data.seeItem.item.contents}</Description>}
+        </Content>
       </Container>
     );
   } else {
