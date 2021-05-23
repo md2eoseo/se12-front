@@ -172,6 +172,7 @@ function ItemManage({ itemId, imgUrl, name, price, author, publisher, createdAt,
     }
     if (yes) {
       toggleActivate({ variables: { id: itemId, activate: !activateState } });
+      window.alert(`'${name}' 상품이 ${notice}되었습니다.`);
     }
   };
 
