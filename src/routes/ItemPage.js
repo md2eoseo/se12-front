@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import { useState } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const SEE_ITEM_QUERY = gql`
   query seeItem($id: Int) {
@@ -72,10 +74,9 @@ const Title = styled.h1`
   margin-bottom: 10px;
 `;
 
-const Contents = styled.div`
+const Content = styled.div`
   margin-top: 100px;
   margin-bottom: 20px;
-
   font-size: 20px;
   color: #5d5d5d;
 `;
@@ -248,82 +249,100 @@ function useQueryString() {
 }
 
 function ItemPage() {
+  const queries = useQueryString();
+  const itemId = Number(queries.get('itemId'));
+  const { data } = useQuery(SEE_ITEM_QUERY, { variables: { id: itemId } });
+
   const [number, setNumber] = useState(0);
   const onIncrease = () => {
-    setNumber(number => number + 1);
+    if (number != (data && data.seeItem.item.stock)) {
+      setNumber(number => number + 1);
+    }
   };
   const onDecrease = () => {
-    if (number != 1) {
+    if (number != 0) {
       setNumber(number => number - 1);
     }
   };
 
-  const queries = useQueryString();
-  const itemId = Number(queries.get('itemId'));
-  const { data } = useQuery(SEE_ITEM_QUERY, { variables: { id: itemId } });
-  const pressDate = data && data.seeItem.item.pressDate;
-  const pDate = new Date(+pressDate),
-    pressYear = pDate.getFullYear(),
-    pressMonth = pDate.getMonth() + 1,
-    pressDay = pDate.getDate();
-  const pressed = `${pressYear}년 ${pressMonth}월 ${pressDay}일`;
+  if (data && data.seeItem.ok && data && data.seeItem.item.activate) {
+    const pressDate = data && data.seeItem.item.pressDate;
+    const pDate = new Date(+pressDate),
+      pressYear = pDate.getFullYear(),
+      pressMonth = pDate.getMonth() + 1,
+      pressDay = pDate.getDate();
+    const pressed = `${pressYear}년 ${pressMonth}월 ${pressDay}일`;
 
-  const total = (data && data.seeItem.item.price) * number;
+    const total = (data && data.seeItem.item.price) * number;
 
-  return (
-    <Container>
-      <Wrapper>
-        <Image>
-          <Carousel autoPlay emulateTouch swipeable stopOnHover infiniteLoop showStatus={false} showThumbs={false}>
-            {data && <ItemImg src={data.seeItem.item.imgUrl} />}
-          </Carousel>
-        </Image>
-        <Info>
-          <Title>{data && <ItemName>{data.seeItem.item.name}</ItemName>}</Title>
-          <Author>{data && <ItemName>{data.seeItem.item.author} 지음</ItemName>}</Author>
-          <Slash>|</Slash>
-          <Category>{data && <ItemName>{data.seeItem.item.category.name}</ItemName>}</Category>
-          <Slash>|</Slash>
-          <Publisher>{data && <ItemName>{data.seeItem.item.publisher}</ItemName>}</Publisher>
-          <Slash>|</Slash>
-          <Pressed>{data && <ItemName>{pressed}</ItemName>}</Pressed>
-          <Stock>{data && <ItemName>재고 : {data.seeItem.item.stock}권</ItemName>}</Stock>
-          <Price>
-            {data && (
-              <ItemName>
-                <Label>판매가</Label>
-                <Int>{data.seeItem.item.price}</Int>
-                <Won>원</Won>
-              </ItemName>
-            )}
-          </Price>
-          <Quantity>
-            <H3>수량</H3>
-            <Dec onClick={onDecrease}>-</Dec>
-            <Num>{number}</Num>
-            <Inc onClick={onIncrease}>+</Inc>
-          </Quantity>
-          <TotalPrice>
-            <HR />
-            <Label>총 상품 금액</Label>
-            <Int>{total}</Int>
-            <Won>원</Won>
-          </TotalPrice>
-          <Button>
-            <Destination>배송지 선택</Destination>
-            <br />
-            <BuyButton>구매하기</BuyButton>
-            <BagButton>장바구니</BagButton>
-          </Button>
-        </Info>
-      </Wrapper>
-      <Contents>
-        <Text>책소개</Text>
-        <Line />
-        {data && <Description>{data.seeItem.item.contents}</Description>}
-      </Contents>
-    </Container>
-  );
+    return (
+      <Container>
+        <Wrapper>
+          <Image>
+            <Carousel autoPlay emulateTouch swipeable stopOnHover infiniteLoop showStatus={false} showThumbs={false}>
+              {data && <ItemImg src={data.seeItem.item.imgUrl} />}
+            </Carousel>
+          </Image>
+          <Info>
+            <Title>{data && <ItemName>{data.seeItem.item.name}</ItemName>}</Title>
+            <Author>{data && <ItemName>{data.seeItem.item.author} 지음</ItemName>}</Author>
+            <Slash>|</Slash>
+            <Category>{data && <ItemName>{data.seeItem.item.category.name}</ItemName>}</Category>
+            <Slash>|</Slash>
+            <Publisher>{data && <ItemName>{data.seeItem.item.publisher}</ItemName>}</Publisher>
+            <Slash>|</Slash>
+            <Pressed>{data && <ItemName>{pressed}</ItemName>}</Pressed>
+            <Stock>{data && <ItemName>재고 : {data.seeItem.item.stock}권</ItemName>}</Stock>
+            <Price>
+              {data && (
+                <ItemName>
+                  <Label>판매가</Label>
+                  <Int>{data.seeItem.item.price}</Int>
+                  <Won>원</Won>
+                </ItemName>
+              )}
+            </Price>
+            <Quantity>
+              <H3>수량</H3>
+              <Dec onClick={onDecrease}>-</Dec>
+              <Num>{number}</Num>
+              <Inc onClick={onIncrease}>+</Inc>
+            </Quantity>
+            <TotalPrice>
+              <HR />
+              <Label>총 상품 금액</Label>
+              <Int>{total}</Int>
+              <Won>원</Won>
+            </TotalPrice>
+            <Button>
+              <Destination>배송지 선택</Destination>
+              <br />
+              <BuyButton>구매하기</BuyButton>
+              <BagButton>장바구니</BagButton>
+            </Button>
+          </Info>
+        </Wrapper>
+        <Content>
+          <Text>책소개</Text>
+          <Line />
+          {data && <Description>{data.seeItem.item.contents}</Description>}
+        </Content>
+      </Container>
+    );
+  } else {
+    return (
+      <Router>
+        <Route
+          render={() => (
+            <div className="error">
+              잘못된 접근입니다.
+              <Link to="/">홈으로 돌아가기</Link>
+            </div>
+          )}
+        />
+      </Router>
+    );
+  }
 }
 
 export default ItemPage;
