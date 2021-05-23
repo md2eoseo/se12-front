@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
   margin-bottom: 20px;
@@ -19,11 +20,19 @@ const Table = styled.div`
   height: 200px;
   padding: 8px;
   border: 1px solid black;
-
   &:hover {
     border-width: 2px;
     cursor: pointer;
   }
+`;
+
+const Contents = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 790px;
+  height: 200px;
+  margin-right: 10px;
 `;
 
 const ItemImg = styled.img`
@@ -152,17 +161,21 @@ function ItemManage({ itemId, imgUrl, name, price, author, publisher, createdAt,
   return (
     <Container id={`item-${itemId}`}>
       <Table>
-        <ItemImg src={imgUrl} />
-        <ItemInfo>
-          <ItemName>제목: {name}</ItemName>
-          <ItemAuthor>저자: {author}</ItemAuthor>
-        </ItemInfo>
-        <ItemPublisher>출판사: {publisher}</ItemPublisher>
-        <ItemPrice>가격: {price}원</ItemPrice>
-        <ItemDate>
-          <ItemCreatedAt>등록일: {created}</ItemCreatedAt>
-          <ItemUpdateAt>업데이트일: {updated}</ItemUpdateAt>
-        </ItemDate>
+        <Link to={`/iteminfo?itemId=${itemId}`} style={{ textDecoration: 'none', color: 'black' }}>
+          <Contents>
+            <ItemImg src={imgUrl} />
+            <ItemInfo>
+              <ItemName>제목: {name}</ItemName>
+              <ItemAuthor>저자: {author}</ItemAuthor>
+            </ItemInfo>
+            <ItemPublisher>출판사: {publisher}</ItemPublisher>
+            <ItemPrice>가격: {price}원</ItemPrice>
+            <ItemDate>
+              <ItemCreatedAt>등록일: {created}</ItemCreatedAt>
+              <ItemUpdateAt>업데이트일: {updated}</ItemUpdateAt>
+            </ItemDate>
+          </Contents>
+        </Link>
         <Button>
           <Box>
             <ActivateButton activate={activateState} onClick={onActivateBtnClick} disabled={toggleActivateLoading}>
