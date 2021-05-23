@@ -28,6 +28,8 @@ const Table = styled.div`
 
 const ItemImg = styled.img`
   max-height: 160px;
+  max-width: 100px;
+  object-fit: cover;
 `;
 const ItemInfo = styled.div`
   margin-left: -20px;
