@@ -161,9 +161,18 @@ function ItemManage({ itemId, imgUrl, name, price, author, publisher, createdAt,
   const updated = `${updatedYear}-${updatedMonth}-${updatedDay}`;
 
   const [activateState, setActivateState] = useState(activate);
+  const [notice, setNotice] = useState('삭제');
 
   const onActivateBtnClick = () => {
-    toggleActivate({ variables: { id: itemId, activate: !activateState } });
+    const yes = window.confirm(`'${name}' 상품을 ${notice}하시겠습니까?`);
+    if (!activate) {
+      setNotice('삭제');
+    } else {
+      setNotice('복구');
+    }
+    if (yes) {
+      toggleActivate({ variables: { id: itemId, activate: !activateState } });
+    }
   };
 
   const toggleActivateCompleted = () => {
