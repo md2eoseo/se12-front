@@ -24,6 +24,7 @@ function App() {
           <AuthRoute authenticated={isAdmin} path="/iteminfo" render={props => <AdminItemInfo {...props} />}/>
           <AuthRoute authenticated={isAdmin} path="/banners" render={props => <AdminPage {...props} />} />
           <AuthRoute authenticated={isAdmin} path="/items" render={props => <AdminPage {...props} />} />
+          <AuthRoute authenticated={isAdmin} path="/additem" render={props => <AdminPage {...props} />} />
           <Route path="/item" component={ItemPage} />
           <Route path="/search" component={SearchPage} />
           <Route path="/signup" component={SignUpPage} />

@@ -1,5 +1,6 @@
 import { Route } from 'react-router';
 import styled from 'styled-components';
+import AddItem from './AddItem';
 import AdminBanners from './AdminBanners';
 import AdminItems from './AdminItems';
 
@@ -36,6 +37,7 @@ function AdminMain() {
 
       <Route path="/banners" component={AdminBanners} />
       <Route path="/items" component={AdminItems} />
+      <Route path="/additem" component={AddItem} />
     </Container>
   );
 }
