@@ -91,7 +91,7 @@ const DELETE_BANNER_MUTATION = gql`
   }
 `;
 
-function Banner({ bannerId, imgUrl, title, startDate, endDate, activate, admin }) {
+function Banner({ bannerId, imgUrl, category, title, startDate, endDate, activate, admin }) {
   const start = new Date(+startDate),
     startYear = start.getFullYear(),
     startMonth = ('' + (start.getMonth() + 1)).padStart(2, '0'),
@@ -116,7 +116,7 @@ function Banner({ bannerId, imgUrl, title, startDate, endDate, activate, admin }
   };
 
   const onDeleteBtnClick = () => {
-    const yes = window.confirm(`'${title}' 배너를 지우시겠습니까?`);
+    const yes = window.confirm(`'${title}' ${category === 'ANNOUNCEMENT' ? '공지' : '이벤트'}를 지우시겠습니까?`);
     if (yes) {
       deleteBanner({ variables: { id: bannerId } });
     }
@@ -139,7 +139,9 @@ function Banner({ bannerId, imgUrl, title, startDate, endDate, activate, admin }
       {admin ? (
         <Card>
           <CardInfo>
-            <Title>{title}</Title>
+            <Title>
+              {category === 'ANNOUNCEMENT' ? '공지' : '이벤트'} : {title}
+            </Title>
             <Period>{period}</Period>
           </CardInfo>
           <CardBtns>

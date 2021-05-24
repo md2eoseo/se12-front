@@ -1,5 +1,7 @@
 import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Banner from './Banner';
 
@@ -17,6 +19,21 @@ const Label = styled.h2`
 
 const Button = styled.div`
   padding: 0px 0px 20px 790px;
+`;
+
+const AddButton = styled.button`
+  width: 110px;
+  height: 50px;
+  margin-right: 20px;
+  font-size: 18px;
+  color: white;
+  background-color: #487be1;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  &:hover {
+    background-color: cornflowerblue;
+  }
 `;
 
 const SaveButton = styled.button`
@@ -52,7 +69,12 @@ const SEE_ALL_BANNERS_QUERY = gql`
 `;
 
 function AdminBanners() {
-  const { loading, data } = useQuery(SEE_ALL_BANNERS_QUERY);
+  const { loading, data, refetch } = useQuery(SEE_ALL_BANNERS_QUERY);
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
+
   function refreshPage() {
     window.location.reload();
   }
@@ -60,15 +82,19 @@ function AdminBanners() {
     <Container>
       <Label>공지/이벤트 관리</Label>
       <Button>
+        <Link to="/addbanner">
+          <AddButton>배너 등록</AddButton>
+        </Link>
         <SaveButton onClick={refreshPage}>새로고침</SaveButton>
       </Button>
 
-      {loading && '배너 불러오는 중...'}
+      {loading && '공지/이벤트 불러오는 중...'}
       {data &&
         data.seeAllBanners.banners.map(banner => (
           <Banner
             key={banner.id}
             bannerId={banner.id}
+            category={banner.category}
             title={banner.title}
             startDate={banner.startDate}
             endDate={banner.endDate}

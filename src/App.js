@@ -20,6 +20,7 @@ function App() {
         <Switch>
           <AuthRoute authenticated={isAdmin} path="/banners" render={props => <AdminPage {...props} />} />
           <AuthRoute authenticated={isAdmin} path="/additem" render={props => <AdminPage {...props} />} />
+          <AuthRoute authenticated={isAdmin} path="/addbanner" render={props => <AdminPage {...props} />} />
           <AuthRoute authenticated={isAdmin} path="/iteminfo" render={props => <AdminPage {...props} />} />
           <AuthRoute authenticated={isAdmin} path="/edititem" render={props => <AdminPage {...props} />} />
           <Route path="/item" component={ItemPage} />
