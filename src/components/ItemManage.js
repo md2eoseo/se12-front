@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
   margin-bottom: 20px;
@@ -19,14 +20,22 @@ const Table = styled.div`
   height: 200px;
   padding: 8px;
   border: 1px solid black;
-
   &:hover {
     border-width: 2px;
     cursor: pointer;
   }
 `;
 
-const ItemImg = styled.div`
+const Contents = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 790px;
+  height: 200px;
+  margin-right: 10px;
+`;
+
+const ItemImg = styled.img`
   ${props =>
     props.src &&
     css`
@@ -34,6 +43,9 @@ const ItemImg = styled.div`
     `}
   height: 180px;
   width: 132px;
+  max-height: 160px;
+  max-width: 100px;
+  object-fit: cover;
   margin-bottom: 8px;
   background-position: center;
   background-size: contain;
@@ -131,6 +143,22 @@ const TOGGLE_ACTIVATE_MUTATION = gql`
   }
 `;
 
+function showItemState(activate) {
+  if (activate) {
+    return '판매중';
+  } else if (!activate) {
+    return '판매중단';
+  }
+}
+
+function deleteBtn(activate) {
+  if (activate) {
+    return '삭제';
+  } else if (!activate) {
+    return '복구';
+  }
+}
+
 function ItemManage({ itemId, imgUrl, name, price, author, publisher, createdAt, updatedAt, activate }) {
   const cDate = new Date(+createdAt),
     createdYear = cDate.getFullYear(),
@@ -144,9 +172,19 @@ function ItemManage({ itemId, imgUrl, name, price, author, publisher, createdAt,
   const updated = `${updatedYear}-${updatedMonth}-${updatedDay}`;
 
   const [activateState, setActivateState] = useState(activate);
+  const [notice, setNotice] = useState('삭제');
 
   const onActivateBtnClick = () => {
-    toggleActivate({ variables: { id: itemId, activate: !activateState } });
+    const yes = window.confirm(`'${name}' 상품을 ${notice}하시겠습니까?`);
+    if (!activate) {
+      setNotice('삭제');
+    } else {
+      setNotice('복구');
+    }
+    if (yes) {
+      toggleActivate({ variables: { id: itemId, activate: !activateState } });
+      window.alert(`'${name}' 상품이 ${notice}되었습니다.`);
+    }
   };
 
   const toggleActivateCompleted = () => {
@@ -160,28 +198,32 @@ function ItemManage({ itemId, imgUrl, name, price, author, publisher, createdAt,
   return (
     <Container id={`item-${itemId}`}>
       <Table>
-        <ItemImg src={imgUrl} />
-        <ItemInfo>
-          <ItemName>제목: {name}</ItemName>
-          {author && <ItemAuthor>저자: {author}</ItemAuthor>}
-        </ItemInfo>
-        {publisher && <ItemPublisher>출판사: {publisher}</ItemPublisher>}
-        <ItemPrice>가격: {price}원</ItemPrice>
-        <ItemDate>
-          <ItemCreatedAt>등록일: {created}</ItemCreatedAt>
-          <ItemUpdateAt>업데이트일: {updated}</ItemUpdateAt>
-        </ItemDate>
+        <Link to={`/iteminfo?itemId=${itemId}`} style={{ textDecoration: 'none', color: 'black' }}>
+          <Contents>
+            <ItemImg src={imgUrl} />
+            <ItemInfo>
+              <ItemName>제목: {name}</ItemName>
+              {author && <ItemAuthor>저자: {author}</ItemAuthor>}
+            </ItemInfo>
+            {publisher && <ItemPublisher>출판사: {publisher}</ItemPublisher>}
+            <ItemPrice>가격: {price}원</ItemPrice>
+            <ItemDate>
+              <ItemCreatedAt>등록일: {created}</ItemCreatedAt>
+              <ItemUpdateAt>업데이트일: {updated}</ItemUpdateAt>
+            </ItemDate>
+          </Contents>
+        </Link>
         <Button>
           <Box>
-            <ActivateButton activate={activateState} onClick={onActivateBtnClick} disabled={toggleActivateLoading}>
-              판매상태
+            <ActivateButton activate={activateState} disabled={toggleActivateLoading}>
+              {showItemState(activateState)}
             </ActivateButton>
           </Box>
           <Box>
             <EditButton>수정</EditButton>
           </Box>
           <Box>
-            <DeleteButton>삭제</DeleteButton>
+            <DeleteButton onClick={onActivateBtnClick}>{deleteBtn(activateState)}</DeleteButton>
           </Box>
         </Button>
       </Table>

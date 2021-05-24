@@ -7,7 +7,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  width: 1120px;
+  margin-bottom: 50px;
 `;
 
 const Label = styled.h2`
@@ -15,7 +16,7 @@ const Label = styled.h2`
 `;
 
 const Button = styled.div`
-  padding: 0px 0px 20px 700px;
+  padding: 0px 0px 20px 790px;
 `;
 
 const SaveButton = styled.button`
