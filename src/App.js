@@ -9,8 +9,6 @@ import HomePage from './routes/HomePage';
 import SearchPage from './routes/SearchPage';
 import SignUpPage from './routes/SignUpPage';
 import ItemPage from './routes/ItemPage';
-import AddItem from './components/AddItem';
-import AdminItemInfo from './components/AdminItemInfo';
 import AuthRoute from './routes/AuthRoute';
 
 function App() {
@@ -20,11 +18,11 @@ function App() {
       <Router>
         <Header />
         <Switch>
-          <AuthRoute authenticated={isAdmin} path="/additem" render={props => <AddItem {...props} />} />
-          <AuthRoute authenticated={isAdmin} path="/iteminfo" render={props => <AdminItemInfo {...props} />}/>
           <AuthRoute authenticated={isAdmin} path="/banners" render={props => <AdminPage {...props} />} />
           <AuthRoute authenticated={isAdmin} path="/items" render={props => <AdminPage {...props} />} />
           <AuthRoute authenticated={isAdmin} path="/additem" render={props => <AdminPage {...props} />} />
+          <AuthRoute authenticated={isAdmin} path="/iteminfo" render={props => <AdminPage {...props} />} />
+          <AuthRoute authenticated={isAdmin} path="/edititem" render={props => <AdminPage {...props} />} />
           <Route path="/item" component={ItemPage} />
           <Route path="/search" component={SearchPage} />
           <Route path="/signup" component={SignUpPage} />

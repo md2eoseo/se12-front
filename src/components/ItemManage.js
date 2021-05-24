@@ -96,7 +96,6 @@ const ActivateButton = styled.button`
   color: white;
   background-color: #cc3d3d;
   font-size: 100%;
-  cursor: pointer;
   outline: none;
   border: none;
   ${props =>
@@ -215,12 +214,12 @@ function ItemManage({ itemId, imgUrl, name, price, author, publisher, createdAt,
         </Link>
         <Button>
           <Box>
-            <ActivateButton activate={activateState} disabled={toggleActivateLoading}>
-              {showItemState(activateState)}
-            </ActivateButton>
+            <ActivateButton activate={activateState}>{showItemState(activateState)}</ActivateButton>
           </Box>
           <Box>
-            <EditButton>수정</EditButton>
+            <Link to={`/edititem?itemId=${itemId}`}>
+              <EditButton>수정</EditButton>
+            </Link>
           </Box>
           <Box>
             <DeleteButton onClick={onActivateBtnClick}>{deleteBtn(activateState)}</DeleteButton>

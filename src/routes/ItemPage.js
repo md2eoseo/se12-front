@@ -3,8 +3,7 @@ import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import { useState } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 const SEE_ITEM_QUERY = gql`
   query seeItem($id: Int) {
@@ -198,6 +197,7 @@ const HR = styled.hr`
   margin-top: 80px;
   margin-bottom: 10px;
 `;
+
 const Button = styled.div`
   flex-direction: column;
 `;
@@ -217,6 +217,7 @@ const Destination = styled.button`
     background-color: #53c14b;
   }
 `;
+
 const BuyButton = styled.button`
   width: 175px;
   height: 50px;
@@ -245,6 +246,7 @@ const BagButton = styled.button`
     background-color: #747474;
   }
 `;
+
 function useQueryString() {
   return new URLSearchParams(useLocation().search);
 }
@@ -256,12 +258,12 @@ function ItemPage() {
 
   const [number, setNumber] = useState(0);
   const onIncrease = () => {
-    if (number != (data && data.seeItem.item.stock)) {
+    if (number !== (data && data.seeItem.item.stock)) {
       setNumber(number => number + 1);
     }
   };
   const onDecrease = () => {
-    if (number != 0) {
+    if (number !== 0) {
       setNumber(number => number - 1);
     }
   };

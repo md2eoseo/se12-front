@@ -2,8 +2,6 @@ import { gql, useQuery } from '@apollo/client';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
-import { useState } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 const SEE_ITEM_QUERY = gql`
@@ -13,6 +11,7 @@ const SEE_ITEM_QUERY = gql`
       error
       item {
         id
+        categoryId
         category {
           name
         }
@@ -131,6 +130,7 @@ const ListButton = styled.button`
     background-color: #747474;
   }
 `;
+
 function useQueryString() {
   return new URLSearchParams(useLocation().search);
 }
@@ -147,88 +147,71 @@ function AdminItemInfo() {
     stateString = '판매중단';
   }
 
-  if (data && data.seeItem.ok) {
-    const pressDate = data && data.seeItem.item.pressDate;
-    const pDate = new Date(+pressDate),
-      pressYear = pDate.getFullYear(),
-      pressMonth = pDate.getMonth() + 1,
-      pressDay = pDate.getDate();
-    const pressed = `${pressYear}년 ${pressMonth}월 ${pressDay}일`;
+  const pressDate = data && data.seeItem.item.pressDate;
+  const pDate = new Date(+pressDate),
+    pressYear = pDate.getFullYear(),
+    pressMonth = pDate.getMonth() + 1,
+    pressDay = pDate.getDate();
+  const pressed = `${pressYear}년 ${pressMonth}월 ${pressDay}일`;
 
-    const createDay = data && data.seeItem.item.createdAt;
-    const cDate = new Date(+createDay),
-      createdYear = cDate.getFullYear(),
-      createdMonth = cDate.getMonth() + 1,
-      createdDay = cDate.getDate();
-    const created = `${createdYear}-${createdMonth}-${createdDay}`;
+  const createDay = data && data.seeItem.item.createdAt;
+  const cDate = new Date(+createDay),
+    createdYear = cDate.getFullYear(),
+    createdMonth = cDate.getMonth() + 1,
+    createdDay = cDate.getDate();
+  const created = `${createdYear}-${createdMonth}-${createdDay}`;
 
-    const updateDay = data && data.seeItem.item.updatedAt;
-    const uDate = new Date(+updateDay),
-      updatedYear = uDate.getFullYear(),
-      updatedMonth = uDate.getMonth() + 1,
-      updatedDay = uDate.getDate();
-    const updated = `${updatedYear}-${updatedMonth}-${updatedDay}`;
+  const updateDay = data && data.seeItem.item.updatedAt;
+  const uDate = new Date(+updateDay),
+    updatedYear = uDate.getFullYear(),
+    updatedMonth = uDate.getMonth() + 1,
+    updatedDay = uDate.getDate();
+  const updated = `${updatedYear}-${updatedMonth}-${updatedDay}`;
 
-    return (
-      <Container>
-        <Wrapper>
-          <Image>
-            <Carousel autoPlay emulateTouch swipeable stopOnHover infiniteLoop showStatus={false} showThumbs={false}>
-              {data && <ItemImg src={data.seeItem.item.imgUrl} />}
-            </Carousel>
-          </Image>
-          <Info>
-            <Label>제목 : {data && <ItemName>{data.seeItem.item.name}</ItemName>}</Label>
-            <Label>저자 : {data && <ItemName>{data.seeItem.item.author}</ItemName>}</Label>
-            <Label>카테고리 : {data && <ItemName>{data.seeItem.item.category.name}</ItemName>}</Label>
-            <Label>출판사 : {data && <ItemName>{data.seeItem.item.publisher}</ItemName>}</Label>
-            <Label>출간일 : {data && <ItemName>{pressed}</ItemName>}</Label>
-            <Label>재고 : {data && <ItemName>{data.seeItem.item.stock}권</ItemName>}</Label>
-            <Label>판매가 : {data && <ItemName>{data.seeItem.item.price}원</ItemName>}</Label>
-            <Label>
-              판매상태 : <ItemName>{stateString}</ItemName>
-            </Label>
-            <Label>
-              등록일 : <ItemName>{created}</ItemName>
-            </Label>
-            <Label>
-              수정일 : <ItemName>{updated}</ItemName>
-            </Label>
-          </Info>
-        </Wrapper>
-        <Content>
-          <Text>책소개</Text>
-          <Line />
-          {data && <Description>{data.seeItem.item.contents}</Description>}
-        </Content>
-        <Button>
-          <Link to="/items">
-            <ListButton>목록으로</ListButton>
-          </Link>
+  return loading ? (
+    <Container>상품 불러오는 중...</Container>
+  ) : (
+    <Container>
+      <Wrapper>
+        <Image>
+          <Carousel emulateTouch swipeable infiniteLoop showStatus={false} showThumbs={false}>
+            {data && <ItemImg src={data.seeItem.item.imgUrl} />}
+          </Carousel>
+        </Image>
+        <Info>
+          <Label>제목 : {data && <ItemName>{data.seeItem.item.name}</ItemName>}</Label>
+          <Label>저자 : {data && <ItemName>{data.seeItem.item.author}</ItemName>}</Label>
+          <Label>카테고리 : {data && <ItemName>{data.seeItem.item.category.name}</ItemName>}</Label>
+          <Label>출판사 : {data && <ItemName>{data.seeItem.item.publisher}</ItemName>}</Label>
+          <Label>출간일 : {data && <ItemName>{pressed}</ItemName>}</Label>
+          <Label>재고 : {data && <ItemName>{data.seeItem.item.stock}권</ItemName>}</Label>
+          <Label>판매가 : {data && <ItemName>{data.seeItem.item.price}원</ItemName>}</Label>
+          <Label>
+            판매상태 : <ItemName>{stateString}</ItemName>
+          </Label>
+          <Label>
+            등록일 : <ItemName>{created}</ItemName>
+          </Label>
+          <Label>
+            수정일 : <ItemName>{updated}</ItemName>
+          </Label>
+        </Info>
+      </Wrapper>
+      <Content>
+        <Text>책소개</Text>
+        <Line />
+        {data && <Description>{data.seeItem.item.contents}</Description>}
+      </Content>
+      <Button>
+        <Link to="/items">
+          <ListButton>목록으로</ListButton>
+        </Link>
+        <Link to={`/edititem?itemId=${itemId}`}>
           <EditButton>상품 수정</EditButton>
-        </Button>
-      </Container>
-    );
-  } else if (loading) {
-    return (
-      <Router>
-        <Route render={() => <div className="loading">상품 상세정보 불러오는 중...</div>} />
-      </Router>
-    );
-  } else {
-    return (
-      <Router>
-        <Route
-          render={() => (
-            <div className="error">
-              잘못된 접근입니다.
-              <a href="/">홈으로 돌아가기</a>
-            </div>
-          )}
-        />
-      </Router>
-    );
-  }
+        </Link>
+      </Button>
+    </Container>
+  );
 }
 
 export default AdminItemInfo;
