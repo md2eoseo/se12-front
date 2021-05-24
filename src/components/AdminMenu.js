@@ -31,7 +31,7 @@ function AdminMenu() {
       <Link to="/banners">
         <Button>공지/이벤트 관리</Button>
       </Link>
-      <Link to="/items">
+      <Link to="/">
         <Button>상품 관리</Button>
       </Link>
     </Container>

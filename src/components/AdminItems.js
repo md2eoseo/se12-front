@@ -2,8 +2,9 @@ import styled from 'styled-components';
 import ItemManage from './ItemManage';
 import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
+import AdminSearchBar from './AdminSearchBar';
 
 const Container = styled.div`
   display: flex;
@@ -51,8 +52,8 @@ const Label = styled.h2`
 `;
 
 const GET_ITEMS_QUERY = gql`
-  query getItems {
-    getItems {
+  query getItems($term: String, $minPrice: Int, $maxPrice: Int, $sortMethod: SortMethod) {
+    getItems(term: $term, minPrice: $minPrice, maxPrice: $maxPrice, sortMethod: $sortMethod) {
       ok
       error
       items {
@@ -71,8 +72,19 @@ const GET_ITEMS_QUERY = gql`
   }
 `;
 
+function useQueryString() {
+  return new URLSearchParams(useLocation().search);
+}
+
 function AdminItems() {
-  const { loading, data, refetch } = useQuery(GET_ITEMS_QUERY);
+  const queries = useQueryString();
+  const term = queries.get('term');
+  const minPrice = Number(queries.get('minPrice'));
+  const maxPrice = Number(queries.get('maxPrice'));
+  const sortMethod = queries.get('sortMethod');
+  const { loading, data, refetch } = useQuery(GET_ITEMS_QUERY, {
+    variables: { ...(term && { term }), ...(minPrice && { minPrice }), ...(maxPrice && { maxPrice }), ...(sortMethod && { sortMethod }) },
+  });
 
   useEffect(() => {
     refetch();
@@ -84,11 +96,12 @@ function AdminItems() {
   return (
     <Container>
       <Label>상품 관리</Label>
+      <AdminSearchBar initialTerm={term} initialMinPrice={minPrice} initialMaxPrice={maxPrice} initialSortMethod={sortMethod} />
       <Button>
         <Link to="/additem">
           <AddButton>상품 등록</AddButton>
         </Link>
-        <SaveButton onClick={refreshPage}>저장</SaveButton>
+        <SaveButton onClick={refreshPage}>새로고침</SaveButton>
       </Button>
       {loading && '상품 불러오는 중...'}
       {data &&

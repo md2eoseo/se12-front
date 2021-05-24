@@ -156,7 +156,7 @@ function AddItem() {
     if (!ok) {
       return setError('result', { message: error });
     } else {
-      history.push('/items');
+      history.push('/');
     }
   };
 

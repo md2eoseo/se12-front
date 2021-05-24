@@ -17,7 +17,6 @@ function AdminMain() {
   return (
     <Container>
       <Route path="/banners" component={AdminBanners} />
-      <Route path="/items" component={AdminItems} />
       <Route path="/additem" component={AddItem} />
       <Route path="/iteminfo" component={AdminItemInfo} />
       <Route path="/edititem" component={EditItem} />

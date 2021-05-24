@@ -222,7 +222,9 @@ function ItemManage({ itemId, imgUrl, name, price, author, publisher, createdAt,
             </Link>
           </Box>
           <Box>
-            <DeleteButton onClick={onActivateBtnClick}>{deleteBtn(activateState)}</DeleteButton>
+            <DeleteButton onClick={onActivateBtnClick} disabled={toggleActivateLoading}>
+              {deleteBtn(activateState)}
+            </DeleteButton>
           </Box>
         </Button>
       </Table>

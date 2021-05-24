@@ -19,7 +19,6 @@ function App() {
         <Header />
         <Switch>
           <AuthRoute authenticated={isAdmin} path="/banners" render={props => <AdminPage {...props} />} />
-          <AuthRoute authenticated={isAdmin} path="/items" render={props => <AdminPage {...props} />} />
           <AuthRoute authenticated={isAdmin} path="/additem" render={props => <AdminPage {...props} />} />
           <AuthRoute authenticated={isAdmin} path="/iteminfo" render={props => <AdminPage {...props} />} />
           <AuthRoute authenticated={isAdmin} path="/edititem" render={props => <AdminPage {...props} />} />
@@ -27,6 +26,7 @@ function App() {
           <Route path="/search" component={SearchPage} />
           <Route path="/signup" component={SignUpPage} />
           <Route path="/" exact component={HomePage} />
+          <AuthRoute authenticated={isAdmin} path="/" render={props => <AdminPage {...props} />} />
           <Route
             render={() => (
               <div className="error">

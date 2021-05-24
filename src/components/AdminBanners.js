@@ -60,7 +60,7 @@ function AdminBanners() {
     <Container>
       <Label>공지/이벤트 관리</Label>
       <Button>
-        <SaveButton onClick={refreshPage}>저장</SaveButton>
+        <SaveButton onClick={refreshPage}>새로고침</SaveButton>
       </Button>
 
       {loading && '배너 불러오는 중...'}

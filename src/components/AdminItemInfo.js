@@ -203,7 +203,7 @@ function AdminItemInfo() {
         {data && <Description>{data.seeItem.item.contents}</Description>}
       </Content>
       <Button>
-        <Link to="/items">
+        <Link to="/">
           <ListButton>목록으로</ListButton>
         </Link>
         <Link to={`/edititem?itemId=${itemId}`}>
