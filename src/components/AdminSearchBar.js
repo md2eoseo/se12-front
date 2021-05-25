@@ -30,13 +30,9 @@ const Input = styled.input`
   }
 `;
 
-const Select = styled.select`
-  width: 100px;
-  height: 50px;
-  font-size: 18px;
-  &:focus {
-    outline: none;
-  }
+const Radio = styled.input`
+  margin: 0 4px;
+  padding: 0px 15px;
 `;
 
 const Button = styled.button`
@@ -64,16 +60,16 @@ const PriceInput = styled.input`
   }
 `;
 
-function SearchBar({ initialTerm, initialCategoryId, initialMinPrice, initialMaxPrice, categories, categoriesLoading }) {
+function AdminSearchBar({ initialTerm, initialMinPrice, initialMaxPrice, initialSortMethod }) {
   const history = useHistory();
   const [term, setTerm] = useState(initialTerm || null);
-  const [categoryId, setCategoryId] = useState(initialCategoryId || null);
   const [minPrice, setMinPrice] = useState(initialMinPrice || null);
   const [maxPrice, setMaxPrice] = useState(initialMaxPrice || null);
+  const [sortMethod, setSortMethod] = useState(initialSortMethod || null);
 
   const onSearchBtnClick = e => {
     e.preventDefault();
-    history.push(`/search?${generateQueryStrings()}`);
+    history.push(`?${generateQueryStrings()}`);
   };
 
   const generateQueryStrings = () => {
@@ -81,14 +77,14 @@ function SearchBar({ initialTerm, initialCategoryId, initialMinPrice, initialMax
     if (term && term !== '') {
       queryStrings += `term=${term}&`;
     }
-    if (categoryId && categoryId !== '') {
-      queryStrings += `categoryId=${categoryId}&`;
-    }
     if (minPrice && minPrice !== '') {
       queryStrings += `minPrice=${minPrice}&`;
     }
     if (maxPrice && maxPrice !== '') {
       queryStrings += `maxPrice=${maxPrice}&`;
+    }
+    if (sortMethod && sortMethod !== '') {
+      queryStrings += `sortMethod=${sortMethod}&`;
     }
     return queryStrings;
   };
@@ -96,15 +92,6 @@ function SearchBar({ initialTerm, initialCategoryId, initialMinPrice, initialMax
   return (
     <Container>
       <Form onSubmit={onSearchBtnClick}>
-        <Select name="categoryId" value={categoryId} onChange={({ target: { value } }) => setCategoryId(value)}>
-          <option value="">전체</option>
-          {categories &&
-            categories.map(category => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-        </Select>
         <Input type="text" placeholder="검색어 입력" value={term} onChange={({ target: { value } }) => setTerm(value)} />
         <Button type="submit">검색</Button>
       </Form>
@@ -112,9 +99,19 @@ function SearchBar({ initialTerm, initialCategoryId, initialMinPrice, initialMax
         <PriceInput type="number" placeholder="최소 금액" value={minPrice} onChange={({ target: { value } }) => setMinPrice(value)} />
         {' ~ '}
         <PriceInput type="number" placeholder="최대 금액" value={maxPrice} onChange={({ target: { value } }) => setMaxPrice(value)} />
+        <Radio type="radio" name="sortMethod" id="PRICE_LOW" value="PRICE_LOW" onChange={({ target: { value } }) => setSortMethod(value)} />
+        <label htmlFor="PRICE_LOW">저가격순</label>
+        <Radio
+          type="radio"
+          name="sortMethod"
+          id="PRICE_HIGH"
+          value="PRICE_HIGH"
+          onChange={({ target: { value } }) => setSortMethod(value)}
+        />
+        <label htmlFor="PRICE_HIGH">고가격순</label>
       </Conditions>
     </Container>
   );
 }
 
-export default SearchBar;
+export default AdminSearchBar;

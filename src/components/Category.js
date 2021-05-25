@@ -1,12 +1,25 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-const Container = styled.div`
+const Button = styled.button`
+  width: 250px;
+  height: 70px;
+  border: 0;
+  background-color: #487be1;
+  color: #d9e5ff;
   font-size: 20px;
-  margin: 10px 0;
+  cursor: pointer;
+  &:hover {
+    background-color: cornflowerblue;
+  }
 `;
 
 function Category({ categoryId, name }) {
-  return <Container categoryId={categoryId}>{name}</Container>;
+  return (
+    <Link to={`/search?categoryId=${categoryId}`}>
+      <Button categoryId={categoryId}>{name}</Button>
+    </Link>
+  );
 }
 
 export default Category;

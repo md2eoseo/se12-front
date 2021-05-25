@@ -44,6 +44,21 @@ const BagBtn = styled.button`
   outline: none;
   border: none;
   margin-right: 16px;
+ `;
+
+const LogoutBtn = styled.button`
+  margin-top: 10px;
+  width: 80px;
+  height: 40px;
+  color: white;
+  background-color: #487be1;
+  font-size: 90%;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  &:hover {
+    background-color: cornflowerblue;
+  }
 `;
 
 const GET_USER_QUERY = gql`
@@ -76,7 +91,7 @@ function MyMenu() {
     <Container>
       <AppBlock>
         <Greeting>안녕하세요! {!loading && `${data?.getUser?.user?.name}님!`}</Greeting>
-        <BagBtn onClick={logout}>장바구니</BagBtn>
+        <BagBtn onClick={()=>{}}>장바구니</BagBtn>
         <LogoutBtn onClick={logout}>로그아웃</LogoutBtn>
       </AppBlock>
     </Container>

@@ -35,13 +35,32 @@ const Input = styled.input`
 
 const SubmitBtn = styled.button`
   width: 64px;
+  margin-left: 3px;
   height: 60px;
   color: white;
-  background-color: cornflowerblue;
+  background-color: #487be1;
   font-size: 100%;
   cursor: pointer;
   outline: none;
   border: none;
+  &:hover {
+    background-color: cornflowerblue;
+  }
+`;
+
+const Button = styled.button`
+  margin-left: 5px;
+  width: 80px;
+  height: 60px;
+  color: white;
+  background-color: #487be1;
+  font-size: 100%;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  &:hover {
+    background-color: cornflowerblue;
+  }
 `;
 
 const Errors = styled.div`
@@ -118,7 +137,9 @@ function Login() {
         <SubmitBtn type="submit" disabled={loading}>
           {loading ? '로그인 중...' : '로그인'}
         </SubmitBtn>
-        <Link to="/signup">회원가입</Link>
+        <Link to="/signup">
+          <Button>회원가입</Button>
+        </Link>
       </Form>
       <Errors>
         {errors.userId?.message && <Error>{errors.userId?.message}</Error>}

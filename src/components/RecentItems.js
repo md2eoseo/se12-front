@@ -8,6 +8,7 @@ const Container = styled.div`
   padding: 0 20px;
   display: flex;
   justify-content: space-between;
+  margin-bottom: 40px;
 `;
 
 const SEE_RECENT_ITEMS_QUERY = gql`
@@ -19,6 +20,7 @@ const SEE_RECENT_ITEMS_QUERY = gql`
         id
         imgUrl
         name
+        price
       }
     }
   }
@@ -30,7 +32,10 @@ function RecentItems() {
   return (
     <Container>
       {loading && '최신 상품 불러오는 중...'}
-      {data && data.seeRecentItems.items.map(item => <Item key={item.id} itemId={item.id} imgUrl={item.imgUrl} name={item.name} />)}
+      {data &&
+        data.seeRecentItems.items.map(item => (
+          <Item key={item.id} itemId={item.id} imgUrl={item.imgUrl} name={item.name} price={item.price} />
+        ))}
     </Container>
   );
 }

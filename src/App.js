@@ -1,25 +1,38 @@
-import { ApolloProvider } from '@apollo/client';
+import { ApolloProvider, useReactiveVar } from '@apollo/client';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { client } from './client';
+import { client, isAdminVar } from './client';
 import Footer from './components/Footer';
 import Header from './components/Header';
-import Home from './routes/Home';
-import SignUp from './routes/SignUp';
+import AdminPage from './routes/AdminPage';
+import HomePage from './routes/HomePage';
+import SearchPage from './routes/SearchPage';
+import SignUpPage from './routes/SignUpPage';
+import ItemPage from './routes/ItemPage';
+import AuthRoute from './routes/AuthRoute';
 
 function App() {
+  const isAdmin = useReactiveVar(isAdminVar);
   return (
     <ApolloProvider client={client}>
       <Router>
         <Header />
         <Switch>
-          <Route path="/signup" component={SignUp} />
-          <Route path="/" exact component={Home} />
+          <AuthRoute authenticated={isAdmin} path="/banners" render={props => <AdminPage {...props} />} />
+          <AuthRoute authenticated={isAdmin} path="/additem" render={props => <AdminPage {...props} />} />
+          <AuthRoute authenticated={isAdmin} path="/addbanner" render={props => <AdminPage {...props} />} />
+          <AuthRoute authenticated={isAdmin} path="/iteminfo" render={props => <AdminPage {...props} />} />
+          <AuthRoute authenticated={isAdmin} path="/edititem" render={props => <AdminPage {...props} />} />
+          <AuthRoute authenticated={isAdmin} path="/editbanner" render={props => <AdminPage {...props} />} />
+          <Route path="/item" component={ItemPage} />
+          <Route path="/search" component={SearchPage} />
+          <Route path="/signup" component={SignUpPage} />
+          <Route path="/" exact component={HomePage} />
+          <AuthRoute authenticated={isAdmin} path="/" render={props => <AdminPage {...props} />} />
           <Route
             render={() => (
               <div className="error">
                 잘못된 접근입니다.
-                <Link to="/main">홈으로 돌아가기</Link>
                 <Link to="/">홈으로 돌아가기</Link>
               </div>
             )}
