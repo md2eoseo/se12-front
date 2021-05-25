@@ -10,9 +10,17 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const Greeting = styled.div``;
+const Greeting = styled.div`
+  width: 100%;
+  text-align: center;
+`;
 
-const LogoutBtn = styled.button`
+const Buttons = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const Button = styled.button`
   margin-top: 10px;
   width: 80px;
   height: 40px;
@@ -56,7 +64,10 @@ function MyMenu() {
   return (
     <Container>
       <Greeting>안녕하세요! {!loading && `${data?.getUser?.user?.name}님!`}</Greeting>
-      <LogoutBtn onClick={logout}>로그아웃</LogoutBtn>
+      <Buttons>
+        <Button onClick={() => {}}>장바구니</Button>
+        <Button onClick={logout}>로그아웃</Button>
+      </Buttons>
     </Container>
   );
 }
