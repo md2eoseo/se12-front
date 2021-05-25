@@ -1,4 +1,4 @@
-import { gql, useQuery } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
@@ -26,6 +26,29 @@ const SEE_ITEM_QUERY = gql`
         createdAt
         updatedAt
       }
+    }
+  }
+`;
+
+const SEE_BAG_QUERY = gql`
+  query seeBag {
+    seeBag {
+      ok
+      error
+      items {
+        id
+        name
+        price
+      }
+    }
+  }
+`;
+
+const ADD_BAG_ITEM_MUTATION = gql`
+  mutation addBagItem($itemId: Int!, $quantity: Int!) {
+    addBagItem(itemId: $itemId, quantity: $quantity) {
+      ok
+      error
     }
   }
 `;
@@ -198,6 +221,11 @@ const HR = styled.hr`
   margin-bottom: 10px;
 `;
 
+const Bag = styled.div`
+  width: 400px;
+  height: 400px;
+`;
+
 const Button = styled.div`
   flex-direction: column;
 `;
@@ -254,8 +282,19 @@ function useQueryString() {
 function ItemPage() {
   const queries = useQueryString();
   const itemId = Number(queries.get('itemId'));
-  const [number, setNumber] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const { data } = useQuery(SEE_ITEM_QUERY, { variables: { id: itemId } });
+  const { bag } = useQuery(SEE_BAG_QUERY);
+  const onCompleted = data => {
+    const {
+      addBagItem: { ok, error },
+    } = data;
+    if (!ok) {
+      alert(error);
+    } else {
+      alert('추가되었습니다.');
+    }
+  };
 
   const pressDate = data && data.seeItem.item.pressDate;
   const pDate = new Date(+pressDate),
@@ -263,19 +302,35 @@ function ItemPage() {
     pressMonth = pDate.getMonth() + 1,
     pressDay = pDate.getDate();
   const pressed = `${pressYear}년 ${pressMonth}월 ${pressDay}일`;
-  const total = (data && data.seeItem.item.price) * number;
+  const total = (data && data.seeItem.item.price) * quantity;
 
   const onIncrease = () => {
-    if (number !== (data && data.seeItem.item.stock)) {
-      setNumber(number => number + 1);
+    if (quantity !== (data && data.seeItem.item.stock)) {
+      setQuantity(quantity => quantity + 1);
     }
   };
 
   const onDecrease = () => {
-    if (number !== 0) {
-      setNumber(number => number - 1);
+    if (quantity !== 0) {
+      setQuantity(quantity => quantity - 1);
     }
   };
+
+  const onBagBtnClick = () => {
+    if (addBagItemLoading) {
+      return;
+    }
+    addBagItem({
+      variables: {
+        itemId,
+        quantity,
+      },
+    });
+  };
+
+  const [addBagItem, { loading: addBagItemLoading }] = useMutation(ADD_BAG_ITEM_MUTATION, {
+    onCompleted,
+  });
 
   return (
     <Container>
@@ -307,7 +362,7 @@ function ItemPage() {
           <Quantity>
             <H3>수량</H3>
             <Dec onClick={onDecrease}>-</Dec>
-            <Num>{number}</Num>
+            <Num>{quantity}</Num>
             <Inc onClick={onIncrease}>+</Inc>
           </Quantity>
           <TotalPrice>
@@ -320,7 +375,7 @@ function ItemPage() {
             <Destination>배송지 선택</Destination>
             <br />
             <BuyButton>구매하기</BuyButton>
-            <BagButton>장바구니</BagButton>
+            <BagButton onClick={onBagBtnClick}>장바구니</BagButton>
           </Button>
         </Info>
       </WrapperTop>
