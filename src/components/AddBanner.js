@@ -138,20 +138,17 @@ function AddBanner() {
       <Label>공지/이벤트 등록</Label>
       {errors.result?.message && <Message>{errors.result?.message}</Message>}
       <form onSubmit={handleSubmit(onSubmit)}>
+        <input type="radio" name="category" id="ANNOUNCEMENT" value="ANNOUNCEMENT" {...register('category')} />
+        <label htmlFor="ANNOUNCEMENT">공지</label>
+        <input type="radio" name="category" id="EVENT" value="EVENT" {...register('category')} />
+        <label htmlFor="EVENT">이벤트</label>
+        {errors.category?.message && <Message>{errors.category?.message}</Message>}
         <label>
           <Text>이미지</Text>
           <input type="file" {...register('imgUrl')} required />
           {errors.imgUrl?.message && <Message>{errors.imgUrl?.message}</Message>}
         </label>
-        <label>
-          <Text>카테고리</Text>
-          <Select {...register('category')} required>
-            <option value={0}>선택</option>
-            <option value={'ANNOUNCEMENT'}>공지</option>
-            <option value={'EVENT'}>이벤트</option>
-          </Select>
-          {errors.category?.message && <Message>유형을 선택하세요.</Message>}
-        </label>
+
         <label>
           <Text>제목</Text>
           <Input type="text" placeholder="제목을 입력하세요." {...register('title')} />
