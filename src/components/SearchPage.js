@@ -2,9 +2,8 @@ import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
 import { useLocation } from 'react-router';
 import styled from 'styled-components';
-import Categories from '../components/Categories';
-import Item from '../components/Item';
-import SearchBar from '../components/SearchBar';
+import Item from './Item';
+import SearchBar from './SearchBar';
 
 const SEARCH_ITEMS_QUERY = gql`
   query searchItems($term: String, $categoryId: Int, $minPrice: Int, $maxPrice: Int) {
@@ -39,21 +38,17 @@ const SEE_CATEGORIES_QUERY = gql`
 `;
 
 const Container = styled.div`
-  display: grid;
-  grid-template-columns: 20% 80%;
-`;
-
-const SearchMain = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
 `;
 
 const Items = styled.div`
-  width: 100%;
-  padding: 0 20px;
+  width: 80%;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-column-gap: 5%;
 `;
 
 function useQueryString() {
@@ -73,26 +68,22 @@ function SearchPage() {
 
   return (
     <Container>
-      <Categories categories={categoriesData && categoriesData.seeCategories.categories} categoriesLoading={categoriesLoading} />
-      <SearchMain>
-        <SearchBar
-          initialTerm={term}
-          initialCategoryId={categoryId}
-          initialMinPrice={minPrice}
-          initialMaxPrice={maxPrice}
-          categories={categoriesData && categoriesData.seeCategories.categories}
-          categoriesLoading={categoriesLoading}
-        />
-        {`${categoriesData.seeCategories.categories.filter(category => category.id === categoryId)[0]?.name || '전체'}에서 "${
-          term || ''
-        }"` + (itemsLoading ? ' 검색중...' : ' 검색 결과')}
-        <Items>
-          {itemsData?.searchItems?.ok &&
-            itemsData.searchItems.items.map(item => (
-              <Item key={item.id} itemId={item.id} imgUrl={item.imgUrl} name={item.name} price={item.price} />
-            ))}
-        </Items>
-      </SearchMain>
+      <SearchBar
+        initialTerm={term}
+        initialCategoryId={categoryId}
+        initialMinPrice={minPrice}
+        initialMaxPrice={maxPrice}
+        categories={categoriesData && categoriesData.seeCategories.categories}
+        categoriesLoading={categoriesLoading}
+      />
+      {`${categoriesData.seeCategories.categories.filter(category => category.id === categoryId)[0]?.name || '전체'}에서 "${term || ''}"` +
+        (itemsLoading ? ' 검색중...' : ' 검색 결과')}
+      <Items>
+        {itemsData?.searchItems?.ok &&
+          itemsData.searchItems.items.map(item => (
+            <Item key={item.id} itemId={item.id} imgUrl={item.imgUrl} name={item.name} price={item.price} />
+          ))}
+      </Items>
     </Container>
   );
 }
