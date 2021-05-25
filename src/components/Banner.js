@@ -1,6 +1,7 @@
 import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 const Container = styled.div`
@@ -57,10 +58,11 @@ const ActivateBtn = styled.button`
     `}
 `;
 
-const DeleteBtn = styled.button`
+const EditBtn = styled.button`
   width: 80px;
   height: 50px;
   color: white;
+  margin-right: 5px;
   background-color: #487be1;
   font-size: 100%;
   cursor: pointer;
@@ -68,6 +70,20 @@ const DeleteBtn = styled.button`
   border: none;
   &:hover {
     background-color: cornflowerblue;
+  }
+`;
+
+const DeleteBtn = styled.button`
+  width: 80px;
+  height: 50px;
+  color: white;
+  background-color: #cc0000;
+  font-size: 100%;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  &:hover {
+    background-color: #ee0000;
   }
 `;
 
@@ -148,6 +164,9 @@ function Banner({ bannerId, imgUrl, category, title, startDate, endDate, activat
             <ActivateBtn activate={activateState} onClick={onActivateBtnClick} disabled={toggleActivateLoading}>
               노출상태
             </ActivateBtn>
+            <Link to={`/editbanner?bannerId=${bannerId}`}>
+              <EditBtn>수정</EditBtn>
+            </Link>
             <DeleteBtn onClick={onDeleteBtnClick} disabled={deleteBannerLoading}>
               삭제
             </DeleteBtn>

@@ -5,6 +5,7 @@ import AddItem from './AddItem';
 import AdminBanners from './AdminBanners';
 import AdminItemInfo from './AdminItemInfo';
 import AdminItems from './AdminItems';
+import EditBanner from './EditBanner';
 import EditItem from './EditItem';
 
 const Container = styled.div`
@@ -22,6 +23,7 @@ function AdminMain() {
       <Route path="/addbanner" component={AddBanner} />
       <Route path="/iteminfo" component={AdminItemInfo} />
       <Route path="/edititem" component={EditItem} />
+      <Route path="/editbanner" component={EditBanner} />
       <Route exact path="/" component={AdminItems} />
     </Container>
   );
