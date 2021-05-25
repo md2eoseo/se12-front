@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import { useState } from 'react';
 import Categories from '../components/Categories';
+import BagItems from '../components/BagItems.js';
 
 const SEE_ITEM_QUERY = gql`
   query seeItem($id: Int) {
@@ -241,7 +242,10 @@ const HR = styled.hr`
   margin-bottom: 10px;
 `;
 
-const Bag = styled.div``;
+const Bag = styled.div`
+  width: 400px;
+  height: 400px;
+`;
 
 const Button = styled.div`
   flex-direction: column;
@@ -389,15 +393,17 @@ function ItemPage() {
               <Int>{data && data.seeItem.item.price * quantity}</Int>
               <Won>원</Won>
             </TotalPrice>
-            <Bag>{bag && bag.seeBag.items}</Bag>
             <Button>
               <Destination>배송지 선택</Destination>
               <br />
               <BuyButton>구매하기</BuyButton>
-              <BagButton onClick={onBagBtnClick}>장바구니</BagButton>
+              <BagButton onClick={onBagBtnClick}>장바구니 담기</BagButton>
             </Button>
           </Info>
         </WrapperTop>
+        <Bag>
+          <BagItems />
+        </Bag>
         <Content>
           <Text>책소개</Text>
           <Line />
