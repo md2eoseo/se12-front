@@ -1,12 +1,12 @@
 import { ApolloProvider, useReactiveVar } from '@apollo/client';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import { client, isAdminVar } from './client';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import AdminPage from './routes/AdminPage';
 import AuthRoute from './routes/AuthRoute';
 import CustomerPage from './routes/CustomerPage';
+import NotFound from './routes/NotFound';
 import SignUpPage from './routes/SignUpPage';
 
 function App() {
@@ -15,42 +15,26 @@ function App() {
     <ApolloProvider client={client}>
       <Router>
         <Header />
-        <Switch>
-          {isAdmin ? (
-            <>
-              <AuthRoute authenticated={isAdmin} path="/banners" render={props => <AdminPage {...props} />} />
-              <AuthRoute authenticated={isAdmin} path="/additem" render={props => <AdminPage {...props} />} />
-              <AuthRoute authenticated={isAdmin} path="/addbanner" render={props => <AdminPage {...props} />} />
-              <AuthRoute authenticated={isAdmin} path="/iteminfo" render={props => <AdminPage {...props} />} />
-              <AuthRoute authenticated={isAdmin} path="/edititem" render={props => <AdminPage {...props} />} />
-              <AuthRoute authenticated={isAdmin} path="/editbanner" render={props => <AdminPage {...props} />} />
-              <AuthRoute authenticated={isAdmin} exact path="/" render={props => <AdminPage {...props} />} />
-              <Route
-                render={() => (
-                  <div className="error">
-                    잘못된 접근입니다.
-                    <Link to="/">홈으로 돌아가기</Link>
-                  </div>
-                )}
-              />
-            </>
-          ) : (
-            <>
-              <Route path="/item" render={props => <CustomerPage {...props} />} />
-              <Route path="/search" render={props => <CustomerPage {...props} />} />
-              <Route path="/signup" component={SignUpPage} />
-              <Route path="/" exact render={props => <CustomerPage {...props} />} />
-              <Route
-                render={() => (
-                  <div className="error">
-                    잘못된 접근입니다.
-                    <Link to="/">홈으로 돌아가기</Link>
-                  </div>
-                )}
-              />
-            </>
-          )}
-        </Switch>
+        {isAdmin ? (
+          <Switch>
+            <AuthRoute authenticated={isAdmin} path="/banners" component={AdminPage} />
+            <AuthRoute authenticated={isAdmin} path="/additem" component={AdminPage} />
+            <AuthRoute authenticated={isAdmin} path="/addbanner" component={AdminPage} />
+            <AuthRoute authenticated={isAdmin} path="/iteminfo" component={AdminPage} />
+            <AuthRoute authenticated={isAdmin} path="/edititem" component={AdminPage} />
+            <AuthRoute authenticated={isAdmin} path="/editbanner" component={AdminPage} />
+            <AuthRoute authenticated={isAdmin} exact path="/" component={AdminPage} />
+            <Route component={NotFound} />
+          </Switch>
+        ) : (
+          <Switch>
+            <Route path="/item" component={CustomerPage} />
+            <Route path="/search" component={CustomerPage} />
+            <Route path="/signup" component={SignUpPage} />
+            <Route exact path="/" component={CustomerPage} />
+            <Route component={NotFound} />
+          </Switch>
+        )}
         <Footer />
       </Router>
     </ApolloProvider>
