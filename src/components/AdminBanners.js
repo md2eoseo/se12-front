@@ -36,20 +36,6 @@ const AddButton = styled.button`
   }
 `;
 
-const SaveButton = styled.button`
-  width: 110px;
-  height: 50px;
-  font-size: 18px;
-  color: white;
-  background-color: #487be1;
-  cursor: pointer;
-  outline: none;
-  border: none;
-  &:hover {
-    background-color: cornflowerblue;
-  }
-`;
-
 const SEE_ALL_BANNERS_QUERY = gql`
   query seeAllBanners {
     seeAllBanners {
@@ -75,9 +61,6 @@ function AdminBanners() {
     refetch();
   }, [refetch]);
 
-  function refreshPage() {
-    window.location.reload();
-  }
   return (
     <Container>
       <Label>공지/이벤트 관리</Label>
@@ -85,7 +68,6 @@ function AdminBanners() {
         <Link to="/addbanner">
           <AddButton>배너 등록</AddButton>
         </Link>
-        <SaveButton onClick={refreshPage}>새로고침</SaveButton>
       </Button>
 
       {loading && '공지/이벤트 불러오는 중...'}

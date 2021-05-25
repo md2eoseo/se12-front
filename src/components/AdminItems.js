@@ -32,20 +32,6 @@ const AddButton = styled.button`
   }
 `;
 
-const SaveButton = styled.button`
-  width: 110px;
-  height: 50px;
-  font-size: 18px;
-  color: white;
-  background-color: #487be1;
-  cursor: pointer;
-  outline: none;
-  border: none;
-  &:hover {
-    background-color: cornflowerblue;
-  }
-`;
-
 const Label = styled.h2`
   margin-top: 30px;
   margin-bottom: 30px;
@@ -88,11 +74,8 @@ function AdminItems() {
 
   useEffect(() => {
     refetch();
-  }, []);
+  }, [refetch]);
 
-  function refreshPage() {
-    window.location.reload();
-  }
   return (
     <Container>
       <Label>상품 관리</Label>
@@ -101,7 +84,6 @@ function AdminItems() {
         <Link to="/additem">
           <AddButton>상품 등록</AddButton>
         </Link>
-        <SaveButton onClick={refreshPage}>새로고침</SaveButton>
       </Button>
       {loading && '상품 불러오는 중...'}
       {data &&

@@ -3,6 +3,7 @@ import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { client } from '../client';
 
 const Container = styled.div`
   margin-bottom: 20px;
@@ -182,12 +183,32 @@ function ItemManage({ itemId, imgUrl, name, price, author, publisher, createdAt,
     }
     if (yes) {
       toggleActivate({ variables: { id: itemId, activate: !activateState } });
+
       window.alert(`'${name}' 상품이 ${notice}되었습니다.`);
     }
   };
 
   const toggleActivateCompleted = () => {
     setActivateState(!activateState);
+    const itemActivate = client.readFragment({
+      id: `Item:${itemId}`,
+      fragment: gql`
+        fragment ItemFragment on Item {
+          activate
+        }
+      `,
+    });
+    client.writeFragment({
+      id: `Item:${itemId}`,
+      fragment: gql`
+        fragment ItemFragment on Item {
+          activate
+        }
+      `,
+      data: {
+        activate: !itemActivate.activate,
+      },
+    });
   };
 
   const [toggleActivate, { toggleActivateLoading }] = useMutation(TOGGLE_ACTIVATE_MUTATION, {

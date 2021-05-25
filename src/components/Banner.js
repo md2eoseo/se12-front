@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
+import { client } from '../client';
 
 const Container = styled.div`
   width: 100%;
@@ -129,6 +130,25 @@ function Banner({ bannerId, imgUrl, category, title, startDate, endDate, activat
 
   const toggleActivateCompleted = () => {
     setActivateState(!activateState);
+    const bannerActivate = client.readFragment({
+      id: `Banner:${bannerId}`,
+      fragment: gql`
+        fragment BannerFragment on Banner {
+          activate
+        }
+      `,
+    });
+    client.writeFragment({
+      id: `Banner:${bannerId}`,
+      fragment: gql`
+        fragment BannerFragment on Banner {
+          activate
+        }
+      `,
+      data: {
+        activate: !bannerActivate.activate,
+      },
+    });
   };
 
   const onDeleteBtnClick = () => {
