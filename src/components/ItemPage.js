@@ -30,6 +30,20 @@ const SEE_ITEM_QUERY = gql`
   }
 `;
 
+const SEE_BAG_QUERY = gql`
+  query seeBag {
+    seeBag {
+      ok
+      error
+      items {
+        id
+        name
+        price
+      }
+    }
+  }
+`;
+
 const ADD_BAG_ITEM_MUTATION = gql`
   mutation addBagItem($itemId: Int!, $quantity: Int!) {
     addBagItem(itemId: $itemId, quantity: $quantity) {
@@ -207,6 +221,11 @@ const HR = styled.hr`
   margin-bottom: 10px;
 `;
 
+const Bag = styled.div`
+  width: 400px;
+  height: 400px;
+`;
+
 const Button = styled.div`
   flex-direction: column;
 `;
@@ -265,6 +284,7 @@ function ItemPage() {
   const itemId = Number(queries.get('itemId'));
   const [quantity, setQuantity] = useState(1);
   const { data } = useQuery(SEE_ITEM_QUERY, { variables: { id: itemId } });
+  const { bag } = useQuery(SEE_BAG_QUERY);
   const onCompleted = data => {
     const {
       addBagItem: { ok, error },
