@@ -176,11 +176,6 @@ function ItemManage({ itemId, imgUrl, name, price, author, publisher, createdAt,
 
   const onActivateBtnClick = () => {
     const yes = window.confirm(`'${name}' 상품을 ${notice}하시겠습니까?`);
-    if (!activate) {
-      setNotice('삭제');
-    } else {
-      setNotice('복구');
-    }
     if (yes) {
       toggleActivate({ variables: { id: itemId, activate: !activateState } });
 
@@ -190,6 +185,11 @@ function ItemManage({ itemId, imgUrl, name, price, author, publisher, createdAt,
 
   const toggleActivateCompleted = () => {
     setActivateState(!activateState);
+    if (!activate) {
+      setNotice('삭제');
+    } else if (activate) {
+      setNotice('복구');
+    }
     const itemActivate = client.readFragment({
       id: `Item:${itemId}`,
       fragment: gql`
