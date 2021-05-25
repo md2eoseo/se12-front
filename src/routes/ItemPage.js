@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import { useState } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import Categories from '../components/Categories';
 
 const SEE_ITEM_QUERY = gql`
   query seeItem($id: Int) {
@@ -31,17 +31,37 @@ const SEE_ITEM_QUERY = gql`
   }
 `;
 
+const SEE_CATEGORIES_QUERY = gql`
+  query seeCategories {
+    seeCategories {
+      ok
+      error
+      categories {
+        id
+        name
+      }
+    }
+  }
+`;
+
 const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 100px;
-  margin-bottom: 100px;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 20% 80%;
 `;
 
 const Wrapper = styled.div`
-  flex-direction: row;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+  margin-bottom: 40px;
+`;
+
+const WrapperTop = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const Text = styled.h3`
@@ -74,7 +94,7 @@ const Title = styled.h1`
 `;
 
 const Content = styled.div`
-  margin-top: 100px;
+  margin-top: 40px;
   margin-bottom: 20px;
   font-size: 20px;
   color: #5d5d5d;
@@ -254,7 +274,8 @@ function useQueryString() {
 function ItemPage() {
   const queries = useQueryString();
   const itemId = Number(queries.get('itemId'));
-  const { loading, data } = useQuery(SEE_ITEM_QUERY, { variables: { id: itemId } });
+  const { data } = useQuery(SEE_ITEM_QUERY, { variables: { id: itemId } });
+  const { loading: categoriesLoading, data: categoriesData } = useQuery(SEE_CATEGORIES_QUERY);
 
   const [number, setNumber] = useState(0);
   const onIncrease = () => {
@@ -268,19 +289,20 @@ function ItemPage() {
     }
   };
 
-  if (data && data.seeItem.ok && data && data.seeItem.item.activate) {
-    const pressDate = data && data.seeItem.item.pressDate;
-    const pDate = new Date(+pressDate),
-      pressYear = pDate.getFullYear(),
-      pressMonth = pDate.getMonth() + 1,
-      pressDay = pDate.getDate();
-    const pressed = `${pressYear}년 ${pressMonth}월 ${pressDay}일`;
+  const pressDate = data && data.seeItem.item.pressDate;
+  const pDate = new Date(+pressDate),
+    pressYear = pDate.getFullYear(),
+    pressMonth = pDate.getMonth() + 1,
+    pressDay = pDate.getDate();
+  const pressed = `${pressYear}년 ${pressMonth}월 ${pressDay}일`;
 
-    const total = (data && data.seeItem.item.price) * number;
+  const total = (data && data.seeItem.item.price) * number;
 
-    return (
-      <Container>
-        <Wrapper>
+  return (
+    <Container>
+      <Categories categories={categoriesData && categoriesData.seeCategories.categories} categoriesLoading={categoriesLoading} />
+      <Wrapper>
+        <WrapperTop>
           <Image>
             <Carousel autoPlay emulateTouch swipeable stopOnHover infiniteLoop showStatus={false} showThumbs={false}>
               {data && data.seeItem.item.imgUrl.map(src => <ItemImg src={src} />)}
@@ -324,34 +346,15 @@ function ItemPage() {
               <BagButton>장바구니</BagButton>
             </Button>
           </Info>
-        </Wrapper>
+        </WrapperTop>
         <Content>
           <Text>책소개</Text>
           <Line />
           {data && <Description>{data.seeItem.item.contents}</Description>}
         </Content>
-      </Container>
-    );
-  } else if (loading) {
-    return (
-      <Router>
-        <Route render={() => <div className="loading">상품 상세정보 불러오는 중...</div>} />
-      </Router>
-    );
-  } else {
-    return (
-      <Router>
-        <Route
-          render={() => (
-            <div className="error">
-              잘못된 접근입니다.
-              <a href="/">홈으로 돌아가기</a>
-            </div>
-          )}
-        />
-      </Router>
-    );
-  }
+      </Wrapper>
+    </Container>
+  );
 }
 
 export default ItemPage;

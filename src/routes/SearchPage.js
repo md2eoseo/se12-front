@@ -7,8 +7,8 @@ import Item from '../components/Item';
 import SearchBar from '../components/SearchBar';
 
 const SEARCH_ITEMS_QUERY = gql`
-  query searchItems($term: String, $categoryId: Int, $minPrice: Int, $maxPrice: Int, $lastId: Int) {
-    searchItems(term: $term, categoryId: $categoryId, minPrice: $minPrice, maxPrice: $maxPrice, lastId: $lastId) {
+  query searchItems($term: String, $categoryId: Int, $minPrice: Int, $maxPrice: Int) {
+    searchItems(term: $term, categoryId: $categoryId, minPrice: $minPrice, maxPrice: $maxPrice) {
       ok
       error
       items {
@@ -21,7 +21,6 @@ const SEARCH_ITEMS_QUERY = gql`
         publisher
         pressDate
       }
-      lastId
     }
   }
 `;
