@@ -283,7 +283,7 @@ function ItemPage() {
         <Wrapper>
           <Image>
             <Carousel autoPlay emulateTouch swipeable stopOnHover infiniteLoop showStatus={false} showThumbs={false}>
-              {data && <ItemImg src={data.seeItem.item.imgUrl} />}
+              {data && data.seeItem.item.imgUrl.map(src => <ItemImg src={src} />)}
             </Carousel>
           </Image>
           <Info>

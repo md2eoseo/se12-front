@@ -40,11 +40,10 @@ const ItemPrice = styled.p``;
 
 function Item({ itemId, imgUrl, name, price }) {
   return (
-    // TODO: "/item" 뒤에 itemId 추가
     <Link to={`/item?itemId=${itemId}`}>
       <Button>
         <Container id={`item-${itemId}`}>
-          <ItemImg src={imgUrl} />
+          <ItemImg src={imgUrl[0]} />
           <ItemName>{name}</ItemName>
           <ItemPrice>{price}원</ItemPrice>
         </Container>

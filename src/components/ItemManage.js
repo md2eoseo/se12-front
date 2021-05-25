@@ -220,7 +220,7 @@ function ItemManage({ itemId, imgUrl, name, price, author, publisher, createdAt,
       <Table>
         <Link to={`/iteminfo?itemId=${itemId}`} style={{ textDecoration: 'none', color: 'black' }}>
           <Contents>
-            <ItemImg src={imgUrl} />
+            <ItemImg src={imgUrl[0]} />
             <ItemInfo>
               <ItemName>제목: {name}</ItemName>
               {author && <ItemAuthor>저자: {author}</ItemAuthor>}

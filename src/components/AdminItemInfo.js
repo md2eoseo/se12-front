@@ -175,7 +175,7 @@ function AdminItemInfo() {
       <Wrapper>
         <Image>
           <Carousel emulateTouch swipeable infiniteLoop showStatus={false} showThumbs={false}>
-            {data && <ItemImg src={data.seeItem.item.imgUrl} />}
+            {data && <ItemImg src={data.seeItem.item.imgUrl[0]} />}
           </Carousel>
         </Image>
         <Info>

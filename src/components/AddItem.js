@@ -81,7 +81,7 @@ const CREATE_ITEM_MUTATION = gql`
     $name: String!
     $price: Int!
     $stock: Int
-    $imgUrl: Upload!
+    $imgUrl: [Upload]!
     $author: String
     $contents: String
     $publisher: String
@@ -114,7 +114,12 @@ const schema = yup.object().shape({
   publisher: yup.string(),
   contents: yup.string(),
   imgUrl: yup.mixed().test('fileSize', '2MB 이하 이미지를 업로드해주세요.', value => {
-    return value[0].size <= 2000000;
+    for (let i = 0; i < value.length; i++) {
+      if (value[i].size > 2000000) {
+        return false;
+      }
+    }
+    return true;
   }),
 });
 
@@ -139,7 +144,7 @@ function AddItem() {
         name,
         price,
         stock,
-        imgUrl: imgUrl[0],
+        imgUrl,
         author,
         contents,
         publisher,
@@ -173,7 +178,7 @@ function AddItem() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <label>
           <Text>이미지</Text>
-          <input type="file" {...register('imgUrl')} required />
+          <input type="file" {...register('imgUrl')} required multiple />
           {errors.imgUrl?.message && <Message>{errors.imgUrl?.message}</Message>}
         </label>
         <label>
