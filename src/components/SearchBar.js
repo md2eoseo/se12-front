@@ -8,7 +8,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   width: 600px;
-  margin: 20px;
+  margin: 30px;
 `;
 
 const Form = styled.form`
@@ -98,7 +98,8 @@ function SearchBar({ initialTerm, initialCategoryId, initialMinPrice, initialMax
       <Form onSubmit={onSearchBtnClick}>
         <Select name="categoryId" value={categoryId} onChange={({ target: { value } }) => setCategoryId(value)}>
           <option value="">전체</option>
-          {categories &&
+          {!categoriesLoading &&
+            categories &&
             categories.map(category => (
               <option key={category.id} value={category.id}>
                 {category.name}

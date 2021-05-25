@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import { useState } from 'react';
-import Categories from '../components/Categories';
 
 const SEE_ITEM_QUERY = gql`
   query seeItem($id: Int) {
@@ -31,19 +30,6 @@ const SEE_ITEM_QUERY = gql`
   }
 `;
 
-const SEE_CATEGORIES_QUERY = gql`
-  query seeCategories {
-    seeCategories {
-      ok
-      error
-      categories {
-        id
-        name
-      }
-    }
-  }
-`;
-
 const ADD_BAG_ITEM_MUTATION = gql`
   mutation addBagItem($itemId: Int!, $quantity: Int!) {
     addBagItem(itemId: $itemId, quantity: $quantity) {
@@ -54,14 +40,8 @@ const ADD_BAG_ITEM_MUTATION = gql`
 `;
 
 const Container = styled.div`
-  display: grid;
-  grid-template-columns: 20% 80%;
-`;
-
-const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   margin-top: 40px;
   margin-bottom: 40px;
@@ -283,8 +263,8 @@ function useQueryString() {
 function ItemPage() {
   const queries = useQueryString();
   const itemId = Number(queries.get('itemId'));
+  const [quantity, setQuantity] = useState(1);
   const { data } = useQuery(SEE_ITEM_QUERY, { variables: { id: itemId } });
-  const { loading: categoriesLoading, data: categoriesData } = useQuery(SEE_CATEGORIES_QUERY);
   const onCompleted = data => {
     const {
       addBagItem: { ok, error },
@@ -296,24 +276,25 @@ function ItemPage() {
     }
   };
 
-  const [quantity, setQuantity] = useState(1);
-  const onIncrease = () => {
-    if (quantity !== (data && data.seeItem.item.stock)) {
-      setQuantity(quantity => quantity + 1);
-    }
-  };
-  const onDecrease = () => {
-    if (quantity !== 0) {
-      setQuantity(quantity => quantity - 1);
-    }
-  };
-
   const pressDate = data && data.seeItem.item.pressDate;
   const pDate = new Date(+pressDate),
     pressYear = pDate.getFullYear(),
     pressMonth = pDate.getMonth() + 1,
     pressDay = pDate.getDate();
   const pressed = `${pressYear}년 ${pressMonth}월 ${pressDay}일`;
+  const total = (data && data.seeItem.item.price) * quantity;
+
+  const onIncrease = () => {
+    if (quantity !== (data && data.seeItem.item.stock)) {
+      setQuantity(quantity => quantity + 1);
+    }
+  };
+
+  const onDecrease = () => {
+    if (quantity !== 0) {
+      setQuantity(quantity => quantity - 1);
+    }
+  };
 
   const onBagBtnClick = () => {
     if (addBagItemLoading) {
@@ -333,59 +314,56 @@ function ItemPage() {
 
   return (
     <Container>
-      <Categories categories={categoriesData && categoriesData.seeCategories.categories} categoriesLoading={categoriesLoading} />
-      <Wrapper>
-        <WrapperTop>
-          <Image>
-            <Carousel autoPlay emulateTouch swipeable stopOnHover infiniteLoop showStatus={false} showThumbs={false}>
-              {data && data.seeItem.item.imgUrl.map((src, i) => <ItemImg key={i} src={src} />)}
-            </Carousel>
-          </Image>
-          <Info>
-            <Title>{data && <ItemName>{data.seeItem.item.name}</ItemName>}</Title>
-            <Author>{data && <ItemName>{data.seeItem.item.author} 지음</ItemName>}</Author>
-            <Slash>|</Slash>
-            <Category>{data && <ItemName>{data.seeItem.item.category.name}</ItemName>}</Category>
-            <Slash>|</Slash>
-            <Publisher>{data && <ItemName>{data.seeItem.item.publisher}</ItemName>}</Publisher>
-            <Slash>|</Slash>
-            <Pressed>{data && <ItemName>{pressed}</ItemName>}</Pressed>
-            <Stock>{data && <ItemName>재고 : {data.seeItem.item.stock}권</ItemName>}</Stock>
-            <Price>
-              {data && (
-                <ItemName>
-                  <Label>판매가</Label>
-                  <Int>{data && data.seeItem.item.price}</Int>
-                  <Won>원</Won>
-                </ItemName>
-              )}
-            </Price>
-            <Quantity>
-              <H3>수량</H3>
-              <Dec onClick={onDecrease}>-</Dec>
-              <Num>{quantity}</Num>
-              <Inc onClick={onIncrease}>+</Inc>
-            </Quantity>
-            <TotalPrice>
-              <HR />
-              <Label>총 상품 금액</Label>
-              <Int>{data && data.seeItem.item.price * quantity}</Int>
-              <Won>원</Won>
-            </TotalPrice>
-            <Button>
-              <Destination>배송지 선택</Destination>
-              <br />
-              <BuyButton>구매하기</BuyButton>
-              <BagButton onClick={onBagBtnClick}>장바구니</BagButton>
-            </Button>
-          </Info>
-        </WrapperTop>
-        <Content>
-          <Text>책소개</Text>
-          <Line />
-          {data && <Description>{data.seeItem.item.contents}</Description>}
-        </Content>
-      </Wrapper>
+      <WrapperTop>
+        <Image>
+          <Carousel autoPlay emulateTouch swipeable stopOnHover infiniteLoop showStatus={false} showThumbs={false}>
+            {data && data.seeItem.item.imgUrl.map(src => <ItemImg src={src} />)}
+          </Carousel>
+        </Image>
+        <Info>
+          <Title>{data && <ItemName>{data.seeItem.item.name}</ItemName>}</Title>
+          <Author>{data && <ItemName>{data.seeItem.item.author} 지음</ItemName>}</Author>
+          <Slash>|</Slash>
+          <Category>{data && <ItemName>{data.seeItem.item.category.name}</ItemName>}</Category>
+          <Slash>|</Slash>
+          <Publisher>{data && <ItemName>{data.seeItem.item.publisher}</ItemName>}</Publisher>
+          <Slash>|</Slash>
+          <Pressed>{data && <ItemName>{pressed}</ItemName>}</Pressed>
+          <Stock>{data && <ItemName>재고 : {data.seeItem.item.stock}권</ItemName>}</Stock>
+          <Price>
+            {data && (
+              <ItemName>
+                <Label>판매가</Label>
+                <Int>{data.seeItem.item.price}</Int>
+                <Won>원</Won>
+              </ItemName>
+            )}
+          </Price>
+          <Quantity>
+            <H3>수량</H3>
+            <Dec onClick={onDecrease}>-</Dec>
+            <Num>{quantity}</Num>
+            <Inc onClick={onIncrease}>+</Inc>
+          </Quantity>
+          <TotalPrice>
+            <HR />
+            <Label>총 상품 금액</Label>
+            <Int>{total}</Int>
+            <Won>원</Won>
+          </TotalPrice>
+          <Button>
+            <Destination>배송지 선택</Destination>
+            <br />
+            <BuyButton>구매하기</BuyButton>
+            <BagButton onClick={onBagBtnClick}>장바구니</BagButton>
+          </Button>
+        </Info>
+      </WrapperTop>
+      <Content>
+        <Text>책소개</Text>
+        <Line />
+        {data && <Description>{data.seeItem.item.contents}</Description>}
+      </Content>
     </Container>
   );
 }
