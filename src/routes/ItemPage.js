@@ -44,6 +44,20 @@ const SEE_CATEGORIES_QUERY = gql`
   }
 `;
 
+const SEE_BAG_QUERY = gql`
+  query seeBag {
+    seeBag {
+      ok
+      error
+      items {
+        id
+        name
+        price
+      }
+    }
+  }
+`;
+
 const ADD_BAG_ITEM_MUTATION = gql`
   mutation addBagItem($itemId: Int!, $quantity: Int!) {
     addBagItem(itemId: $itemId, quantity: $quantity) {
@@ -227,6 +241,8 @@ const HR = styled.hr`
   margin-bottom: 10px;
 `;
 
+const Bag = styled.div``;
+
 const Button = styled.div`
   flex-direction: column;
 `;
@@ -284,6 +300,7 @@ function ItemPage() {
   const queries = useQueryString();
   const itemId = Number(queries.get('itemId'));
   const { data } = useQuery(SEE_ITEM_QUERY, { variables: { id: itemId } });
+  const { bag } = useQuery(SEE_BAG_QUERY);
   const { loading: categoriesLoading, data: categoriesData } = useQuery(SEE_CATEGORIES_QUERY);
   const onCompleted = data => {
     const {
@@ -372,6 +389,7 @@ function ItemPage() {
               <Int>{data && data.seeItem.item.price * quantity}</Int>
               <Won>원</Won>
             </TotalPrice>
+            <Bag>{bag && bag.seeBag.items}</Bag>
             <Button>
               <Destination>배송지 선택</Destination>
               <br />
