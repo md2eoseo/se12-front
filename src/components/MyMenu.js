@@ -43,6 +43,7 @@ export const GET_USER_QUERY = gql`
       user {
         name
         totalBagItems
+        address
       }
     }
   }

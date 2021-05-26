@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
 import { getUserId } from '../client';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import styled from 'styled-components';
+import { GET_USER_QUERY } from './MyMenu';
 
 const Container = styled.div`
   display: flex;
@@ -11,25 +11,8 @@ const Container = styled.div`
 
 const Label = styled.div``;
 
-const GET_USER_QUERY = gql`
-  query getUser($id: Int!) {
-    getUser(id: $id) {
-      ok
-      error
-      user {
-        address
-      }
-    }
-  }
-`;
-
 function Address() {
-  const [userId, setUserId] = useState();
-  const { data, loading } = useQuery(GET_USER_QUERY, { variables: { id: userId } });
-  useEffect(() => {
-    setUserId(getUserId());
-  }, []);
-
+  const { data, loading } = useQuery(GET_USER_QUERY, { variables: { id: getUserId() } });
   return (
     !loading && (
       <Container>
