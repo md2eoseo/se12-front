@@ -112,14 +112,20 @@ function EditBanner() {
     if (updateBannerLoading) {
       return;
     }
+    const timezoneOffset = new Date().getTimezoneOffset() * 60000;
+    console.log(timezoneOffset);
+    console.log(startDate, endDate);
+    const nStartDate = new Date(startDate - timezoneOffset);
+    const nEndDate = new Date(endDate - timezoneOffset);
+    console.log(nStartDate, nEndDate);
     updateBanner({
       variables: {
         id: bannerId,
         category,
         title,
         contents,
-        startDate,
-        endDate,
+        startDate: nStartDate,
+        endDate: nEndDate,
       },
     });
   };

@@ -109,18 +109,18 @@ const DELETE_BANNER_MUTATION = gql`
 `;
 
 function Banner({ bannerId, imgUrl, category, title, startDate, endDate, activate, admin }) {
-  const start = new Date(+startDate),
-    startYear = start.getFullYear(),
-    startMonth = ('' + (start.getMonth() + 1)).padStart(2, '0'),
-    startDay = ('' + start.getDate()).padStart(2, '0'),
-    startHours = ('' + start.getHours()).padStart(2, '0'),
-    startMinutes = ('' + start.getMinutes()).padStart(2, '0');
-  const end = new Date(+endDate),
-    endYear = end.getFullYear(),
-    endMonth = ('' + (end.getMonth() + 1)).padStart(2, '0'),
-    endDay = ('' + end.getDate()).padStart(2, '0'),
-    endHours = ('' + end.getHours()).padStart(2, '0'),
-    endMinutes = ('' + end.getMinutes()).padStart(2, '0');
+  const start = new Date(+startDate);
+  const end = new Date(+endDate);
+  const startYear = start.getUTCFullYear(),
+    startMonth = ('' + (start.getUTCMonth() + 1)).padStart(2, '0'),
+    startDay = ('' + start.getUTCDate()).padStart(2, '0'),
+    startHours = ('' + start.getUTCHours()).padStart(2, '0'),
+    startMinutes = ('' + start.getUTCMinutes()).padStart(2, '0');
+  const endYear = end.getUTCFullYear(),
+    endMonth = ('' + (end.getUTCMonth() + 1)).padStart(2, '0'),
+    endDay = ('' + end.getUTCDate()).padStart(2, '0'),
+    endHours = ('' + end.getUTCHours()).padStart(2, '0'),
+    endMinutes = ('' + end.getUTCMinutes()).padStart(2, '0');
   const period = `${startYear}-${startMonth}-${startDay} ${startHours}:${startMinutes} ~ ${endYear}-${endMonth}-${endDay} ${endHours}:${endMinutes}`;
   const [activateState, setActivateState] = useState(activate);
 
