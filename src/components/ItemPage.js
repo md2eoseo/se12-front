@@ -209,8 +209,7 @@ const HR = styled.hr`
 `;
 
 const Bag = styled.div`
-  width: 400px;
-  height: 400px;
+  margin-top: 50px;
 `;
 
 const Button = styled.div`
@@ -271,6 +270,7 @@ function ItemPage() {
   const itemId = Number(queries.get('itemId'));
   const [quantity, setQuantity] = useState(1);
   const { data } = useQuery(SEE_ITEM_QUERY, { variables: { id: itemId } });
+
   const onCompleted = data => {
     const {
       addBagItem: { ok, error },
@@ -365,8 +365,8 @@ function ItemPage() {
           </Button>
         </Info>
       </WrapperTop>
+      <Bag>{BagItems()}</Bag>
       <Content>
-        <Bag>{BagItems()}</Bag>
         <Text>책소개</Text>
         <Line />
         {data && <Description>{data.seeItem.item.contents}</Description>}

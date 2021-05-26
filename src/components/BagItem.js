@@ -1,36 +1,65 @@
+import { NoSchemaIntrospectionCustomRule } from 'graphql';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  margin: 30px 0;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
 `;
 
-const Button = styled.button`
-  background-color: white;
-  outline: none;
-  border: none;
-  cursor: pointer;
-  padding: 0px 10px;
+const Bag = styled.div`
+  display: flex;
+  align-items: center;
+  width: 800px;
+  padding: 10px 10px 10px 20px;
+  border: 1px solid #bdbdbd;
+  &:hover {
+    background-color: #ebf7ff;
+    cursor: pointer;
+  }
 `;
 
-const ItemName = styled.p``;
+const Delete = styled.button`
+  width: 24px;
+  height: 24px;
+  font-size: 120%;
+  color: #5d5d5d;
+`;
 
-const ItemPrice = styled.p``;
+const ItemName = styled.span``;
 
+const ItemPrice = styled.span``;
+
+const Name = styled.div`
+  width: 350px;
+`;
+const Price = styled.div`
+  width: 200px;
+  justify-content: left;
+`;
+
+const Quantity = styled.div`
+  border: 1px solid #a6a6a6;
+  width: 40px;
+  height: 30px;
+  text-align: center;
+  margin-right: 140px;
+`;
 function BagItem({ itemId, name, price }) {
   return (
-    <Link to={`/item?itemId=${itemId}`}>
-      <Button>
-        <Container id={`item-${itemId}`}>
+    <Container id={`item-${itemId}`}>
+      <Bag>
+        <Name>
           <ItemName>{name}</ItemName>
+        </Name>
+        <Price>
           <ItemPrice>{price}원</ItemPrice>
-        </Container>
-      </Button>
-    </Link>
+        </Price>
+        <Quantity>1</Quantity>
+        <Delete>X</Delete>
+      </Bag>
+    </Container>
   );
 }
 
