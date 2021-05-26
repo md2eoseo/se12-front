@@ -10,19 +10,31 @@ const Container = styled.div`
   margin-bottom: 40px;
 `;
 const TotalPrice = styled.div`
-  margin-left: 650px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 500px;
+  margin-left: 600px;
   margin-top: 30px;
   margin-bottom: 50px;
+`;
+
+const Contents = styled.div`
+  display: flex;
+  flex-direction: row;
 `;
 const Int = styled.span`
   font-size: 33px;
   font-weight: bold;
   color: #4374d9;
+  margin-top: -10px;
+  padding: 0px 10px 0px 0px;
 `;
 
 const Label = styled.span`
   font-size: 25px;
-  padding: 0px 20px 0px 0px;
+  padding: 0px 10px 0px 0px;
 `;
 
 const Won = styled.span`
@@ -51,9 +63,11 @@ function BagPage() {
     <Container>
       <BagItems />
       <TotalPrice>
-        <Label>총 상품 금액</Label>
-        <Int>1000</Int>
-        <Won>원</Won>
+        <Contents>
+          <Label>총 상품 금액</Label>
+          <Int>1000</Int>
+          <Won>원</Won>
+        </Contents>
         <BuyButton>구매하기</BuyButton>
       </TotalPrice>
     </Container>
