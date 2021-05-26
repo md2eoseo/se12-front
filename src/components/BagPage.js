@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import BagItems from './BagItems';
 
@@ -47,6 +48,7 @@ const BuyButton = styled.button`
 `;
 
 function BagPage() {
+  const [total, setTotal] = useState();
   return (
     <Container>
       <BagItems />

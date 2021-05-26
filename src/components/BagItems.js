@@ -88,15 +88,15 @@ function BagItems() {
         </Total>
       </Table>
       {data &&
-        data.seeBag.bagItems.map(item => (
+        data.seeBag.bagItems.map(bagItem => (
           <BagItem
-            key={item.id}
-            imgUrl={item.item.imgUrl}
-            itemId={item.id}
-            name={item.item.name}
-            price={item.item.price}
-            quantity={item.quantity}
-            stock={item.item.stock}
+            key={bagItem.id}
+            imgUrl={bagItem.item.imgUrl}
+            bagItemId={bagItem.id}
+            name={bagItem.item.name}
+            price={bagItem.item.price}
+            quantity={bagItem.quantity}
+            stock={bagItem.item.stock}
           />
         ))}
     </Container>
