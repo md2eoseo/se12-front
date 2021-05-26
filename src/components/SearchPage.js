@@ -18,7 +18,6 @@ const SEARCH_ITEMS_QUERY = gql`
         author
         contents
         publisher
-        pressDate
       }
     }
   }

@@ -22,7 +22,6 @@ const SEE_ITEM_QUERY = gql`
         author
         contents
         publisher
-        pressDate
         activate
         createdAt
         updatedAt
@@ -147,13 +146,6 @@ function AdminItemInfo() {
     stateString = '판매중단';
   }
 
-  const pressDate = data && data.seeItem.item.pressDate;
-  const pDate = new Date(+pressDate),
-    pressYear = pDate.getFullYear(),
-    pressMonth = pDate.getMonth() + 1,
-    pressDay = pDate.getDate();
-  const pressed = `${pressYear}년 ${pressMonth}월 ${pressDay}일`;
-
   const createDay = data && data.seeItem.item.createdAt;
   const cDate = new Date(+createDay),
     createdYear = cDate.getFullYear(),
@@ -183,7 +175,6 @@ function AdminItemInfo() {
           <Label>저자 : {data && <ItemName>{data.seeItem.item.author}</ItemName>}</Label>
           <Label>카테고리 : {data && <ItemName>{data.seeItem.item.category.name}</ItemName>}</Label>
           <Label>출판사 : {data && <ItemName>{data.seeItem.item.publisher}</ItemName>}</Label>
-          <Label>출간일 : {data && <ItemName>{pressed}</ItemName>}</Label>
           <Label>재고 : {data && <ItemName>{data.seeItem.item.stock}권</ItemName>}</Label>
           <Label>판매가 : {data && <ItemName>{data.seeItem.item.price}원</ItemName>}</Label>
           <Label>

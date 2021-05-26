@@ -25,24 +25,22 @@ const GET_USER_QUERY = gql`
 
 function Address() {
   const [userId, setUserId] = useState();
-  const { data } = useQuery(GET_USER_QUERY, { variables: { id: userId } });
+  const { data, loading } = useQuery(GET_USER_QUERY, { variables: { id: userId } });
   useEffect(() => {
     setUserId(getUserId());
   }, []);
 
-  if ((data && data.getUser.user.address == '') || userId == '') {
-    return (
+  return (
+    !loading && (
       <Container>
-        <Label>등록된 주소가 없습니다.</Label>
+        <Label>
+          {data?.getUser?.user?.address === null || data?.getUser?.user?.address.trim() === ''
+            ? '등록된 주소가 없습니다.'
+            : data.getUser.user.address}
+        </Label>
       </Container>
-    );
-  } else {
-    return (
-      <Container>
-        <Label> {data && data.getUser.user.address}</Label>
-      </Container>
-    );
-  }
+    )
+  );
 }
 
 export default Address;

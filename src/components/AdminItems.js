@@ -46,7 +46,6 @@ const GET_ITEMS_QUERY = gql`
         id
         author
         publisher
-        pressDate
         activate
         createdAt
         updatedAt

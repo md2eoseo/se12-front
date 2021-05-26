@@ -85,7 +85,6 @@ const CREATE_ITEM_MUTATION = gql`
     $author: String
     $contents: String
     $publisher: String
-    $pressDate: String
     $activate: Boolean
   ) {
     createItem(
@@ -97,7 +96,6 @@ const CREATE_ITEM_MUTATION = gql`
       author: $author
       contents: $contents
       publisher: $publisher
-      pressDate: $pressDate
       activate: $activate
     ) {
       ok
@@ -134,7 +132,7 @@ function AddItem() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = ({ categoryId, name, price, stock, imgUrl, author, contents, publisher, pressDate, activate }) => {
+  const onSubmit = ({ categoryId, name, price, stock, imgUrl, author, contents, publisher, activate }) => {
     if (createItemLoading) {
       return;
     }
@@ -148,7 +146,6 @@ function AddItem() {
         author,
         contents,
         publisher,
-        pressDate,
         activate,
       },
     });

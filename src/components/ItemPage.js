@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import { useState } from 'react';
-import { isLoggedInVar } from '../client';
-import ItemPageBags from './ItemPageBags';
 import Address from './Address';
 import { client, getUserId, isLoggedInVar } from '../client';
 import { GET_USER_QUERY } from './MyMenu';
@@ -26,7 +24,6 @@ const SEE_ITEM_QUERY = gql`
         author
         contents
         publisher
-        pressDate
         activate
         createdAt
         updatedAt
@@ -138,11 +135,6 @@ const Category = styled.span`
 `;
 
 const Publisher = styled.span`
-  padding: 0px 10px 0px 10px;
-  color: #747474;
-`;
-
-const Pressed = styled.span`
   padding: 0px 10px 0px 10px;
   color: #747474;
 `;
@@ -317,12 +309,6 @@ function ItemPage() {
     }
   };
 
-  const pressDate = data && data.seeItem.item.pressDate;
-  const pDate = new Date(+pressDate),
-    pressYear = pDate.getFullYear(),
-    pressMonth = pDate.getMonth() + 1,
-    pressDay = pDate.getDate();
-  const pressed = `${pressYear}년 ${pressMonth}월 ${pressDay}일`;
   const total = (data && data.seeItem.item.price) * quantity;
 
   const onIncrease = () => {
@@ -372,8 +358,6 @@ function ItemPage() {
           <Category>{data && <ItemName>{data.seeItem.item.category.name}</ItemName>}</Category>
           <Slash>|</Slash>
           <Publisher>{data && <ItemName>{data.seeItem.item.publisher}</ItemName>}</Publisher>
-          <Slash>|</Slash>
-          <Pressed>{data && <ItemName>{pressed}</ItemName>}</Pressed>
           <Stock>{data && <ItemName>재고 : {data.seeItem.item.stock}권</ItemName>}</Stock>
           <Price>
             {data && (
@@ -396,12 +380,15 @@ function ItemPage() {
             <Int>{total}</Int>
             <Won>원</Won>
           </TotalPrice>
-          <UserAddress>
-            <Label title="기본 배송지는 회원가입 시 입력한 주소입니다.">배송지</Label>
-            <Box>
-              <Address />
-            </Box>
-          </UserAddress>
+          {isLoggedIn && (
+            <UserAddress>
+              <Label>배송지</Label>
+              <Box>
+                <Address />
+              </Box>
+            </UserAddress>
+          )}
+
           <Button>
             <Destination>배송지 선택</Destination>
             <br />

@@ -80,7 +80,6 @@ const SEE_ITEM_QUERY = gql`
         author
         contents
         publisher
-        pressDate
         activate
         createdAt
         updatedAt
@@ -112,7 +111,6 @@ const UPDATE_ITEM_MUTATION = gql`
     $author: String
     $contents: String
     $publisher: String
-    $pressDate: String
   ) {
     updateItem(
       id: $id
@@ -123,7 +121,6 @@ const UPDATE_ITEM_MUTATION = gql`
       author: $author
       contents: $contents
       publisher: $publisher
-      pressDate: $pressDate
     ) {
       ok
       error
@@ -157,7 +154,7 @@ function EditItem() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = ({ categoryId, name, price, stock, author, contents, publisher, pressDate }) => {
+  const onSubmit = ({ categoryId, name, price, stock, author, contents, publisher }) => {
     if (updateItemLoading) {
       return;
     }
@@ -171,7 +168,6 @@ function EditItem() {
         author,
         contents,
         publisher,
-        pressDate,
       },
     });
   };
