@@ -1,10 +1,11 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql, useMutation, useReactiveVar } from '@apollo/client';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useHistory } from 'react-router';
-import { logUserIn } from '../client';
+import { isLoggedInVar, logUserIn } from '../client';
+import NotFound from './NotFound';
 
 const Wrapper = styled.div`
   display: flex;
@@ -104,6 +105,7 @@ const schema = yup.object().shape({
 });
 
 function SignUpPage() {
+  const isLoggedIn = useReactiveVar(isLoggedInVar);
   const history = useHistory();
   const {
     register,
@@ -166,7 +168,9 @@ function SignUpPage() {
     onCompleted: onLoginCompleted,
   });
 
-  return (
+  return isLoggedIn ? (
+    <NotFound />
+  ) : (
     <Wrapper>
       <Container>
         <Title>회원가입</Title>
