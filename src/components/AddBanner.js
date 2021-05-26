@@ -82,6 +82,8 @@ const schema = yup.object().shape({
   endDate: yup.date().required('종료 날짜를 입력해주세요.').typeError('종료 날짜를 입력해주세요.'),
 });
 
+const timezoneOffset = new Date().getTimezoneOffset() * 60000;
+
 function AddBanner() {
   const history = useHistory();
   const [minEndDate, setMinEndDate] = useState('');
@@ -98,14 +100,17 @@ function AddBanner() {
     if (loading) {
       return;
     }
+
+    const nStartDate = new Date(startDate - timezoneOffset);
+    const nEndDate = new Date(endDate - timezoneOffset);
     createBanner({
       variables: {
         category,
         title,
         contents,
         imgUrl: imgUrl[0],
-        startDate,
-        endDate,
+        startDate: nStartDate,
+        endDate: nEndDate,
       },
     });
   };

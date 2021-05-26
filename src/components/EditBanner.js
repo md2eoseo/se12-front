@@ -104,6 +104,7 @@ function EditBanner() {
     handleSubmit,
     setError,
     formState: { errors },
+    setValue,
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -113,11 +114,8 @@ function EditBanner() {
       return;
     }
     const timezoneOffset = new Date().getTimezoneOffset() * 60000;
-    console.log(timezoneOffset);
-    console.log(startDate, endDate);
     const nStartDate = new Date(startDate - timezoneOffset);
     const nEndDate = new Date(endDate - timezoneOffset);
-    console.log(nStartDate, nEndDate);
     updateBanner({
       variables: {
         id: bannerId,
@@ -152,7 +150,7 @@ function EditBanner() {
 
   useEffect(() => {
     if (seeBanner) {
-      document.getElementById(seeBanner.seeBanner.banner.category).checked = true;
+      setValue('category', seeBanner.seeBanner.banner.category);
     }
   }, [seeBanner]);
 
