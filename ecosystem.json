@@ -1,5 +1,3 @@
 {
-  "apps": [
-    { "name": "se12-front", "script": "npm", "args": "start", "watch": true }
-  ]
+  "apps": [{ "name": "se12-front", "script": "npm", "args": "start", "watch": true, "instances": 0, "exec_mode": "cluster" }]
 }
