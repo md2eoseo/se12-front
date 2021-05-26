@@ -19,10 +19,12 @@ const httpLink = createUploadLink({
   uri: process.env.REACT_APP_BACKEND_URL,
 });
 
+export const cache = new InMemoryCache();
+
 export const client = new ApolloClient({
   link: authLink.concat(httpLink),
   uri: process.env.REACT_APP_BACKEND_URL,
-  cache: new InMemoryCache(),
+  cache,
 });
 
 export const logUserIn = token => {

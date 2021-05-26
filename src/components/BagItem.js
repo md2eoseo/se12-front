@@ -2,6 +2,8 @@ import styled, { css } from 'styled-components';
 import { useMutation } from '@apollo/client';
 import { useState } from 'react';
 import gql from 'graphql-tag';
+import { client, getUserId } from '../client';
+import { GET_USER_QUERY } from './MyMenu';
 
 const Container = styled.div`
   display: flex;
@@ -147,6 +149,23 @@ function BagItem({ bagItemId, name, price, quantity, imgUrl, stock }) {
 
   const deleteBagItemCompleted = () => {
     document.getElementById(`bagItem-${bagItemId}`).remove();
+    const {
+      getUser: { user: userCache },
+    } = client.readQuery({
+      query: GET_USER_QUERY,
+      variables: { id: getUserId() },
+    });
+    client.writeQuery({
+      query: GET_USER_QUERY,
+      data: {
+        getUser: {
+          user: { totalBagItems: userCache.totalBagItems - 1 },
+        },
+      },
+      variables: {
+        id: getUserId(),
+      },
+    });
   };
 
   const updateBagItemCntCompleted = data => {
