@@ -1,8 +1,7 @@
-import { NoSchemaIntrospectionCustomRule } from 'graphql';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { useMutation } from '@apollo/client';
-import { useState } from 'react';
+
 import gql from 'graphql-tag';
 
 const Container = styled.div`
@@ -14,7 +13,7 @@ const Container = styled.div`
 const Bag = styled.div`
   display: flex;
   align-items: center;
-  width: 900px;
+  width: 790px;
   padding: 10px 10px 10px 10px;
   border: 1px solid #bdbdbd;
   &:hover {
@@ -24,7 +23,7 @@ const Bag = styled.div`
 `;
 
 const Delete = styled.button`
-  width: 80px;
+  width: 70px;
   height: 40px;
   color: white;
   background-color: #487be1;
@@ -44,66 +43,24 @@ const ItemTotalPrice = styled.span``;
 
 const Name = styled.div`
   width: 250px;
+  margin-left: 20px;
 `;
 const Price = styled.div`
-  width: 120px;
+  width: 140px;
   justify-content: left;
 `;
 
 const Total = styled.div`
   justify-content: left;
   margin-right: 40px;
-  width: 80px;
+  width: 110px;
 `;
 const Quantity = styled.div`
   border: 1px solid #a6a6a6;
   width: 40px;
   height: 30px;
   text-align: center;
-`;
-const Dec = styled.button`
-  width: 30px;
-  height: 30px;
-  color: white;
-  background-color: #487be1;
-  font-size: 100%;
-  cursor: pointer;
-  outline: none;
-  border: 1px solid #487be1;
-  &:hover {
-    background-color: cornflowerblue;
-  }
-`;
-const Inc = styled.button`
-  width: 30px;
-  height: 30px;
-  margin-right: 40px;
-  color: white;
-  background-color: #487be1;
-  font-size: 100%;
-  cursor: pointer;
-  outline: none;
-  border: 1px solid #487be1;
-  &:hover {
-    background-color: cornflowerblue;
-  }
-`;
-const ItemImg = styled.img`
-  ${props =>
-    props.src &&
-    css`
-      background-image: url(${props.src});
-    `}
-  height: 180px;
-  width: 132px;
-  max-height: 200px;
-  max-width: 140px;
-  margin-right: 30px;
-  object-fit: cover;
-  margin-bottom: 8px;
-  background-position: center;
-  background-size: contain;
-  background-repeat: no-repeat;
+  margin-right: 80px;
 `;
 
 const DELETE_BAGITEM_MUTATION = gql`
@@ -115,25 +72,12 @@ const DELETE_BAGITEM_MUTATION = gql`
   }
 `;
 
-function BagItem({ itemId, name, price, quantity, imgUrl, stock }) {
+function ItemPageBag({ itemId, name, price, quantity }) {
   const onDeleteBtnClick = () => {
     const yes = window.confirm(`'${name}' 를 장바구니에서 삭제하시겠습니까?`);
     if (yes) {
       deleteBagItem({ variables: { id: itemId } });
       window.alert(`'${name}' 상품이 삭제되었습니다.`);
-    }
-  };
-  const [c_quantity, setQuantity] = useState(quantity);
-
-  const onIncrease = () => {
-    if (c_quantity !== stock) {
-      setQuantity(c_quantity => c_quantity + 1);
-    }
-  };
-
-  const onDecrease = () => {
-    if (c_quantity !== 0) {
-      setQuantity(c_quantity => c_quantity - 1);
     }
   };
 
@@ -147,18 +91,17 @@ function BagItem({ itemId, name, price, quantity, imgUrl, stock }) {
   return (
     <Container id={`item-${itemId}`}>
       <Bag>
-        <ItemImg src={imgUrl[0]} />
         <Name>
           <ItemName>{name}</ItemName>
         </Name>
         <Price>
           <ItemPrice>{price}원</ItemPrice>
         </Price>
-        <Dec onClick={onDecrease}>-</Dec>
-        <Quantity>{c_quantity}</Quantity>
-        <Inc onClick={onIncrease}>+</Inc>
+
+        <Quantity>{quantity}</Quantity>
+
         <Total>
-          <ItemTotalPrice>{price * c_quantity}원</ItemTotalPrice>
+          <ItemTotalPrice>{price * quantity}원</ItemTotalPrice>
         </Total>
         <Delete onClick={onDeleteBtnClick} disabled={deleteBagItemLoading}>
           삭제
@@ -168,4 +111,4 @@ function BagItem({ itemId, name, price, quantity, imgUrl, stock }) {
   );
 }
 
-export default BagItem;
+export default ItemPageBag;

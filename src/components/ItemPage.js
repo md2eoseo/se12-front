@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import { useState } from 'react';
 import { isLoggedInVar } from '../client';
+import ItemPageBags from './ItemPageBags';
 
 const SEE_ITEM_QUERY = gql`
   query seeItem($id: Int) {
@@ -52,6 +53,7 @@ const WrapperTop = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 30px;
 `;
 
 const Text = styled.h3`
@@ -294,7 +296,7 @@ function ItemPage() {
   };
 
   const onDecrease = () => {
-    if (quantity !== 0) {
+    if (quantity !== 1) {
       setQuantity(quantity => quantity - 1);
     }
   };
@@ -366,6 +368,7 @@ function ItemPage() {
           </Button>
         </Info>
       </WrapperTop>
+      <ItemPageBags />
       <Content>
         <Text>책소개</Text>
         <Line />

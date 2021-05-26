@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
-import BagItem from './BagItem';
+import ItemPageBag from './ItemPageBag';
 
 const Container = styled.div`
   display: flex;
@@ -18,8 +18,6 @@ const SEE_BAG_QUERY = gql`
         item {
           name
           price
-          imgUrl
-          stock
         }
         quantity
         user {
@@ -33,7 +31,7 @@ const SEE_BAG_QUERY = gql`
 const Table = styled.div`
   display: flex;
   align-items: center;
-  width: 900px;
+  width: 790px;
   padding: 10px 10px 10px 20px;
   font-weight: bold;
   color: #4c4c4c;
@@ -43,11 +41,11 @@ const Table = styled.div`
 
 const Label = styled.span``;
 const Name = styled.div`
-  width: 300px;
-  margin-left: 100px;
+  width: 250px;
+  margin-left: 10px;
 `;
 const Price = styled.div`
-  width: 155px;
+  width: 145px;
   justify-content: center;
 `;
 
@@ -66,13 +64,13 @@ const Quantity = styled.div`
 
 const Total = styled.div``;
 
-function BagItems() {
+function ItemPageBags() {
   const { loading, data } = useQuery(SEE_BAG_QUERY);
 
   return (
     <Container>
-      {loading && '장바구니 정보 불러오는 중...'}
       <Title>장바구니</Title>
+      {loading && '장바구니 정보 불러오는 중...'}
       <Table>
         <Name>
           <Label>상품명</Label>
@@ -89,9 +87,8 @@ function BagItems() {
       </Table>
       {data &&
         data.seeBag.bagItems.map(item => (
-          <BagItem
+          <ItemPageBag
             key={item.id}
-            imgUrl={item.item.imgUrl}
             itemId={item.id}
             name={item.item.name}
             price={item.item.price}
@@ -103,4 +100,4 @@ function BagItems() {
   );
 }
 
-export default BagItems;
+export default ItemPageBags;
