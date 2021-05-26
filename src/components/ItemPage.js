@@ -1,9 +1,10 @@
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { gql, useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import { useState } from 'react';
 import BagItems from './BagItems';
+import { isLoggedInVar } from '../client';
 
 const SEE_ITEM_QUERY = gql`
   query seeItem($id: Int) {
@@ -267,6 +268,7 @@ function useQueryString() {
 }
 
 function ItemPage() {
+  const isLoggedIn = useReactiveVar(isLoggedInVar);
   const queries = useQueryString();
   const itemId = Number(queries.get('itemId'));
   const [quantity, setQuantity] = useState(1);
@@ -303,6 +305,10 @@ function ItemPage() {
   };
 
   const onBagBtnClick = () => {
+    if (!isLoggedIn) {
+      alert('장바구니 추가는 로그인한 회원만 사용할 수 있습니다.');
+      return;
+    }
     if (addBagItemLoading) {
       return;
     }
