@@ -172,19 +172,14 @@ function ItemManage({ itemId, imgUrl, name, price, author, publisher, createdAt,
   const updated = `${updatedYear}-${updatedMonth}-${updatedDay}`;
 
   const [activateState, setActivateState] = useState(activate);
-  const [notice, setNotice] = useState('삭제');
 
   const onActivateBtnClick = () => {
-    const yes = window.confirm(`'${name}' 상품을 ${notice}하시겠습니까?`);
-    if (!activate) {
-      setNotice('삭제');
-    } else {
-      setNotice('복구');
-    }
+    const yes = window.confirm(`'${name}' 상품을 ${activateState ? '삭제' : '복구'}하시겠습니까?`);
+
     if (yes) {
       toggleActivate({ variables: { id: itemId, activate: !activateState } });
 
-      window.alert(`'${name}' 상품이 ${notice}되었습니다.`);
+      window.alert(`'${name}' 상품이 ${activateState ? '삭제' : '복구'}되었습니다.`);
     }
   };
 
