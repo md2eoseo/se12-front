@@ -204,6 +204,10 @@ const Num = styled.div`
 
 const TotalPrice = styled.div``;
 
+const Address = styled.div`
+  margin-top: 20px;
+`;
+
 const HR = styled.hr`
   width: 400px;
   margin-top: 80px;
@@ -360,6 +364,10 @@ function ItemPage() {
             <Int>{total}</Int>
             <Won>원</Won>
           </TotalPrice>
+          <Address>
+            <Label title="기본 배송지는 회원가입 시 입력한 주소입니다.">배송지</Label>
+          </Address>
+
           <Button>
             <Destination>배송지 선택</Destination>
             <br />
