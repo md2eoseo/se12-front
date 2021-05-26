@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import { useState } from 'react';
-import BagItems from './BagItems';
 import { isLoggedInVar } from '../client';
 
 const SEE_ITEM_QUERY = gql`
@@ -209,10 +208,6 @@ const HR = styled.hr`
   margin-bottom: 10px;
 `;
 
-const Bag = styled.div`
-  margin-top: 50px;
-`;
-
 const Button = styled.div`
   flex-direction: column;
 `;
@@ -371,7 +366,6 @@ function ItemPage() {
           </Button>
         </Info>
       </WrapperTop>
-      <Bag>{BagItems()}</Bag>
       <Content>
         <Text>책소개</Text>
         <Line />

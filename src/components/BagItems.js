@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import BagItem from './BagItem';
 
 const Container = styled.div`
-  width: 100%;
   display: flex;
   flex-direction: column;
 `;

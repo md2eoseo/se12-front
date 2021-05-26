@@ -1,5 +1,3 @@
-import { NoSchemaIntrospectionCustomRule } from 'graphql';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.div`
