@@ -1,4 +1,8 @@
-import styled from 'styled-components';
+import { NoSchemaIntrospectionCustomRule } from 'graphql';
+import { Link } from 'react-router-dom';
+import styled, { css } from 'styled-components';
+import { useMutation } from '@apollo/client';
+import gql from 'graphql-tag';
 
 const Container = styled.div`
   display: flex;
@@ -44,10 +48,46 @@ const Quantity = styled.div`
   text-align: center;
   margin-right: 140px;
 `;
-function BagItem({ itemId, name, price, quantity }) {
+
+const ItemImg = styled.img`
+  ${props =>
+    props.src &&
+    css`
+      background-image: url(${props.src});
+    `}
+  height: 180px;
+  width: 132px;
+  max-height: 200px;
+  max-width: 140px;
+  object-fit: cover;
+  margin-bottom: 8px;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+`;
+
+const DELETE_BAGITEM_MUTATION = gql`
+  mutation deleteBagItem($id: Int) {
+    deleteBagItem(id: $id) {
+      ok
+      error
+    }
+  }
+`;
+
+function BagItem({ itemId, name, price, quantity, imgUrl }) {
+  const onDeleteBtnClick = () => {
+    const yes = window.confirm(`'${name}' 를 장바구니에서 삭제하시겠습니까?`);
+    if (yes) {
+      deleteBagItem({ variables: { id: itemId } });
+    }
+  };
+
+  const [deleteBagItem] = useMutation(DELETE_BAGITEM_MUTATION);
   return (
     <Container id={`item-${itemId}`}>
       <Bag>
+        <ItemImg src={imgUrl[0]} />
         <Name>
           <ItemName>{name}</ItemName>
         </Name>
@@ -55,7 +95,7 @@ function BagItem({ itemId, name, price, quantity }) {
           <ItemPrice>{price}원</ItemPrice>
         </Price>
         <Quantity>{quantity}</Quantity>
-        <Delete>X</Delete>
+        <Delete onClick={onDeleteBtnClick}>X</Delete>
       </Bag>
     </Container>
   );

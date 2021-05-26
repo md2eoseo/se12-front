@@ -79,7 +79,14 @@ function BagItems() {
       </Table>
       {data &&
         data.seeBag.bagItems.map(item => (
-          <BagItem key={item.id} itemId={item.id} name={item.item.name} price={item.item.price} quantity={item.quantity} />
+          <BagItem
+            key={item.id}
+            imgUrl={item.item.imgUrl}
+            itemId={item.id}
+            name={item.item.name}
+            price={item.item.price}
+            quantity={item.quantity}
+          />
         ))}
     </Container>
   );
