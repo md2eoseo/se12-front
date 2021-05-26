@@ -71,8 +71,8 @@ function BagItems() {
 
   return (
     <Container>
-      {loading && '장바구니 정보 불러오는 중...'}
       <Title>장바구니</Title>
+      {loading && '장바구니 정보 불러오는 중...'}
       <Table>
         <Name>
           <Label>상품명</Label>
