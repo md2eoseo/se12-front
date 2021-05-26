@@ -42,6 +42,7 @@ const GET_USER_QUERY = gql`
       error
       user {
         name
+        totalBagItems
       }
     }
   }
@@ -69,7 +70,7 @@ function MyMenu() {
     <Container>
       <Greeting>안녕하세요! {!loading && `${data?.getUser?.user?.name}님!`}</Greeting>
       <Buttons>
-        <Button onClick={onBagBtnClick}>장바구니</Button>
+        <Button onClick={onBagBtnClick}>장바구니({data?.getUser?.user?.totalBagItems})</Button>
         <Button onClick={logout}>로그아웃</Button>
       </Buttons>
     </Container>
