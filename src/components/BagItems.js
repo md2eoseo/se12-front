@@ -1,33 +1,9 @@
-import { useQuery } from '@apollo/client';
-import gql from 'graphql-tag';
 import styled from 'styled-components';
 import BagItem from './BagItem';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const SEE_BAG_QUERY = gql`
-  query seeBag {
-    seeBag {
-      ok
-      error
-      bagItems {
-        id
-        item {
-          name
-          price
-          imgUrl
-          stock
-        }
-        quantity
-        user {
-          name
-        }
-      }
-    }
-  }
 `;
 
 const Table = styled.div`
@@ -66,12 +42,9 @@ const Quantity = styled.div`
 
 const Total = styled.div``;
 
-function BagItems() {
-  const { loading, data } = useQuery(SEE_BAG_QUERY);
-
+function BagItems({ bagItems, seeBagRefetch }) {
   return (
     <Container>
-      {loading && '장바구니 정보 불러오는 중...'}
       <Title>장바구니</Title>
       <Table>
         <Name>
@@ -87,18 +60,18 @@ function BagItems() {
           <Label>합계</Label>
         </Total>
       </Table>
-      {data &&
-        data.seeBag.bagItems.map(item => (
-          <BagItem
-            key={item.id}
-            imgUrl={item.item.imgUrl}
-            itemId={item.id}
-            name={item.item.name}
-            price={item.item.price}
-            quantity={item.quantity}
-            stock={item.item.stock}
-          />
-        ))}
+      {bagItems.map(bagItem => (
+        <BagItem
+          key={bagItem.id}
+          imgUrl={bagItem.item.imgUrl}
+          bagItemId={bagItem.id}
+          name={bagItem.item.name}
+          price={bagItem.item.price}
+          quantity={bagItem.quantity}
+          stock={bagItem.item.stock}
+          seeBagRefetch={seeBagRefetch}
+        />
+      ))}
     </Container>
   );
 }
