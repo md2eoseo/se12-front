@@ -18,6 +18,7 @@ const SEE_BAG_QUERY = gql`
         item {
           name
           price
+          imgUrl
         }
         quantity
         user {
