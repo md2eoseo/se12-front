@@ -26,12 +26,11 @@ const GET_USER_QUERY = gql`
 function Address() {
   const [userId, setUserId] = useState();
   const { data } = useQuery(GET_USER_QUERY, { variables: { id: userId } });
-
   useEffect(() => {
     setUserId(getUserId());
   }, []);
 
-  if (data && data.getUser.user.address == '') {
+  if ((data && data.getUser.user.address == '') || userId == '') {
     return (
       <Container>
         <Label>등록된 주소가 없습니다.</Label>
