@@ -367,7 +367,7 @@ function ItemPage() {
             <Destination>배송지 선택</Destination>
             <br />
             <BuyButton>구매하기</BuyButton>
-            <BagButton onClick={onBagBtnClick}>장바구니</BagButton>
+            <BagButton onClick={onBagBtnClick}>장바구니 담기</BagButton>
           </Button>
         </Info>
       </WrapperTop>

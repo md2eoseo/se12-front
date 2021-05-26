@@ -46,7 +46,7 @@ const Quantity = styled.div`
   text-align: center;
   margin-right: 140px;
 `;
-function BagItem({ itemId, name, price }) {
+function BagItem({ itemId, name, price, quantity }) {
   return (
     <Container id={`item-${itemId}`}>
       <Bag>
@@ -56,7 +56,7 @@ function BagItem({ itemId, name, price }) {
         <Price>
           <ItemPrice>{price}원</ItemPrice>
         </Price>
-        <Quantity>1</Quantity>
+        <Quantity>{quantity}</Quantity>
         <Delete>X</Delete>
       </Bag>
     </Container>

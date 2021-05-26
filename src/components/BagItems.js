@@ -14,10 +14,16 @@ const SEE_BAG_QUERY = gql`
     seeBag {
       ok
       error
-      items {
+      bagItems {
         id
-        name
-        price
+        item {
+          name
+          price
+        }
+        quantity
+        user {
+          name
+        }
       }
     }
   }
@@ -71,7 +77,10 @@ function BagItems() {
           <Label>수량</Label>
         </Quantity>
       </Table>
-      {data && data.seeBag.items.map(item => <BagItem key={item.id} itemId={item.id} name={item.name} price={item.price} />)}
+      {data &&
+        data.seeBag.bagItems.map(item => (
+          <BagItem key={item.id} itemId={item.id} name={item.item.name} price={item.item.price} quantity={item.quantity} />
+        ))}
     </Container>
   );
 }
