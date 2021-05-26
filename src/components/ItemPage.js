@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import { useState } from 'react';
+import BagItems from './BagItems';
 
 const SEE_ITEM_QUERY = gql`
   query seeItem($id: Int) {
@@ -25,20 +26,6 @@ const SEE_ITEM_QUERY = gql`
         activate
         createdAt
         updatedAt
-      }
-    }
-  }
-`;
-
-const SEE_BAG_QUERY = gql`
-  query seeBag {
-    seeBag {
-      ok
-      error
-      items {
-        id
-        name
-        price
       }
     }
   }
@@ -284,7 +271,6 @@ function ItemPage() {
   const itemId = Number(queries.get('itemId'));
   const [quantity, setQuantity] = useState(1);
   const { data } = useQuery(SEE_ITEM_QUERY, { variables: { id: itemId } });
-  const { bag } = useQuery(SEE_BAG_QUERY);
   const onCompleted = data => {
     const {
       addBagItem: { ok, error },
@@ -380,6 +366,7 @@ function ItemPage() {
         </Info>
       </WrapperTop>
       <Content>
+        <Bag>{BagItems()}</Bag>
         <Text>책소개</Text>
         <Line />
         {data && <Description>{data.seeItem.item.contents}</Description>}
