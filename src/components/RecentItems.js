@@ -27,7 +27,7 @@ const SEE_RECENT_ITEMS_QUERY = gql`
 `;
 
 function RecentItems() {
-  const { loading, data } = useQuery(SEE_RECENT_ITEMS_QUERY, { variables: { count: 6 } });
+  const { loading, data } = useQuery(SEE_RECENT_ITEMS_QUERY, { variables: { count: 5 } });
 
   return (
     <Container>
