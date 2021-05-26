@@ -56,6 +56,10 @@ function MyMenu() {
     setUserId(getUserId());
   }, []);
 
+  const onBagBtnClick = () => {
+    history.push('/bag');
+  };
+
   const logout = () => {
     logUserOut();
     history.push('/');
@@ -65,7 +69,7 @@ function MyMenu() {
     <Container>
       <Greeting>안녕하세요! {!loading && `${data?.getUser?.user?.name}님!`}</Greeting>
       <Buttons>
-        <Button onClick={() => {}}>장바구니</Button>
+        <Button onClick={onBagBtnClick}>장바구니</Button>
         <Button onClick={logout}>로그아웃</Button>
       </Buttons>
     </Container>
