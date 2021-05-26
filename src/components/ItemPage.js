@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import { useState } from 'react';
-import { isLoggedInVar } from '../client';
-import ItemPageBags from './ItemPageBags';
+import { client, getUserId, isLoggedInVar } from '../client';
+import { GET_USER_QUERY } from './MyMenu';
 
 const SEE_ITEM_QUERY = gql`
   query seeItem($id: Int) {
@@ -277,6 +277,23 @@ function ItemPage() {
     if (!ok) {
       alert(error);
     } else {
+      const {
+        getUser: { user: userCache },
+      } = client.readQuery({
+        query: GET_USER_QUERY,
+        variables: { id: getUserId() },
+      });
+      client.writeQuery({
+        query: GET_USER_QUERY,
+        data: {
+          getUser: {
+            user: { totalBagItems: userCache.totalBagItems + 1 },
+          },
+        },
+        variables: {
+          id: getUserId(),
+        },
+      });
       alert('추가되었습니다.');
     }
   };
@@ -368,7 +385,6 @@ function ItemPage() {
           </Button>
         </Info>
       </WrapperTop>
-      <ItemPageBags />
       <Content>
         <Text>책소개</Text>
         <Line />

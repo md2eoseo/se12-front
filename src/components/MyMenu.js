@@ -35,7 +35,7 @@ const Button = styled.button`
   }
 `;
 
-const GET_USER_QUERY = gql`
+export const GET_USER_QUERY = gql`
   query getUser($id: Int!) {
     getUser(id: $id) {
       ok

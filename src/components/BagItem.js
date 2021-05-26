@@ -1,9 +1,9 @@
-import { NoSchemaIntrospectionCustomRule } from 'graphql';
-import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { useMutation } from '@apollo/client';
 import { useState } from 'react';
 import gql from 'graphql-tag';
+import { client, getUserId } from '../client';
+import { GET_USER_QUERY } from './MyMenu';
 
 const Container = styled.div`
   display: flex;
@@ -115,37 +115,73 @@ const DELETE_BAGITEM_MUTATION = gql`
   }
 `;
 
-function BagItem({ itemId, name, price, quantity, imgUrl, stock }) {
+const UPDATE_BAGITEM_CNT_MUTATION = gql`
+  mutation updateBagItemCnt($bagItemId: Int!, $quantity: Int!) {
+    updateBagItemCnt(bagItemId: $bagItemId, quantity: $quantity) {
+      ok
+      error
+      quantity
+    }
+  }
+`;
+
+function BagItem({ bagItemId, name, price, quantity, imgUrl, stock, seeBagRefetch }) {
   const onDeleteBtnClick = () => {
     const yes = window.confirm(`'${name}' 를 장바구니에서 삭제하시겠습니까?`);
     if (yes) {
-      deleteBagItem({ variables: { id: itemId } });
+      deleteBagItem({ variables: { id: bagItemId } });
       window.alert(`'${name}' 상품이 삭제되었습니다.`);
     }
   };
   const [c_quantity, setQuantity] = useState(quantity);
 
   const onIncrease = () => {
-    if (c_quantity !== stock) {
-      setQuantity(c_quantity => c_quantity + 1);
+    if (c_quantity < stock) {
+      updateBagItemCnt({ variables: { bagItemId, quantity: 1 } });
     }
   };
 
   const onDecrease = () => {
-    if (c_quantity !== 0) {
-      setQuantity(c_quantity => c_quantity - 1);
+    if (c_quantity > 1) {
+      updateBagItemCnt({ variables: { bagItemId, quantity: -1 } });
     }
   };
 
   const deleteBagItemCompleted = () => {
-    document.getElementById(`item-${itemId}`).remove();
+    const {
+      getUser: { user: userCache },
+    } = client.readQuery({
+      query: GET_USER_QUERY,
+      variables: { id: getUserId() },
+    });
+    client.writeQuery({
+      query: GET_USER_QUERY,
+      data: {
+        getUser: {
+          user: { totalBagItems: userCache.totalBagItems - 1 },
+        },
+      },
+      variables: {
+        id: getUserId(),
+      },
+    });
+    seeBagRefetch();
   };
 
-  const [deleteBagItem, { deleteBagItemLoading }] = useMutation(DELETE_BAGITEM_MUTATION, {
+  const updateBagItemCntCompleted = data => {
+    setQuantity(data.updateBagItemCnt.quantity);
+    seeBagRefetch();
+  };
+
+  const [deleteBagItem, { loading: deleteBagItemLoading }] = useMutation(DELETE_BAGITEM_MUTATION, {
     onCompleted: deleteBagItemCompleted,
   });
+
+  const [updateBagItemCnt, { loading: updateBagItemCntLoading }] = useMutation(UPDATE_BAGITEM_CNT_MUTATION, {
+    onCompleted: updateBagItemCntCompleted,
+  });
   return (
-    <Container id={`item-${itemId}`}>
+    <Container id={`bagItem-${bagItemId}`}>
       <Bag>
         <ItemImg src={imgUrl[0]} />
         <Name>
@@ -154,9 +190,13 @@ function BagItem({ itemId, name, price, quantity, imgUrl, stock }) {
         <Price>
           <ItemPrice>{price}원</ItemPrice>
         </Price>
-        <Dec onClick={onDecrease}>-</Dec>
+        <Dec onClick={onDecrease} disabled={updateBagItemCntLoading}>
+          -
+        </Dec>
         <Quantity>{c_quantity}</Quantity>
-        <Inc onClick={onIncrease}>+</Inc>
+        <Inc onClick={onIncrease} disabled={updateBagItemCntLoading}>
+          +
+        </Inc>
         <Total>
           <ItemTotalPrice>{price * c_quantity}원</ItemTotalPrice>
         </Total>
