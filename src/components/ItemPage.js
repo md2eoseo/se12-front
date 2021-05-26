@@ -5,6 +5,7 @@ import { Carousel } from 'react-responsive-carousel';
 import { useState } from 'react';
 import { isLoggedInVar } from '../client';
 import ItemPageBags from './ItemPageBags';
+import Address from './Address';
 
 const SEE_ITEM_QUERY = gql`
   query seeItem($id: Int) {
@@ -204,8 +205,20 @@ const Num = styled.div`
 
 const TotalPrice = styled.div``;
 
-const Address = styled.div`
+const UserAddress = styled.div`
   margin-top: 20px;
+  border: 1px solid #a6a6a6;
+  width: 400px;
+  padding: 10px;
+  &:hover {
+    background-color: #eaeaea;
+    cursor: pointer;
+  }
+`;
+
+const Box = styled.div`
+  margin-top: 20px;
+  height: 70px;
 `;
 
 const HR = styled.hr`
@@ -219,7 +232,7 @@ const Button = styled.div`
 `;
 
 const Destination = styled.button`
-  width: 360px;
+  width: 400px;
   height: 50px;
   margin-top: 20px;
   margin-bottom: 10px;
@@ -235,7 +248,7 @@ const Destination = styled.button`
 `;
 
 const BuyButton = styled.button`
-  width: 175px;
+  width: 195px;
   height: 50px;
   margin-right: 10px;
   color: white;
@@ -250,7 +263,7 @@ const BuyButton = styled.button`
 `;
 
 const BagButton = styled.button`
-  width: 175px;
+  width: 195px;
   height: 50px;
   color: white;
   background-color: #5d5d5d;
@@ -364,10 +377,12 @@ function ItemPage() {
             <Int>{total}</Int>
             <Won>원</Won>
           </TotalPrice>
-          <Address>
+          <UserAddress>
             <Label title="기본 배송지는 회원가입 시 입력한 주소입니다.">배송지</Label>
-          </Address>
-
+            <Box>
+              <Address />
+            </Box>
+          </UserAddress>
           <Button>
             <Destination>배송지 선택</Destination>
             <br />
