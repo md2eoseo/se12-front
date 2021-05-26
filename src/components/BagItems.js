@@ -19,6 +19,7 @@ const SEE_BAG_QUERY = gql`
           name
           price
           imgUrl
+          stock
         }
         quantity
         user {
@@ -32,7 +33,7 @@ const SEE_BAG_QUERY = gql`
 const Table = styled.div`
   display: flex;
   align-items: center;
-  width: 800px;
+  width: 900px;
   padding: 10px 10px 10px 20px;
   font-weight: bold;
   color: #4c4c4c;
@@ -42,11 +43,12 @@ const Table = styled.div`
 
 const Label = styled.span``;
 const Name = styled.div`
-  width: 350px;
+  width: 300px;
+  margin-left: 100px;
 `;
 const Price = styled.div`
-  width: 200px;
-  justify-content: left;
+  width: 155px;
+  justify-content: center;
 `;
 
 const Title = styled.div`
@@ -57,7 +59,12 @@ const Title = styled.div`
   margin-bottom: 20px;
   margin-left: 2px;
 `;
-const Quantity = styled.div``;
+const Quantity = styled.div`
+  margin-right: 55px;
+  width: 60px;
+`;
+
+const Total = styled.div``;
 
 function BagItems() {
   const { loading, data } = useQuery(SEE_BAG_QUERY);
@@ -76,6 +83,9 @@ function BagItems() {
         <Quantity>
           <Label>수량</Label>
         </Quantity>
+        <Total>
+          <Label>합계</Label>
+        </Total>
       </Table>
       {data &&
         data.seeBag.bagItems.map(item => (
@@ -86,6 +96,7 @@ function BagItems() {
             name={item.item.name}
             price={item.item.price}
             quantity={item.quantity}
+            stock={item.item.stock}
           />
         ))}
     </Container>
