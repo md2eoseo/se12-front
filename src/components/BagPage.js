@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { gql, useQuery } from '@apollo/client';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import BagItems from './BagItems';
 
@@ -10,29 +11,18 @@ const Container = styled.div`
   margin-top: 40px;
   margin-bottom: 40px;
 `;
+
 const TotalPrice = styled.div`
-  margin-left: 650px;
-  margin-top: 30px;
-  margin-bottom: 50px;
+  font-size: 30px;
+  margin-top: 20px;
 `;
-const Int = styled.span`
-  font-size: 33px;
+
+const Total = styled.span`
   font-weight: bold;
   color: #4374d9;
 `;
 
-const Label = styled.span`
-  font-size: 25px;
-  padding: 0px 20px 0px 0px;
-`;
-
-const Won = styled.span`
-  font-size: 25px;
-`;
-
 const BuyButton = styled.button`
-  margin-top: 30px;
-  margin-left: 30px;
   width: 200px;
   height: 50px;
   color: white;
@@ -47,17 +37,45 @@ const BuyButton = styled.button`
   }
 `;
 
+const SEE_BAG_QUERY = gql`
+  query seeBag {
+    seeBag {
+      ok
+      error
+      bagItems {
+        id
+        item {
+          name
+          price
+          imgUrl
+          stock
+        }
+        quantity
+        user {
+          name
+        }
+      }
+    }
+  }
+`;
+
 function BagPage() {
-  const [total, setTotal] = useState();
+  const [total, setTotal] = useState(0);
+  const { loading, data, refetch } = useQuery(SEE_BAG_QUERY);
+  useEffect(() => {
+    if (data?.seeBag) {
+      const sum = data.seeBag.bagItems.reduce((prev, bagItem) => (prev += bagItem.quantity * bagItem.item.price), 0);
+      setTotal(sum);
+    }
+  }, [data]);
   return (
     <Container>
-      <BagItems />
+      {loading && '장바구니 정보 불러오는 중...'}
+      {data && <BagItems bagItems={data.seeBag.bagItems} seeBagRefetch={refetch} />}
       <TotalPrice>
-        <Label>총 상품 금액</Label>
-        <Int>1000</Int>
-        <Won>원</Won>
-        <BuyButton>구매하기</BuyButton>
+        총 금액 ₩<Total>{total}</Total>
       </TotalPrice>
+      <BuyButton>구매하기</BuyButton>
     </Container>
   );
 }

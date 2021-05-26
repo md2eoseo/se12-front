@@ -125,7 +125,7 @@ const UPDATE_BAGITEM_CNT_MUTATION = gql`
   }
 `;
 
-function BagItem({ bagItemId, name, price, quantity, imgUrl, stock }) {
+function BagItem({ bagItemId, name, price, quantity, imgUrl, stock, seeBagRefetch }) {
   const onDeleteBtnClick = () => {
     const yes = window.confirm(`'${name}' 를 장바구니에서 삭제하시겠습니까?`);
     if (yes) {
@@ -148,7 +148,6 @@ function BagItem({ bagItemId, name, price, quantity, imgUrl, stock }) {
   };
 
   const deleteBagItemCompleted = () => {
-    document.getElementById(`bagItem-${bagItemId}`).remove();
     const {
       getUser: { user: userCache },
     } = client.readQuery({
@@ -166,10 +165,12 @@ function BagItem({ bagItemId, name, price, quantity, imgUrl, stock }) {
         id: getUserId(),
       },
     });
+    seeBagRefetch();
   };
 
   const updateBagItemCntCompleted = data => {
     setQuantity(data.updateBagItemCnt.quantity);
+    seeBagRefetch();
   };
 
   const [deleteBagItem, { loading: deleteBagItemLoading }] = useMutation(DELETE_BAGITEM_MUTATION, {
