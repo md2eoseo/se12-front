@@ -29,6 +29,8 @@ function App() {
         ) : (
           <Switch>
             <Route path="/bag" component={CustomerPage} />
+            <Route path="/buynow" component={CustomerPage} />
+            <Route path="/bagbuy" component={CustomerPage} />
             <Route path="/item" component={CustomerPage} />
             <Route path="/search" component={CustomerPage} />
             <Route path="/signup" component={SignUpPage} />

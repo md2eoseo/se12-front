@@ -1,6 +1,6 @@
 import { gql, useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import { useState } from 'react';
 import Address from './Address';
@@ -280,6 +280,7 @@ function ItemPage() {
   const itemId = Number(queries.get('itemId'));
   const [quantity, setQuantity] = useState(1);
   const { data } = useQuery(SEE_ITEM_QUERY, { variables: { id: itemId } });
+  const history = useHistory();
 
   const onCompleted = data => {
     const {
@@ -320,6 +321,15 @@ function ItemPage() {
   const onDecrease = () => {
     if (quantity !== 1) {
       setQuantity(quantity => quantity - 1);
+    }
+  };
+  localStorage.setItem('count', quantity);
+  const onBuyBtnClick = () => {
+    if (!isLoggedIn) {
+      alert('로그인 후 이용하실 수 있습니다.');
+      return;
+    } else {
+      history.push(`/buynow?itemId=${itemId}`);
     }
   };
 
@@ -392,7 +402,7 @@ function ItemPage() {
           <Button>
             <Destination>배송지 선택</Destination>
             <br />
-            <BuyButton>구매하기</BuyButton>
+            <BuyButton onClick={onBuyBtnClick}>구매하기</BuyButton>
             <BagButton onClick={onBagBtnClick}>장바구니 담기</BagButton>
           </Button>
         </Info>

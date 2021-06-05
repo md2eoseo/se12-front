@@ -1,5 +1,6 @@
 import { gql, useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import BagItems from './BagItems';
 
@@ -62,6 +63,17 @@ const SEE_BAG_QUERY = gql`
 function BagPage() {
   const [total, setTotal] = useState(0);
   const { loading, data, refetch } = useQuery(SEE_BAG_QUERY);
+  const history = useHistory();
+
+  const onBuyBtnClick = () => {
+    if (total == 0) {
+      alert('구매할 상품이 없습니다.');
+      return;
+    } else {
+      history.push(`/bagbuy`);
+    }
+  };
+
   useEffect(() => {
     if (data?.seeBag) {
       const sum = data.seeBag.bagItems.reduce((prev, bagItem) => (prev += bagItem.quantity * bagItem.item.price), 0);
@@ -75,7 +87,7 @@ function BagPage() {
       <TotalPrice>
         총 금액 ₩<Total>{total}</Total>
       </TotalPrice>
-      <BuyButton>구매하기</BuyButton>
+      <BuyButton onClick={onBuyBtnClick}>구매하기</BuyButton>
     </Container>
   );
 }

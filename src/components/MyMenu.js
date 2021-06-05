@@ -42,6 +42,7 @@ export const GET_USER_QUERY = gql`
       error
       user {
         name
+        email
         totalBagItems
         address
       }
