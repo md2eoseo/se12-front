@@ -229,7 +229,7 @@ function kakaopay({ data }, count, total) {
     },
   };
 
-  let url = axios({
+  axios({
     url: '/v1/payment/ready',
     method: 'POST',
     headers: {
@@ -257,11 +257,8 @@ function kakaopay({ data }, count, total) {
     console.log(next_redirect_pc_url);
     console.log(tid);
     window.localStorage.setItem('tid', tid);
-
-    return next_redirect_pc_url;
   });
 
-  console.log(url.response);
   console.log(data && data.next_redirect_pc_url);
   return state && state.next_redirect_pc_url;
 }
