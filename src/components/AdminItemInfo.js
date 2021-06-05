@@ -166,8 +166,8 @@ function AdminItemInfo() {
     <Container>
       <Wrapper>
         <Image>
-          <Carousel emulateTouch swipeable infiniteLoop showStatus={false} showThumbs={false}>
-            {data && <ItemImg src={data.seeItem.item.imgUrl[0]} />}
+          <Carousel autoPlay emulateTouch swipeable stopOnHover infiniteLoop showStatus={false} showThumbs={false}>
+            {data && data.seeItem.item.imgUrl.map((src, i) => <ItemImg key={i} src={src} />)}
           </Carousel>
         </Image>
         <Info>

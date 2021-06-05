@@ -80,7 +80,6 @@ const SEE_ITEM_QUERY = gql`
         author
         contents
         publisher
-        activate
         createdAt
         updatedAt
       }
@@ -108,6 +107,7 @@ const UPDATE_ITEM_MUTATION = gql`
     $name: String
     $price: Int
     $stock: Int
+    $imgUrl: [Upload]
     $author: String
     $contents: String
     $publisher: String
@@ -118,6 +118,7 @@ const UPDATE_ITEM_MUTATION = gql`
       name: $name
       price: $price
       stock: $stock
+      imgUrl: $imgUrl
       author: $author
       contents: $contents
       publisher: $publisher
@@ -135,6 +136,14 @@ const schema = yup.object().shape({
   author: yup.string(),
   publisher: yup.string(),
   contents: yup.string(),
+  imgUrl: yup.mixed().test('fileSize', '2MB 이하 이미지를 업로드해주세요.', value => {
+    for (let i = 0; i < value.length; i++) {
+      if (value[i].size > 2000000) {
+        return false;
+      }
+    }
+    return true;
+  }),
 });
 
 function useQueryString() {
@@ -154,7 +163,7 @@ function EditItem() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = ({ categoryId, name, price, stock, author, contents, publisher }) => {
+  const onSubmit = ({ categoryId, name, price, stock, imgUrl, author, contents, publisher }) => {
     if (updateItemLoading) {
       return;
     }
@@ -168,6 +177,7 @@ function EditItem() {
         author,
         contents,
         publisher,
+        ...(imgUrl.length > 0 && { imgUrl }),
       },
     });
   };
@@ -197,6 +207,11 @@ function EditItem() {
       <Label>상품 수정</Label>
       {errors.result?.message && <Message>{errors.result?.message}</Message>}
       <form onSubmit={handleSubmit(onSubmit)}>
+        <label>
+          <Text>이미지</Text>
+          <input type="file" {...register('imgUrl')} multiple />
+          {errors.imgUrl?.message && <Message>{errors.imgUrl?.message}</Message>}
+        </label>
         <label>
           <Text>카테고리</Text>
           <Select {...register('categoryId')} defaultValue={seeItem.seeItem.item.categoryId}>
