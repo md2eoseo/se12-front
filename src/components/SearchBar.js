@@ -72,8 +72,12 @@ function SearchBar({ initialTerm, initialCategoryId, initialMinPrice, initialMax
   const [maxPrice, setMaxPrice] = useState(initialMaxPrice || null);
 
   const onSearchBtnClick = e => {
-    e.preventDefault();
-    history.push(`/search?${generateQueryStrings()}`);
+    if (maxPrice > 1500000) {
+      window.alert('1,500,000원 이하의 금액을 입력해주세요.');
+    } else {
+      e.preventDefault();
+      history.push(`/search?${generateQueryStrings()}`);
+    }
   };
 
   const generateQueryStrings = () => {
