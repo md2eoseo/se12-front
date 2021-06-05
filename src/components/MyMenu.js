@@ -44,6 +44,7 @@ export const GET_USER_QUERY = gql`
         name
         totalBagItems
         address
+        role
       }
     }
   }
@@ -71,7 +72,9 @@ function MyMenu() {
     <Container>
       <Greeting>안녕하세요! {!loading && `${data?.getUser?.user?.name}님!`}</Greeting>
       <Buttons>
-        <Button onClick={onBagBtnClick}>장바구니({data?.getUser?.user?.totalBagItems})</Button>
+        {data?.getUser?.user?.role === 'CUSTOMER' && (
+          <Button onClick={onBagBtnClick}>장바구니({data?.getUser?.user?.totalBagItems})</Button>
+        )}
         <Button onClick={logout}>로그아웃</Button>
       </Buttons>
     </Container>
