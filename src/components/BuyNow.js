@@ -1,10 +1,12 @@
 import { gql, useQuery } from '@apollo/client';
 import { useLocation, useHistory } from 'react-router-dom';
+import { setState } from 'react';
 import { GET_USER_QUERY } from './MyMenu';
 import { getUserId } from '../client';
 import styled from 'styled-components';
 import Address from './Address';
 import UserInfo from './UserInfo';
+import axios from 'axios';
 
 const SEE_ITEM_QUERY = gql`
   query seeItem($id: Int) {
@@ -208,6 +210,62 @@ function useQueryString() {
   return new URLSearchParams(useLocation().search);
 }
 
+function kakaopay({ data }, count, total) {
+  var { state } = {
+    next_redirect_pc_url: '',
+    tid: '',
+    params: {
+      cid: 'TC0ONETIME',
+      partner_order_id: 'partner_order_id',
+      partner_user_id: 'partner_user_id',
+      item_name: data && data.seeItem.item.name,
+      quantity: count,
+      total_amount: total,
+      vat_amount: 0,
+      tax_free_amount: 0,
+      approval_url: 'http://localhost:3000/',
+      fail_url: 'http://localhost:3000/',
+      cancel_url: 'http://localhost:3000/',
+    },
+  };
+
+  let url = axios({
+    url: '/v1/payment/ready',
+    method: 'POST',
+    headers: {
+      Authorization: 'KakaoAK 2ebcbf53928c8dfa0cbc44ed536c0d72',
+      'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+    },
+    params: {
+      cid: 'TC0ONETIME',
+      partner_order_id: 'partner_order_id',
+      partner_user_id: 'partner_user_id',
+      item_name: data && data.seeItem.item.name,
+      quantity: count,
+      total_amount: total,
+      vat_amount: 0,
+      tax_free_amount: 0,
+      approval_url: 'http://localhost:3000/',
+      fail_url: 'http://localhost:3000/',
+      cancel_url: 'http://localhost:3000/',
+    },
+  }).then(response => {
+    const {
+      data: { next_redirect_pc_url, tid },
+    } = response;
+
+    console.log(next_redirect_pc_url);
+    console.log(tid);
+    window.localStorage.setItem('tid', tid);
+
+    return next_redirect_pc_url;
+  });
+
+  console.log(url.response);
+  console.log(data && data.next_redirect_pc_url);
+  return state && state.next_redirect_pc_url;
+}
+
 function BuyNow() {
   const queries = useQueryString();
   const history = useHistory();
@@ -281,7 +339,9 @@ function BuyNow() {
             </Payment>
           </Side>
         </UserInfomation>
-        <BuyButton>결제하기</BuyButton>
+        <BuyButton a href={kakaopay({ data }, count, total)}>
+          결제하기
+        </BuyButton>
       </Container>
     )
   );
