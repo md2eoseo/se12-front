@@ -74,8 +74,24 @@ const SEE_BANNER_QUERY = gql`
 `;
 
 const UPDATE_BANNER_MUTATION = gql`
-  mutation updateBanner($id: Int!, $category: BannerCategory, $title: String, $contents: String, $startDate: String, $endDate: String) {
-    updateBanner(id: $id, category: $category, title: $title, contents: $contents, startDate: $startDate, endDate: $endDate) {
+  mutation updateBanner(
+    $id: Int!
+    $imgUrl: Upload
+    $category: BannerCategory
+    $title: String
+    $contents: String
+    $startDate: String
+    $endDate: String
+  ) {
+    updateBanner(
+      id: $id
+      imgUrl: $imgUrl
+      category: $category
+      title: $title
+      contents: $contents
+      startDate: $startDate
+      endDate: $endDate
+    ) {
       ok
       error
     }
@@ -109,7 +125,7 @@ function EditBanner() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = ({ category, title, contents, startDate, endDate }) => {
+  const onSubmit = ({ imgUrl, category, title, contents, startDate, endDate }) => {
     if (updateBannerLoading) {
       return;
     }
@@ -119,6 +135,7 @@ function EditBanner() {
     updateBanner({
       variables: {
         id: bannerId,
+        imgUrl: imgUrl[0],
         category,
         title,
         contents,
@@ -166,6 +183,11 @@ function EditBanner() {
         <input type="radio" name="category" id="EVENT" value="EVENT" {...register('category')} />
         <label htmlFor="EVENT">이벤트</label>
         {errors.category?.message && <Message>{errors.category?.message}</Message>}
+        <label>
+          <Text>이미지</Text>
+          <input type="file" {...register('imgUrl')} />
+          {errors.imgUrl?.message && <Message>{errors.imgUrl?.message}</Message>}
+        </label>
         <label>
           <Text>제목</Text>
           <Input
