@@ -66,7 +66,7 @@ function BagPage() {
   const history = useHistory();
 
   const onBuyBtnClick = () => {
-    if (total == 0) {
+    if ((data && data.seeBag.bagItems).length == 0) {
       alert('구매할 상품이 없습니다.');
       return;
     } else {
