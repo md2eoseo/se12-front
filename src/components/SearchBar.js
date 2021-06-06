@@ -70,10 +70,11 @@ function SearchBar({ initialTerm, initialCategoryId, initialMinPrice, initialMax
   const [categoryId, setCategoryId] = useState(initialCategoryId || null);
   const [minPrice, setMinPrice] = useState(initialMinPrice || null);
   const [maxPrice, setMaxPrice] = useState(initialMaxPrice || null);
+  const MAX_INT = 2147483647;
 
   const onSearchBtnClick = e => {
-    if (maxPrice > 1500000) {
-      window.alert('1,500,000원 이하의 금액을 입력해주세요.');
+    if (maxPrice > MAX_INT) {
+      window.alert('최대 가격을 초과하였습니다.');
     } else {
       e.preventDefault();
       history.push(`/search?${generateQueryStrings()}`);
