@@ -66,10 +66,16 @@ function AdminSearchBar({ initialTerm, initialMinPrice, initialMaxPrice, initial
   const [minPrice, setMinPrice] = useState(initialMinPrice || null);
   const [maxPrice, setMaxPrice] = useState(initialMaxPrice || null);
   const [sortMethod, setSortMethod] = useState(initialSortMethod || null);
+  const MAX_INT = 2147483647;
 
   const onSearchBtnClick = e => {
-    e.preventDefault();
+    if (maxPrice > MAX_INT) {
+      window.alert('최대 가격을 초과하였습니다.');
+    }
+    else{
+      e.preventDefault();
     history.push(`?${generateQueryStrings()}`);
+    }
   };
 
   const generateQueryStrings = () => {
