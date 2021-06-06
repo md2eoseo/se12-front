@@ -28,11 +28,14 @@ const Button = styled.button`
 function AdminMenu() {
   return (
     <Container>
-      <Link to="/banners">
-        <Button>공지/이벤트 관리</Button>
-      </Link>
       <Link to="/">
         <Button>상품 관리</Button>
+      </Link>
+      <Link to="/sales">
+        <Button>상품 판매정보 관리</Button>
+      </Link>
+      <Link to="/banners">
+        <Button>공지/이벤트 관리</Button>
       </Link>
     </Container>
   );

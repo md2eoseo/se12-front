@@ -17,6 +17,7 @@ function App() {
         <Header />
         {isAdmin ? (
           <Switch>
+            <AuthRoute authenticated={isAdmin} path="/sales" component={AdminPage} />
             <AuthRoute authenticated={isAdmin} path="/banners" component={AdminPage} />
             <AuthRoute authenticated={isAdmin} path="/additem" component={AdminPage} />
             <AuthRoute authenticated={isAdmin} path="/addbanner" component={AdminPage} />
