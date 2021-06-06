@@ -29,6 +29,9 @@ function App() {
           </Switch>
         ) : (
           <Switch>
+            <Route path="/pay/fail" component={CustomerPage} />
+            <Route path="/pay/cancel" component={CustomerPage} />
+            <Route path="/pay/success" component={CustomerPage} />
             <Route path="/myorders" component={CustomerPage} />
             <Route path="/bag" component={CustomerPage} />
             <Route path="/buynow" component={CustomerPage} />

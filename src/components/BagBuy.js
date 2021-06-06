@@ -1,10 +1,7 @@
 import { gql, useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import BagBuyItems from './BagBuyItems';
-import { GET_USER_QUERY } from './MyMenu';
-import { getUserId } from '../client';
 import Address from './Address';
 import UserInfo from './UserInfo';
 
@@ -15,16 +12,6 @@ const Container = styled.div`
   flex-direction: column;
   margin-top: 40px;
   margin-bottom: 40px;
-`;
-
-const TotalPrice = styled.div`
-  font-size: 30px;
-  margin-top: 20px;
-`;
-
-const Total = styled.span`
-  font-weight: bold;
-  color: #4374d9;
 `;
 
 const BuyButton = styled.button`
@@ -138,7 +125,6 @@ const SEE_BAG_QUERY = gql`
 function BagBuy() {
   const [total, setTotal] = useState(0);
   const { loading, data, refetch } = useQuery(SEE_BAG_QUERY);
-  const history = useHistory();
   const shippingFee = 2500;
   const payment = total + shippingFee;
 

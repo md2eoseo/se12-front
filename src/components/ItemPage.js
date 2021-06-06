@@ -323,13 +323,12 @@ function ItemPage() {
       setQuantity(quantity => quantity - 1);
     }
   };
-  localStorage.setItem('count', quantity);
   const onBuyBtnClick = () => {
     if (!isLoggedIn) {
       alert('로그인 후 이용하실 수 있습니다.');
       return;
     } else {
-      history.push(`/buynow?itemId=${itemId}`);
+      history.push(`/buynow?itemId=${itemId}&quantity=${quantity}`);
     }
   };
 

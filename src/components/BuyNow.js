@@ -1,16 +1,13 @@
 import { gql, useQuery } from '@apollo/client';
-import { useLocation, useHistory } from 'react-router-dom';
-import { setState } from 'react';
-import { useState } from 'react';
-import { GET_USER_QUERY } from './MyMenu';
+import { useLocation } from 'react-router-dom';
 import { getUserId } from '../client';
 import styled from 'styled-components';
 import Address from './Address';
 import UserInfo from './UserInfo';
 import axios from 'axios';
-import Kakaopay from './Kakaopay';
+import querystring from 'querystring';
 
-export const SEE_ITEM_QUERY = gql`
+const SEE_ITEM_QUERY = gql`
   query seeItem($id: Int) {
     seeItem(id: $id) {
       ok
@@ -24,6 +21,7 @@ export const SEE_ITEM_QUERY = gql`
         price
         stock
         imgUrl
+        shippingFee
         author
         contents
         publisher
@@ -111,20 +109,20 @@ const Table = styled.div`
 `;
 
 const Label = styled.span``;
-const T_Name = styled.div`
+const TName = styled.div`
   width: 300px;
   margin-left: 100px;
 `;
-const T_Price = styled.div`
+const TPrice = styled.div`
   width: 155px;
   justify-content: center;
 `;
-const T_Quantity = styled.div`
+const TQuantity = styled.div`
   margin-right: 55px;
   width: 60px;
 `;
 
-const T_Total = styled.div``;
+const TTotal = styled.div``;
 
 const UserAddress = styled.div`
   margin-top: 20px;
@@ -212,86 +210,113 @@ function useQueryString() {
   return new URLSearchParams(useLocation().search);
 }
 
-function ShowKakaopay() {
-  return <Kakaopay />;
-}
-
 function BuyNow() {
+  const location = useLocation();
   const queries = useQueryString();
-  const history = useHistory();
   const itemId = Number(queries.get('itemId'));
-  const { data } = useQuery(SEE_ITEM_QUERY, { variables: { id: itemId } });
-  const { userdata, loading } = useQuery(GET_USER_QUERY, { variables: { id: getUserId() } });
-  const count = localStorage.getItem('count');
-  const shippingFee = 2500;
-  const total = (data && data.seeItem.item.price) * count;
-  const payment = total + shippingFee;
+  const quantity = Number(queries.get('quantity'));
+  const { data, loading } = useQuery(SEE_ITEM_QUERY, { variables: { id: itemId } });
 
-  return (
-    !loading && (
-      <Container>
-        <Title>주문/결제</Title>
-        <Table>
-          <T_Name>
-            <Label>상품명</Label>
-          </T_Name>
-          <T_Price>
-            <Label>판매가</Label>
-          </T_Price>
-          <T_Quantity>
-            <Label>수량</Label>
-          </T_Quantity>
-          <T_Total>
-            <Label>합계</Label>
-          </T_Total>
-        </Table>
-        <Wrapper>
-          <ItemImg src={data && data.seeItem.item.imgUrl[0]} />
-          <Name>
-            <ItemName>{data && data.seeItem.item.name}</ItemName>
-          </Name>
-          <Price>
-            <ItemPrice>{data && data.seeItem.item.price}원</ItemPrice>
-          </Price>
+  async function showKakaoPay() {
+    const instance = axios.create({
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+        Authorization: `KakaoAK ${process.env.REACT_APP_KAKAO_AK}`,
+      },
+    });
+    const redirectUrl = await instance
+      .post(
+        '/v1/payment/ready',
+        querystring.stringify({
+          cid: 'TC0ONETIME',
+          partner_order_id: '00000001',
+          partner_user_id: getUserId(),
+          item_name: data.seeItem.item.name,
+          quantity: quantity,
+          total_amount: data.seeItem.item.price * quantity,
+          tax_free_amount: data.seeItem.item.price * quantity,
+          approval_url: `${process.env.REACT_APP_BASEURL}/pay/success`,
+          cancel_url: `${process.env.REACT_APP_BASEURL}/pay/cancel`,
+          fail_url: `${process.env.REACT_APP_BASEURL}/pay/fail`,
+        })
+      )
+      .then(res => {
+        window.location.replace(res.data.next_redirect_pc_url);
+      })
+      .catch(e => console.log(e));
+  }
 
-          <ItemQuantity>{count}</ItemQuantity>
-          <Total>
-            <TotalPrice>{total}원</TotalPrice>
-          </Total>
-        </Wrapper>
-        <UserInfomation>
-          <UserAddress>
-            <Text>배송지</Text>
+  return !loading ? (
+    <Container>
+      <Title>주문/결제</Title>
+      <Table>
+        <TName>
+          <Label>상품명</Label>
+        </TName>
+        <TPrice>
+          <Label>판매가</Label>
+        </TPrice>
+        <TQuantity>
+          <Label>수량</Label>
+        </TQuantity>
+        <TTotal>
+          <Label>합계</Label>
+        </TTotal>
+      </Table>
+      <Wrapper>
+        <ItemImg src={data && data.seeItem.item.imgUrl[0]} />
+        <Name>
+          <ItemName>{data && data.seeItem.item.name}</ItemName>
+        </Name>
+        <Price>
+          <ItemPrice>{data && data.seeItem.item.price}원</ItemPrice>
+        </Price>
+
+        <ItemQuantity>{quantity}</ItemQuantity>
+        <Total>
+          <TotalPrice>{data && data.seeItem.item.price * quantity}원</TotalPrice>
+        </Total>
+      </Wrapper>
+      <UserInfomation>
+        <UserAddress>
+          <Text>배송지</Text>
+          <Box>
+            <Address />
+          </Box>
+        </UserAddress>
+        <Side>
+          <User>
+            <Text>주문자 정보</Text>
             <Box>
-              <Address />
+              <UserInfo />
             </Box>
-          </UserAddress>
-          <Side>
-            <User>
-              <Text>주문자 정보</Text>
-              <Box>
-                <UserInfo />
-              </Box>
-            </User>
-            <Payment>
-              <Text>결제 금액</Text>
-              <Box>
-                <Value>
-                  상품금액 : <Span>{total}원</Span>
-                </Value>
-                <Value>
-                  배송비 : <Span>{shippingFee}원</Span>
-                </Value>
-                <Pay>
-                  주문 금액 : <TotalPay>{payment}원</TotalPay>
-                </Pay>
-              </Box>
-            </Payment>
-          </Side>
-        </UserInfomation>
-        <BuyButton onClick={ShowKakaopay}>결제하기</BuyButton>
-      </Container>
-    )
+          </User>
+          <Payment>
+            <Text>결제 금액</Text>
+            <Box>
+              <Value>
+                상품금액 : <Span>{data && data.seeItem.item.price * quantity}원</Span>
+              </Value>
+              <Value>
+                배송비 : <Span>{data && data.seeItem.item.shippingFee}원</Span>
+              </Value>
+              <Pay>
+                주문 금액 :
+                <TotalPay>
+                  {data && data.seeItem.item.price * quantity < 20000
+                    ? data.seeItem.item.price * quantity + data.seeItem.item.shippingFee
+                    : data.seeItem.item.price * quantity}
+                  원
+                </TotalPay>
+              </Pay>
+            </Box>
+          </Payment>
+        </Side>
+      </UserInfomation>
+      <BuyButton onClick={showKakaoPay}>결제하기</BuyButton>
+    </Container>
+  ) : (
+    <Container>주문 정보 불러오는 중...</Container>
   );
 }
 
