@@ -80,6 +80,7 @@ const CREATE_ITEM_MUTATION = gql`
     $categoryId: Int!
     $name: String!
     $price: Int!
+    $shippingFee: Int!
     $stock: Int
     $imgUrl: [Upload]!
     $author: String
@@ -91,6 +92,7 @@ const CREATE_ITEM_MUTATION = gql`
       categoryId: $categoryId
       name: $name
       price: $price
+      shippingFee: $shippingFee
       stock: $stock
       imgUrl: $imgUrl
       author: $author
@@ -108,6 +110,7 @@ const schema = yup.object().shape({
   categoryId: yup.number().min(1, '카테고리를 선택해주세요.').required('카테고리를 선택해주세요.'),
   name: yup.string().required('상품 이름을 입력해주세요.'),
   price: yup.number().required('가격을 입력해주세요.').positive('유효하지 않은 가격입니다.').typeError('가격을 입력해주세요.'),
+  shippingFee: yup.number().required('배송비를 입력해주세요.').positive('유효하지 않은 배송비입니다.').typeError('배송비를 입력해주세요.'),
   author: yup.string(),
   publisher: yup.string(),
   contents: yup.string(),
@@ -132,7 +135,7 @@ function AddItem() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = ({ categoryId, name, price, stock, imgUrl, author, contents, publisher, activate }) => {
+  const onSubmit = ({ categoryId, name, price, shippingFee, stock, imgUrl, author, contents, publisher, activate }) => {
     if (createItemLoading) {
       return;
     }
@@ -141,6 +144,7 @@ function AddItem() {
         categoryId: Number(categoryId),
         name,
         price,
+        shippingFee,
         stock,
         imgUrl,
         author,
@@ -200,6 +204,11 @@ function AddItem() {
           <Text>가격</Text>
           <Input type="number" placeholder="가격을 입력하세요." {...register('price')} />
           {errors.price?.message && <Message>{errors.price?.message}</Message>}
+        </label>
+        <label>
+          <Text>배송비</Text>
+          <Input type="number" placeholder="배송비를 입력하세요." {...register('shippingFee')} />
+          {errors.shippingFee?.message && <Message>{errors.shippingFee?.message}</Message>}
         </label>
         <label>
           <Text>저자</Text>
