@@ -75,12 +75,12 @@ const SEE_ITEM_QUERY = gql`
         }
         name
         price
+        shippingFee
         stock
         imgUrl
         author
         contents
         publisher
-        activate
         createdAt
         updatedAt
       }
@@ -107,7 +107,9 @@ const UPDATE_ITEM_MUTATION = gql`
     $categoryId: Int
     $name: String
     $price: Int
+    $shippingFee: Int
     $stock: Int
+    $imgUrl: [Upload]
     $author: String
     $contents: String
     $publisher: String
@@ -117,7 +119,9 @@ const UPDATE_ITEM_MUTATION = gql`
       categoryId: $categoryId
       name: $name
       price: $price
+      shippingFee: $shippingFee
       stock: $stock
+      imgUrl: $imgUrl
       author: $author
       contents: $contents
       publisher: $publisher
@@ -131,10 +135,29 @@ const MAX_INT = 2147483647;
 const schema = yup.object().shape({
   categoryId: yup.number().min(1, '카테고리를 선택해주세요.').required('카테고리를 선택해주세요.'),
   name: yup.string().required('상품 이름을 입력해주세요.'),
-  price: yup.number().min(0, '유효하지 않은 가격입니다.').max(MAX_INT, '최대 가격을 초과하였습니다.').required('가격을 입력해주세요.'),
+  price: yup
+    .number()
+    .required('가격을 입력해주세요.')
+    .max(MAX_INT, '최대 가격을 초과하였습니다.')
+    .positive('유효하지 않은 가격입니다.')
+    .typeError('가격을 입력해주세요.'),
+  shippingFee: yup
+    .number()
+    .required('배송비를 입력해주세요.')
+    .max(MAX_INT, '최대 가격을 초과하였습니다.')
+    .positive('유효하지 않은 배송비입니다.')
+    .typeError('배송비를 입력해주세요.'),
   author: yup.string(),
   publisher: yup.string(),
   contents: yup.string(),
+  imgUrl: yup.mixed().test('fileSize', '2MB 이하 이미지를 업로드해주세요.', value => {
+    for (let i = 0; i < value.length; i++) {
+      if (value[i].size > 2000000) {
+        return false;
+      }
+    }
+    return true;
+  }),
 });
 
 function useQueryString() {
@@ -154,7 +177,7 @@ function EditItem() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = ({ categoryId, name, price, stock, author, contents, publisher }) => {
+  const onSubmit = ({ categoryId, name, price, shippingFee, stock, imgUrl, author, contents, publisher }) => {
     if (updateItemLoading) {
       return;
     }
@@ -164,10 +187,12 @@ function EditItem() {
         categoryId: Number(categoryId),
         name,
         price,
+        shippingFee,
         stock,
         author,
         contents,
         publisher,
+        ...(imgUrl.length > 0 && { imgUrl }),
       },
     });
   };
@@ -198,6 +223,11 @@ function EditItem() {
       {errors.result?.message && <Message>{errors.result?.message}</Message>}
       <form onSubmit={handleSubmit(onSubmit)}>
         <label>
+          <Text>이미지</Text>
+          <input type="file" {...register('imgUrl')} multiple />
+          {errors.imgUrl?.message && <Message>{errors.imgUrl?.message}</Message>}
+        </label>
+        <label>
           <Text>카테고리</Text>
           <Select {...register('categoryId')} defaultValue={seeItem.seeItem.item.categoryId}>
             <option value={0}>선택</option>
@@ -223,6 +253,16 @@ function EditItem() {
             defaultValue={seeItem && seeItem.seeItem.item.price}
           />
           {errors.price?.message && <Message>{errors.price?.message}</Message>}
+        </label>
+        <label>
+          <Text>배송비</Text>
+          <Input
+            type="number"
+            placeholder="배송비를 입력하세요."
+            {...register('shippingFee')}
+            defaultValue={seeItem && seeItem.seeItem.item.shippingFee}
+          />
+          {errors.shippingFee?.message && <Message>{errors.shippingFee?.message}</Message>}
         </label>
         <label>
           <Text>저자</Text>

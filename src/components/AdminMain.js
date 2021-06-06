@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import AddBanner from './AddBanner';
 import AddItem from './AddItem';
 import AdminBanners from './AdminBanners';
+import AdminSales from './AdminSales';
 import AdminItemInfo from './AdminItemInfo';
 import AdminItems from './AdminItems';
 import EditBanner from './EditBanner';
@@ -18,6 +19,7 @@ const Container = styled.div`
 function AdminMain() {
   return (
     <Container>
+      <Route path="/sales" component={AdminSales} />
       <Route path="/banners" component={AdminBanners} />
       <Route path="/additem" component={AddItem} />
       <Route path="/addbanner" component={AddBanner} />

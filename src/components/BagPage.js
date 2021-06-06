@@ -18,12 +18,12 @@ const TotalPrice = styled.div`
   margin-top: 20px;
 `;
 
-const Total = styled.span`
-  font-weight: bold;
-  color: #4374d9;
+const Caption = styled.span`
+  color: grey;
 `;
 
 const BuyButton = styled.button`
+  margin: 40px 0;
   width: 200px;
   height: 50px;
   color: white;
@@ -61,6 +61,8 @@ const SEE_BAG_QUERY = gql`
 `;
 
 function BagPage() {
+  const SHIPPING_FEE = 2500;
+  const FREE_SHIPPING_LIMIT = 20000;
   const [total, setTotal] = useState(0);
   const { loading, data, refetch } = useQuery(SEE_BAG_QUERY);
   const history = useHistory();
@@ -85,8 +87,10 @@ function BagPage() {
       {loading && '장바구니 정보 불러오는 중...'}
       {data && <BagItems bagItems={data.seeBag.bagItems} seeBagRefetch={refetch} />}
       <TotalPrice>
-        총 금액 ₩<Total>{total}</Total>
+        총 결제 금액 ₩{total} {` + 배송비 ${total < FREE_SHIPPING_LIMIT ? '₩' + SHIPPING_FEE : '무료'}`}
+        {` = ₩${total < FREE_SHIPPING_LIMIT ? total + SHIPPING_FEE : total}`}
       </TotalPrice>
+      <Caption>상품 금액이 20000원 이상이면 배송비가 무료입니다.</Caption>
       <BuyButton onClick={onBuyBtnClick}>구매하기</BuyButton>
     </Container>
   );

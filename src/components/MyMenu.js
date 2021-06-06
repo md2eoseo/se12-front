@@ -3,6 +3,8 @@ import { useHistory } from 'react-router';
 import { getUserId, logUserOut } from '../client';
 import { gql, useQuery } from '@apollo/client';
 import styled from 'styled-components';
+import ShoppingBagIcon from './shopping-bag.svg';
+import OrderListIcon from './list.svg';
 
 const Container = styled.div`
   display: flex;
@@ -21,8 +23,8 @@ const Buttons = styled.div`
 `;
 
 const Button = styled.button`
-  margin-top: 10px;
-  width: 80px;
+  margin: 10px 2px 0 2px;
+  width: 52px;
   height: 40px;
   color: white;
   background-color: #487be1;
@@ -45,6 +47,7 @@ export const GET_USER_QUERY = gql`
         email
         totalBagItems
         address
+        role
       }
     }
   }
@@ -63,6 +66,10 @@ function MyMenu() {
     history.push('/bag');
   };
 
+  const onMyOrdersBtnClick = () => {
+    history.push('/myorders');
+  };
+
   const logout = () => {
     logUserOut();
     history.push('/');
@@ -72,7 +79,16 @@ function MyMenu() {
     <Container>
       <Greeting>안녕하세요! {!loading && `${data?.getUser?.user?.name}님!`}</Greeting>
       <Buttons>
-        <Button onClick={onBagBtnClick}>장바구니({data?.getUser?.user?.totalBagItems})</Button>
+        {data?.getUser?.user?.role === 'CUSTOMER' && (
+          <>
+            <Button onClick={onBagBtnClick}>
+              <img src={ShoppingBagIcon} alt="장바구니" width={20} />({data?.getUser?.user?.totalBagItems})
+            </Button>
+            <Button onClick={onMyOrdersBtnClick}>
+              <img src={OrderListIcon} alt="주문내역" width={20} />
+            </Button>
+          </>
+        )}
         <Button onClick={logout}>로그아웃</Button>
       </Buttons>
     </Container>

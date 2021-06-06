@@ -7,6 +7,7 @@ import ItemPage from './ItemPage';
 import BagPage from './BagPage';
 import BuyNow from './BuyNow';
 import BagBuy from './BagBuy';
+import MyOrdersPage from './MyOrdersPage';
 
 const Container = styled.div`
   width: 100%;
@@ -15,6 +16,7 @@ const Container = styled.div`
 function CustomerMain({ categories, categoriesLoading }) {
   return (
     <Container>
+      <Route path="/myorders" component={MyOrdersPage} />
       <Route path="/bag" component={BagPage} />
       <Route path="/buynow" component={BuyNow} />
       <Route path="/bagbuy" component={BagBuy} />

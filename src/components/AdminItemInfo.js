@@ -18,6 +18,7 @@ const SEE_ITEM_QUERY = gql`
         name
         price
         stock
+        shippingFee
         imgUrl
         author
         contents
@@ -166,8 +167,8 @@ function AdminItemInfo() {
     <Container>
       <Wrapper>
         <Image>
-          <Carousel emulateTouch swipeable infiniteLoop showStatus={false} showThumbs={false}>
-            {data && <ItemImg src={data.seeItem.item.imgUrl[0]} />}
+          <Carousel autoPlay emulateTouch swipeable stopOnHover infiniteLoop showStatus={false} showThumbs={false}>
+            {data && data.seeItem.item.imgUrl.map((src, i) => <ItemImg key={i} src={src} />)}
           </Carousel>
         </Image>
         <Info>
@@ -177,6 +178,7 @@ function AdminItemInfo() {
           <Label>출판사 : {data && <ItemName>{data.seeItem.item.publisher}</ItemName>}</Label>
           <Label>재고 : {data && <ItemName>{data.seeItem.item.stock}권</ItemName>}</Label>
           <Label>판매가 : {data && <ItemName>{data.seeItem.item.price}원</ItemName>}</Label>
+          <Label>배송비 : {data && <ItemName>{data.seeItem.item.shippingFee}원</ItemName>}</Label>
           <Label>
             판매상태 : <ItemName>{stateString}</ItemName>
           </Label>
