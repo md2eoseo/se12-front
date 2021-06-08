@@ -211,7 +211,6 @@ function useQueryString() {
 }
 
 function BuyNow() {
-  const location = useLocation();
   const queries = useQueryString();
   const itemId = Number(queries.get('itemId'));
   const quantity = Number(queries.get('quantity'));
@@ -224,7 +223,7 @@ function BuyNow() {
         Authorization: `KakaoAK ${process.env.REACT_APP_KAKAO_AK}`,
       },
     });
-    const redirectUrl = await instance
+    await instance
       .post(
         '/v1/payment/ready',
         querystring.stringify({

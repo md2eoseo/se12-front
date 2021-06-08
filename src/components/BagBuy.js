@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import BagBuyItems from './BagBuyItems';
 import Address from './Address';
 import UserInfo from './UserInfo';
+import axios from 'axios';
+import querystring from 'querystring';
+import { getUserId } from '../client';
 
 const Container = styled.div`
   display: flex;
@@ -123,17 +126,52 @@ const SEE_BAG_QUERY = gql`
 `;
 
 function BagBuy() {
-  const [total, setTotal] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalQuantity, setTotalQuantity] = useState(0);
   const { loading, data, refetch } = useQuery(SEE_BAG_QUERY);
   const shippingFee = 2500;
-  const payment = total + shippingFee;
 
   useEffect(() => {
     if (data?.seeBag) {
-      const sum = data.seeBag.bagItems.reduce((prev, bagItem) => (prev += bagItem.quantity * bagItem.item.price), 0);
-      setTotal(sum);
+      let totalP = data.seeBag.bagItems.reduce((prev, bagItem) => (prev += bagItem.quantity * bagItem.item.price), 0);
+      const totalQ = data.seeBag.bagItems.reduce((prev, bagItem) => (prev += bagItem.quantity), 0);
+      if (totalP < 20000) {
+        totalP += shippingFee;
+      }
+      setTotalPrice(totalP);
+      setTotalQuantity(totalQ);
     }
   }, [data]);
+
+  async function showKakaoPay() {
+    const instance = axios.create({
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+        Authorization: `KakaoAK ${process.env.REACT_APP_KAKAO_AK}`,
+      },
+    });
+    await instance
+      .post(
+        '/v1/payment/ready',
+        querystring.stringify({
+          cid: 'TC0ONETIME',
+          partner_order_id: '00000001',
+          partner_user_id: getUserId(),
+          item_name: '장바구니 상품',
+          quantity: totalQuantity,
+          total_amount: totalPrice,
+          tax_free_amount: totalPrice,
+          approval_url: `${process.env.REACT_APP_BASEURL}/pay/success`,
+          cancel_url: `${process.env.REACT_APP_BASEURL}/pay/cancel`,
+          fail_url: `${process.env.REACT_APP_BASEURL}/pay/fail`,
+        })
+      )
+      .then(res => {
+        window.location.replace(res.data.next_redirect_pc_url);
+      })
+      .catch(e => console.log(e));
+  }
+
   return (
     <Container>
       {loading && '장바구니 정보 불러오는 중...'}
@@ -156,19 +194,19 @@ function BagBuy() {
             <Text>결제 금액</Text>
             <Box>
               <Value>
-                상품금액 : <Span>{total}원</Span>
+                상품금액 : <Span>{totalPrice}원</Span>
               </Value>
               <Value>
                 배송비 : <Span>{shippingFee}원</Span>
               </Value>
               <Pay>
-                주문 금액 : <TotalPay>{payment}원</TotalPay>
+                주문 금액 : <TotalPay>{totalPrice < 20000 ? totalPrice + shippingFee : totalPrice}원</TotalPay>
               </Pay>
             </Box>
           </Payment>
         </Side>
       </UserInfomation>
-      <BuyButton>결제하기</BuyButton>
+      <BuyButton onClick={showKakaoPay}>결제하기</BuyButton>
     </Container>
   );
 }
