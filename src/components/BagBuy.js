@@ -168,8 +168,7 @@ function BagBuy() {
       )
       .then(res => {
         window.location.replace(res.data.next_redirect_pc_url);
-      })
-      .catch(e => console.log(e));
+      });
   }
 
   return (
