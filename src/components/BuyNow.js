@@ -6,6 +6,7 @@ import Address from './Address';
 import UserInfo from './UserInfo';
 import axios from 'axios';
 import querystring from 'querystring';
+import { useEffect, useState } from 'react';
 
 const SEE_ITEM_QUERY = gql`
   query seeItem($id: Int) {
@@ -214,7 +215,19 @@ function BuyNow() {
   const queries = useQueryString();
   const itemId = Number(queries.get('itemId'));
   const quantity = Number(queries.get('quantity'));
+  const [totalPrice, setTotalPrice] = useState();
   const { data, loading } = useQuery(SEE_ITEM_QUERY, { variables: { id: itemId } });
+  const shippingFee = 2500;
+
+  useEffect(() => {
+    if (data?.seeItem) {
+      let totalP = data.seeItem.item.price * quantity;
+      if (totalP < 20000) {
+        totalP += shippingFee;
+      }
+      setTotalPrice(totalP);
+    }
+  }, [data, quantity]);
 
   async function showKakaoPay() {
     const instance = axios.create({
@@ -232,8 +245,8 @@ function BuyNow() {
           partner_user_id: getUserId(),
           item_name: data.seeItem.item.name,
           quantity: quantity,
-          total_amount: data.seeItem.item.price * quantity,
-          tax_free_amount: data.seeItem.item.price * quantity,
+          total_amount: totalPrice,
+          tax_free_amount: totalPrice,
           approval_url: `${process.env.REACT_APP_BASEURL}/pay/success`,
           cancel_url: `${process.env.REACT_APP_BASEURL}/pay/cancel`,
           fail_url: `${process.env.REACT_APP_BASEURL}/pay/fail`,
