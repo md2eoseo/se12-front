@@ -92,6 +92,7 @@ function BagPage() {
       alert('구매할 상품이 없습니다.');
       return;
     } else {
+      localStorage.setItem('Fee', maxShippingFee);
       history.push(`/bagbuy`);
     }
   };

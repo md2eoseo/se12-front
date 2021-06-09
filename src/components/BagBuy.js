@@ -129,15 +129,14 @@ function BagBuy() {
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalQuantity, setTotalQuantity] = useState(0);
   const { loading, data, refetch } = useQuery(SEE_BAG_QUERY);
-  const shippingFee = 2500;
+  const maxShippingFee = Number(localStorage.getItem('Fee'));
+  const FREE_SHIPPING_LIMIT = 20000;
+  const payment = totalPrice + maxShippingFee;
 
   useEffect(() => {
     if (data?.seeBag) {
       let totalP = data.seeBag.bagItems.reduce((prev, bagItem) => (prev += bagItem.quantity * bagItem.item.price), 0);
       const totalQ = data.seeBag.bagItems.reduce((prev, bagItem) => (prev += bagItem.quantity), 0);
-      if (totalP < 20000) {
-        totalP += shippingFee;
-      }
       setTotalPrice(totalP);
       setTotalQuantity(totalQ);
     }
@@ -159,8 +158,8 @@ function BagBuy() {
           partner_user_id: getUserId(),
           item_name: '장바구니 상품',
           quantity: totalQuantity,
-          total_amount: totalPrice,
-          tax_free_amount: totalPrice,
+          total_amount: totalPrice < 20000 ? totalPrice + maxShippingFee : totalPrice,
+          tax_free_amount: totalPrice < 20000 ? totalPrice + maxShippingFee : totalPrice,
           approval_url: `${process.env.REACT_APP_BASEURL}/pay/success`,
           cancel_url: `${process.env.REACT_APP_BASEURL}/pay/cancel`,
           fail_url: `${process.env.REACT_APP_BASEURL}/pay/fail`,
@@ -196,10 +195,10 @@ function BagBuy() {
                 상품금액 : <Span>{totalPrice}원</Span>
               </Value>
               <Value>
-                배송비 : <Span>{shippingFee}원</Span>
+                배송비 : <Span> {` ${totalPrice < FREE_SHIPPING_LIMIT ? maxShippingFee + '원' : '무료'}`}</Span>
               </Value>
               <Pay>
-                주문 금액 : <TotalPay>{totalPrice < 20000 ? totalPrice + shippingFee : totalPrice}원</TotalPay>
+                주문 금액 : <TotalPay>{totalPrice < 20000 ? totalPrice + maxShippingFee : totalPrice}원</TotalPay>
               </Pay>
             </Box>
           </Payment>

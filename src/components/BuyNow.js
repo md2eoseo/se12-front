@@ -217,13 +217,12 @@ function BuyNow() {
   const quantity = Number(queries.get('quantity'));
   const [totalPrice, setTotalPrice] = useState();
   const { data, loading } = useQuery(SEE_ITEM_QUERY, { variables: { id: itemId } });
-  const shippingFee = 2500;
 
   useEffect(() => {
     if (data?.seeItem) {
       let totalP = data.seeItem.item.price * quantity;
       if (totalP < 20000) {
-        totalP += shippingFee;
+        totalP += data.seeItem.item.shippingFee;
       }
       setTotalPrice(totalP);
     }
@@ -309,16 +308,10 @@ function BuyNow() {
                 상품금액 : <Span>{data && data.seeItem.item.price * quantity}원</Span>
               </Value>
               <Value>
-                배송비 : <Span>{data && data.seeItem.item.shippingFee}원</Span>
+                배송비 : <Span>{` ${totalPrice < 20000 ? data.seeItem.item.shippingFee + '원' : '무료'}`}</Span>
               </Value>
               <Pay>
-                주문 금액 :
-                <TotalPay>
-                  {data && data.seeItem.item.price * quantity < 20000
-                    ? data.seeItem.item.price * quantity + data.seeItem.item.shippingFee
-                    : data.seeItem.item.price * quantity}
-                  원
-                </TotalPay>
+                주문 금액 :<TotalPay>{totalPrice}원</TotalPay>
               </Pay>
             </Box>
           </Payment>
