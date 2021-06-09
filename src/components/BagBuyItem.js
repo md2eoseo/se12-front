@@ -1,9 +1,4 @@
 import styled, { css } from 'styled-components';
-import { useMutation } from '@apollo/client';
-import { useState } from 'react';
-import gql from 'graphql-tag';
-import { client, getUserId } from '../client';
-import { GET_USER_QUERY } from './MyMenu';
 
 const Container = styled.div`
   display: flex;
@@ -66,9 +61,7 @@ const ItemImg = styled.img`
   background-repeat: no-repeat;
 `;
 
-function BagBuyItem({ bagItemId, name, price, quantity, imgUrl, stock, seeBagRefetch }) {
-  const [c_quantity, setQuantity] = useState(quantity);
-
+function BagBuyItem({ bagItemId, name, price, quantity, imgUrl }) {
   return (
     <Container id={`bagItem-${bagItemId}`}>
       <Bag>
@@ -79,9 +72,9 @@ function BagBuyItem({ bagItemId, name, price, quantity, imgUrl, stock, seeBagRef
         <Price>
           <ItemPrice>{price}원</ItemPrice>
         </Price>
-        <Quantity>{c_quantity}</Quantity>
+        <Quantity>{quantity}</Quantity>
         <Total>
-          <ItemTotalPrice>{price * c_quantity}원</ItemTotalPrice>
+          <ItemTotalPrice>{price * quantity}원</ItemTotalPrice>
         </Total>
       </Bag>
     </Container>

@@ -114,6 +114,7 @@ const SEE_BAG_QUERY = gql`
           name
           price
           imgUrl
+          shippingFee
           stock
         }
         quantity
@@ -128,17 +129,18 @@ const SEE_BAG_QUERY = gql`
 function BagBuy() {
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalQuantity, setTotalQuantity] = useState(0);
+  const [maxShippingFee, setMaxShippingFee] = useState(0);
   const { loading, data, refetch } = useQuery(SEE_BAG_QUERY);
-  const maxShippingFee = Number(localStorage.getItem('Fee'));
   const FREE_SHIPPING_LIMIT = 20000;
-  const payment = totalPrice + maxShippingFee;
 
   useEffect(() => {
     if (data?.seeBag) {
       let totalP = data.seeBag.bagItems.reduce((prev, bagItem) => (prev += bagItem.quantity * bagItem.item.price), 0);
       const totalQ = data.seeBag.bagItems.reduce((prev, bagItem) => (prev += bagItem.quantity), 0);
+      const maximumShippingFee = Math.max(...data.seeBag.bagItems.map(bagItem => bagItem.item.shippingFee));
       setTotalPrice(totalP);
       setTotalQuantity(totalQ);
+      setMaxShippingFee(maximumShippingFee);
     }
   }, [data]);
 
