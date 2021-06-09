@@ -50,6 +50,7 @@ const SEE_BAG_QUERY = gql`
           price
           imgUrl
           stock
+          shippingFee
         }
         quantity
         user {
@@ -61,11 +62,30 @@ const SEE_BAG_QUERY = gql`
 `;
 
 function BagPage() {
-  const SHIPPING_FEE = 2500;
+  var maxShippingFee = 0;
   const FREE_SHIPPING_LIMIT = 20000;
   const [total, setTotal] = useState(0);
   const { loading, data, refetch } = useQuery(SEE_BAG_QUERY);
   const history = useHistory();
+
+  if (loading) {
+    while (loading) {
+      setTimeout(3000);
+      break;
+    }
+    var itemQuantity = data && data.seeBag.bagItems.length;
+  } else {
+    itemQuantity = data && data.seeBag.bagItems.length;
+  }
+
+  for (var i = 0; i < itemQuantity; i++) {
+    if (data && data.seeBag.bagItems[i].item.shippingFee != null) {
+      if (maxShippingFee < data.seeBag.bagItems[i].item.shippingFee) {
+        maxShippingFee = data.seeBag.bagItems[i].item.shippingFee;
+      }
+    }
+    console.log(i);
+  }
 
   const onBuyBtnClick = () => {
     if ((data && data.seeBag.bagItems).length === 0) {
@@ -87,8 +107,8 @@ function BagPage() {
       {loading && '장바구니 정보 불러오는 중...'}
       {data && <BagItems bagItems={data.seeBag.bagItems} seeBagRefetch={refetch} />}
       <TotalPrice>
-        총 결제 금액 ₩{total} {` + 배송비 ${total < FREE_SHIPPING_LIMIT ? '₩' + SHIPPING_FEE : '무료'}`}
-        {` = ₩${total < FREE_SHIPPING_LIMIT ? total + SHIPPING_FEE : total}`}
+        총 결제 금액 ₩{total} {` + 배송비 ${total < FREE_SHIPPING_LIMIT ? '₩' + maxShippingFee : '무료'}`}
+        {` = ₩${total < FREE_SHIPPING_LIMIT ? total + maxShippingFee : total}`}
       </TotalPrice>
       <Caption>상품 금액이 20000원 이상이면 배송비가 무료입니다.</Caption>
       <BuyButton onClick={onBuyBtnClick}>구매하기</BuyButton>
