@@ -69,7 +69,7 @@ function BagPage() {
   const history = useHistory();
 
   useEffect(() => {
-    if (data?.seeBag) {
+    if (data?.seeBag && data.seeBag.bagItems.length > 0) {
       let totalP = data.seeBag.bagItems.reduce((prev, bagItem) => (prev += bagItem.quantity * bagItem.item.price), 0);
       const maximumShippingFee = Math.max(...data.seeBag.bagItems.map(bagItem => bagItem.item.shippingFee));
       setTotalPrice(totalP);
