@@ -74,10 +74,13 @@ function SearchBar({ initialTerm, initialCategoryId, initialMinPrice, initialMax
 
   const onSearchBtnClick = e => {
     if (maxPrice > MAX_INT) {
-      window.alert('최대 가격을 초과하였습니다.');
+      window.alert('2147483647을 초과하는 금액은 입력할 수 없습니다.');
     } else {
       e.preventDefault();
       history.push(`/search?${generateQueryStrings()}`);
+    }
+    if (minPrice < 0) {
+      window.alert('음수는 입력할 수 없습니다.');
     }
   };
 
